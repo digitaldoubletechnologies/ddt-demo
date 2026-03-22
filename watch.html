@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DDT — Live Demo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Syne:wght@700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#050505;font-family:'JetBrains Mono',monospace;overflow:hidden}
+
+/* ── INTRO SCREEN ── */
+#intro{position:fixed;inset:0;background:#050505;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;transition:opacity 0.8s ease}
+#intro.fade{opacity:0;pointer-events:none}
+.intro-logo{margin-bottom:32px}
+.intro-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#e8d5a3;letter-spacing:0.08em;margin-bottom:10px;text-align:center}
+.intro-sub{font-size:10px;color:#555;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:48px;text-align:center}
+.intro-btn{background:none;border:1px solid #e8d5a3;color:#e8d5a3;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;padding:14px 40px;cursor:pointer;border-radius:2px;transition:all 0.2s}
+.intro-btn:hover{background:rgba(232,213,163,0.08)}
+.intro-scene-label{font-size:9px;color:#444;letter-spacing:0.15em;margin-top:24px;text-align:center}
+
+/* ── MAIN STAGE ── */
+#stage{position:fixed;inset:0;background:#1a1a1a;display:flex;flex-direction:column;opacity:0;transition:opacity 0.6s ease}
+#stage.show{opacity:1}
+
+/* ── BROWSER CHROME ── */
+.chrome{background:#2a2a2a;padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:2px solid #1a1a1a;flex-shrink:0}
+.chrome-dots{display:flex;gap:6px}
+.cdot{width:12px;height:12px;border-radius:50%}
+.cdot-r{background:#c84f4f}.cdot-y{background:#c8963a}.cdot-g{background:#5ab888}
+.url-wrap{flex:1;background:#1a1a1a;border:1px solid #333;border-radius:4px;padding:6px 12px;display:flex;align-items:center;gap:6px;min-height:32px}
+.url-lock{font-size:11px;color:#555;flex-shrink:0;transition:color 0.3s}
+.url-lock.secure{color:#5ab888}
+.url-text{font-size:12px;color:#888;letter-spacing:0.02em;min-width:4px}
+.url-cursor{display:inline-block;width:2px;height:14px;background:#888;margin-left:1px;animation:blink 0.8s step-end infinite;vertical-align:middle}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.url-cursor.hide{display:none}
+
+/* Extension button */
+.ext-area{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.ext-btn{background:#222;border:1px solid #333;border-radius:4px;padding:5px 10px;display:flex;align-items:center;gap:5px;position:relative;transition:all 0.3s}
+.ext-btn.scanning{border-color:#c8963a;background:rgba(200,150,58,0.08)}
+.ext-btn.detected{border-color:#c84f4f;background:rgba(200,79,79,0.08);animation:extpulse 0.6s ease-in-out 3}
+@keyframes extpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.ext-eye{width:18px;height:11px}
+.ext-label{font-size:9px;letter-spacing:0.08em}
+.ext-dot{width:5px;height:5px;border-radius:50%;background:#333;transition:all 0.3s}
+.ext-dot.live{background:#5ab888;animation:edot 2s ease-in-out infinite}
+.ext-dot.scanning{background:#c8963a;animation:escan 0.4s ease-in-out infinite}
+.ext-dot.alert{background:#c84f4f;animation:ealert 0.3s ease-in-out infinite}
+@keyframes edot{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes escan{0%,100%{transform:scale(1.4);opacity:1}50%{transform:scale(0.8);opacity:0.5}}
+@keyframes ealert{0%,100%{transform:scale(1.6);opacity:1}50%{transform:scale(1);opacity:0.5}}
+
+/* ── WEBPAGE CONTENT ── */
+#webpage{flex:1;overflow:hidden;position:relative;background:#f4f2ec;transition:opacity 0.3s}
+#webpage.loading{opacity:0}
+#webpage.loaded{opacity:1;transition:opacity 0.5s ease}
+
+.wp-inner{padding:28px 40px;max-width:900px;margin:0 auto;opacity:0;transform:translateY(8px);transition:all 0.5s ease}
+.wp-inner.show{opacity:1;transform:none}
+
+.wp-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid #e0ddd5}
+.wp-logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#1a1a1a;letter-spacing:0.04em}
+.wp-navlinks{display:flex;gap:24px}
+.wp-navlink{font-size:11px;color:#888;letter-spacing:0.08em}
+
+.wp-hero{display:grid;grid-template-columns:1fr 340px;gap:32px;align-items:start}
+.wp-copy{}
+.wp-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;color:#aaa;text-transform:uppercase;margin-bottom:10px}
+.wp-headline{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:#1a1a1a;line-height:1.2;margin-bottom:14px}
+.wp-body{font-size:12px;color:#666;line-height:1.8;margin-bottom:20px;max-width:380px}
+.wp-cta{background:#1a1a1a;color:#f4f2ec;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;padding:12px 24px;border-radius:2px;display:inline-block}
+
+/* ── PHOTO WITH IPS ── */
+.photo-wrap{position:relative;border-radius:6px;overflow:hidden;height:320px;background:#c8b8a0}
+.photo-face{width:100%;height:100%;background:linear-gradient(160deg,#c4b49a 0%,#9a8068 35%,#b8a888 65%,#c4b49a 100%);display:flex;align-items:center;justify-content:center;transition:filter 0.8s ease}
+.photo-face.blur{filter:blur(12px) brightness(0.6) saturate(0.3)}
+.photo-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.2em;text-transform:uppercase}
+
+/* Scan ring animation */
+.scan-ring{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 0.3s}
+.scan-ring.show{opacity:1}
+.ring{position:absolute;border-radius:50%;border:2px solid rgba(200,150,58,0.6);animation:ringpulse 1s ease-out forwards}
+@keyframes ringpulse{0%{transform:scale(0.3);opacity:1}100%{transform:scale(2.5);opacity:0}}
+
+/* CRO detection flash */
+.cro-detect{position:absolute;top:10px;left:10px;background:rgba(200,150,58,0.9);border-radius:3px;padding:5px 10px;font-size:8px;letter-spacing:0.12em;color:white;text-transform:uppercase;opacity:0;transform:translateY(-4px);transition:all 0.3s}
+.cro-detect.show{opacity:1;transform:none}
+
+/* IPS overlay — fits inside photo */
+.ips-overlay{position:absolute;inset:0;background:rgba(168,40,40,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity 0.5s ease;border-radius:6px}
+.ips-overlay.show{opacity:1}
+.ips-ov-icon{width:44px;height:44px;border:3px solid rgba(255,255,255,0.6);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.ips-ov-x{font-size:20px;color:white;font-weight:700;line-height:1}
+.ips-ov-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:white;margin-bottom:6px;text-align:center}
+.ips-ov-state{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.8);margin-bottom:8px;letter-spacing:0.1em}
+.ips-ov-badge{font-size:8px;color:rgba(255,255,255,0.5);letter-spacing:0.14em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.25);padding:2px 8px;border-radius:2px}
+
+/* ── IPS POPUP ── */
+.ips-popup{position:absolute;bottom:12px;right:12px;background:#0a0a0a;border:1px solid #c84f4f;border-radius:4px;padding:10px 12px;width:180px;opacity:0;transform:translateY(6px);transition:all 0.4s ease;z-index:20}
+.ips-popup.show{opacity:1;transform:none}
+.ipp-hdr{display:flex;align-items:center;gap:5px;margin-bottom:5px}
+.ipp-dot{width:5px;height:5px;border-radius:50%;background:#c84f4f;animation:ealert 0.3s ease-in-out infinite}
+.ipp-title{font-size:8px;color:#e8d5a3;letter-spacing:0.14em;text-transform:uppercase}
+.ipp-state{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#c84f4f;margin-bottom:4px}
+.ipp-detail{font-size:8px;color:#555;line-height:1.6}
+.ipp-ts{font-size:7px;color:#333;margin-top:5px}
+
+/* ── BOTTOM PANEL ── */
+#bottom{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:14px 24px;flex-shrink:0;opacity:0;transition:opacity 0.4s;position:relative;z-index:100}
+#bottom.show{opacity:1}
+.bottom-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:start}
+
+.notif{background:#141414;border:1px solid #1e1e1e;border-radius:4px;overflow:hidden;transform:translateY(calc(-38vh)) scale(1.06);opacity:0;transition:opacity 0.35s ease,transform 0.0s}
+.notif.center{transform:translateY(calc(-38vh)) scale(1.06);opacity:1;transition:opacity 0.35s ease;z-index:200;position:relative}
+.notif.drop{transform:translateY(0) scale(1);opacity:1;transition:transform 0.65s cubic-bezier(0.34,1.4,0.64,1),opacity 0.3s ease}
+.notif-hdr{padding:6px 10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #1a1a1a}
+.notif-icon{width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+.ni-em{background:#1a2a3a;color:#4a8fd4}
+.ni-sm{background:#1a2a1a;color:#5ab888}
+.notif-lbl{font-size:8px;color:#444;letter-spacing:0.06em}
+.notif-body{padding:7px 10px}
+.notif-subj{font-size:9px;color:#c84f4f;font-weight:500;margin-bottom:3px}
+.notif-prev{font-size:8px;color:#444;line-height:1.5}
+
+.action-card{background:#141414;border:1px solid #1e1e1e;border-radius:4px;padding:12px;transform:translateY(calc(-38vh)) scale(1.06);opacity:0;transition:opacity 0.35s ease,transform 0.0s}
+.action-card.center{transform:translateY(calc(-38vh)) scale(1.06);opacity:1;transition:opacity 0.35s ease;z-index:200;position:relative}
+.action-card.drop{transform:translateY(0) scale(1);opacity:1;transition:transform 0.65s cubic-bezier(0.34,1.4,0.64,1),opacity 0.3s ease}
+.action-lbl{font-size:8px;letter-spacing:0.14em;color:#555;text-transform:uppercase;margin-bottom:8px}
+.action-btns{display:flex;flex-direction:column;gap:5px}
+.abtn{padding:7px 10px;border-radius:2px;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:none;font-family:'JetBrains Mono',monospace;text-align:left}
+.abtn-rev{background:#c84f4f;color:white}
+.abtn-ev{background:#141414;color:#5ab888;border:1px solid #1a4a1a}
+.abtn-flg{background:#141414;color:#c8963a;border:1px solid #4a3a1a}
+
+/* ── CAPTION BAR ── */
+#caption-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);padding:10px 24px;font-size:10px;color:#888;letter-spacing:0.08em;text-align:center;transform:translateY(100%);transition:all 0.4s;z-index:500}
+#caption-bar.show{transform:none}
+#caption-bar.important{color:#e8d5a3}
+
+/* ── REPLAY ── */
+#replay-btn{background:none;border:1px solid rgba(232,213,163,0.35);color:rgba(232,213,163,0.7);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:9px 28px;cursor:pointer;border-radius:2px;white-space:nowrap;animation:replaypulse 3s ease-in-out infinite}
+#replay-btn:hover{background:rgba(232,213,163,0.08);color:#e8d5a3;border-color:#e8d5a3}
+@keyframes replaypulse{0%,100%{border-color:rgba(232,213,163,0.2);color:rgba(232,213,163,0.6)}50%{border-color:rgba(232,213,163,0.8);color:#e8d5a3}}
+
+/* ── PROGRESS ── */
+#progress{position:fixed;top:0;left:0;height:2px;background:#c8963a;width:0;transition:width 0.4s ease;z-index:700}
+</style>
+<script>
+const API = 'https://ddt-core-production.up.railway.app';
+const CRO = '0bd66ac7-55c9-4e04-9e8d-f2cb71460b0c';
+function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+
+function setProgress(pct){document.getElementById('progress').style.width=pct+'%';}
+
+function caption(txt, important){
+  const bar = document.getElementById('caption-bar');
+  bar.textContent = txt;
+  bar.className = 'show' + (important ? ' important' : '');
+}
+function hideCaption(){document.getElementById('caption-bar').className='';}
+
+function typeURL(targetURL){
+  return new Promise(resolve => {
+    const el = document.getElementById('url-text');
+    const cursor = document.getElementById('url-cursor');
+    el.textContent = '';
+    cursor.classList.remove('hide');
+    let i = 0;
+    const speed = 55;
+    function type(){
+      if(i < targetURL.length){
+        el.textContent += targetURL[i];
+        i++;
+        setTimeout(type, speed + Math.random()*30);
+      } else {
+        cursor.classList.add('hide');
+        resolve();
+      }
+    }
+    setTimeout(type, 400);
+  });
+}
+
+function spawnRings(){
+  const ring = document.getElementById('scan-ring');
+  ring.innerHTML = '';
+  ring.classList.add('show');
+  const wrap = document.getElementById('photo-wrap');
+  const cx = wrap.offsetWidth / 2;
+  const cy = wrap.offsetHeight / 2;
+  for(let i = 0; i < 4; i++){
+    setTimeout(()=>{
+      const r = document.createElement('div');
+      r.className = 'ring';
+      r.style.cssText = `width:80px;height:80px;left:${cx-40}px;top:${cy-40}px;animation-delay:0s`;
+      ring.appendChild(r);
+      setTimeout(()=>r.remove(), 1100);
+    }, i * 260);
+  }
+}
+
+async function startDemo(){
+  const intro = document.getElementById('intro');
+  const stage = document.getElementById('stage');
+  intro.classList.add('fade');
+  await delay(800);
+  stage.classList.add('show');
+  setProgress(5);
+  await runDemo();
+}
+
+async function runDemo(){
+  // 1. Type URL
+  caption('Opening businesswebsite.com...');
+  setProgress(10);
+  await typeURL('businesswebsite.com/about-us');
+  await delay(300);
+
+  // 2. Page loads
+  document.getElementById('url-lock').classList.add('secure');
+  document.getElementById('webpage').classList.remove('loading');
+  document.getElementById('webpage').classList.add('loaded');
+  await delay(200);
+  document.getElementById('wp-inner').classList.add('show');
+  setProgress(22);
+  caption('Page loaded. DDT IPS extension activating...');
+  await delay(900);
+
+  // 3. Extension activates
+  const extBtn = document.getElementById('ext-btn');
+  const extDot = document.getElementById('ext-dot');
+  const extLabel = document.getElementById('ext-label');
+  extDot.classList.add('live');
+  extLabel.style.color = '#5ab888';
+  extLabel.textContent = 'Scanning...';
+  extBtn.classList.add('scanning');
+  extDot.classList.remove('live');
+  extDot.classList.add('scanning');
+  setProgress(35);
+  caption('IPS extension scanning page for C2PA manifests and CRO bindings...');
+  await delay(1200);
+
+  // 4. Spawn scan rings on photo
+  spawnRings();
+  setProgress(48);
+  caption('C2PA manifest detected on image. ddt.cro_binding found. Querying IPS endpoint...', true);
+  await delay(400);
+
+  // Show CRO detect badge
+  document.getElementById('cro-detect').classList.add('show');
+  await delay(800);
+
+  // 5. IPS query — live
+  let ts = new Date().toISOString();
+  try {
+    const res = await fetch(`${API}/v1/ips/permission/${CRO}`);
+    const data = await res.json();
+    ts = data.checked_at || ts;
+  } catch(e){}
+  document.getElementById('ipp-ts').textContent = 'Checked: ' + ts.slice(0,19).replace('T',' ') + 'Z';
+  setProgress(60);
+
+  // 6. IPS returns REVOKED — extension alerts
+  extBtn.classList.remove('scanning');
+  extBtn.classList.add('detected');
+  extDot.classList.remove('scanning');
+  extDot.classList.add('alert');
+  extLabel.style.color = '#c84f4f';
+  extLabel.textContent = 'REVOKED';
+  caption('IPS response: REVOKED. Intercepting content before render...', true);
+  await delay(500);
+
+  // 7. Blur photo + overlay
+  document.getElementById('photo-face').classList.add('blur');
+  await delay(300);
+  document.getElementById('ips-overlay').classList.add('show');
+  await delay(500);
+  document.getElementById('ips-popup').classList.add('show');
+  setProgress(72);
+  caption('Content blurred. Consent not verified. IPS: REVOKED — creator withdrew authorization.');
+  await delay(1400);
+
+  // 8. Box 1 — Notifications center, linger, drop
+  setProgress(82);
+  document.getElementById('bottom').classList.add('show');
+  caption('Creator and vendor notified immediately via email and SMS...');
+  var ne = document.getElementById('notif-email');
+  ne.classList.add('center');
+  await delay(2800);
+  ne.classList.remove('center');
+  ne.classList.add('drop');
+  await delay(2000);
+
+  // Box 2 — Manifest center, linger, drop
+  caption('Consent manifest updated in the DDT app — event logged and signed...');
+  var ns = document.getElementById('notif-sms');
+  ns.classList.add('center');
+  await delay(2800);
+  ns.classList.remove('center');
+  ns.classList.add('drop');
+  await delay(2000);
+
+  // Box 3 — Action panel center, linger, drop
+  setProgress(92);
+  caption("Evidence packet generated. The \"I didn't know\" defense is closed.", true);
+  var ac = document.getElementById('action-card');
+  ac.classList.add('center');
+  await delay(2800);
+  ac.classList.remove('center');
+  ac.classList.add('drop');
+  await delay(1200);
+
+  setProgress(100);
+  caption('Creator can now revoke, flag, or take legal action — with signed, timestamped evidence.', true);
+  var rw = document.getElementById('replay-wrap'); if(rw) rw.style.opacity='1';
+}
+
+function replay(){
+  location.reload();
+}
+</script>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="intro-logo">
+    <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+      <path d="M8 28L8 8L28 8" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M92 8L112 8L112 28" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M8 92L8 112L28 112" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M92 112L112 112L112 92" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M11 60C11 60 35 22 60 22C85 22 109 60 109 60C109 60 85 98 60 98C35 98 11 60 11 60Z" stroke="#e8d5a3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="60" cy="60" r="18" stroke="#e8d5a3" stroke-width="4" fill="none"/>
+      <text x="60" y="64" text-anchor="middle" font-family="Syne,sans-serif" font-size="11" font-weight="800" letter-spacing="1.5" fill="#e8d5a3">DDT</text>
+    </svg>
+  </div>
+  <div class="intro-title">Identity Permission State</div>
+  <div class="intro-sub">Live Infrastructure Demo · Webpage Scenario</div>
+  <button class="intro-btn" onclick="startDemo()">&#9654; &nbsp; Watch the demo</button>
+  <div class="intro-scene-label">Your content. Your terms. Live — right now.</div>
+</div>
+
+<!-- STAGE -->
+<div id="stage">
+  <!-- Browser chrome -->
+  <div class="chrome">
+    <div class="chrome-dots">
+      <div class="cdot cdot-r"></div>
+      <div class="cdot cdot-y"></div>
+      <div class="cdot cdot-g"></div>
+    </div>
+    <div class="url-wrap">
+      <span class="url-lock" id="url-lock">&#128275;</span>
+      <span class="url-text" id="url-text"></span><span class="url-cursor" id="url-cursor"></span>
+    </div>
+    <div class="ext-area">
+      <div class="ext-btn" id="ext-btn">
+        <svg class="ext-eye" viewBox="0 0 120 75" fill="none">
+          <path d="M8 22L8 5L25 5" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <path d="M95 5L112 5L112 22" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <path d="M8 53L8 70L25 70" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <path d="M95 70L112 70L112 53" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <path d="M4 37C4 37 24 14 60 14C96 14 116 37 116 37C116 37 96 60 60 60C24 60 4 37 4 37Z" stroke="#e8d5a3" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <circle cx="60" cy="37" r="11" stroke="#e8d5a3" stroke-width="5" fill="none"/>
+        </svg>
+        <span class="ext-label" id="ext-label" style="color:#555">DDT IPS</span>
+        <div class="ext-dot" id="ext-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Webpage -->
+  <div id="webpage" class="loading">
+    <div class="wp-inner" id="wp-inner">
+      <div class="wp-nav">
+        <div class="wp-logo">Acme Creative</div>
+        <div class="wp-navlinks">
+          <div class="wp-navlink">Work</div>
+          <div class="wp-navlink">About</div>
+          <div class="wp-navlink">Contact</div>
+          <div class="wp-navlink">Press</div>
+        </div>
+      </div>
+      <div class="wp-hero">
+        <div class="wp-copy">
+          <div class="wp-eyebrow">Award-winning agency</div>
+          <div class="wp-headline">We tell stories<br>that move people.</div>
+          <div class="wp-body">Our team partners with the world's most ambitious brands to create visual narratives that resonate. From campaign photography to motion — we make it unforgettable.</div>
+          <div class="wp-cta">See our work</div>
+        </div>
+        <div style="position:relative">
+        <div class="photo-wrap" id="photo-wrap">
+          <div class="photo-face" id="photo-face">
+            <div class="photo-label">Performer · Justin Hofstad</div>
+          </div>
+          <!-- Scan rings injected by JS -->
+          <div class="scan-ring" id="scan-ring"></div>
+          <div class="cro-detect" id="cro-detect">&#9632; CRO detected</div>
+          <div class="ips-overlay" id="ips-overlay">
+            <div class="ips-ov-icon"><span class="ips-ov-x">&#10005;</span></div>
+            <div class="ips-ov-title">Consent not verified</div>
+            <div class="ips-ov-state">IPS STATE: REVOKED</div>
+            <div class="ips-ov-badge">C2PA · DDT IPS · ddt.cro_binding</div>
+          </div>
+          <div class="ips-popup" id="ips-popup">
+            <div class="ipp-hdr"><div class="ipp-dot"></div><div class="ipp-title">DDT IPS · Live</div></div>
+            <div class="ipp-state">REVOKED</div>
+            <div class="ipp-detail">Creator consent withdrawn.<br>Use not authorized.<br>Evidence packet generated.</div>
+            <div class="ipp-ts" id="ipp-ts">Checked: —</div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Replay -->
+  <div id="replay-wrap" style="background:#0a0a0a;padding:8px 24px 0;text-align:center;opacity:0;transition:opacity 0.5s;position:relative;z-index:100" id="replay-wrap"><button id="replay-btn" onclick="replay()">&#8635; &nbsp; Watch again</button></div>
+
+  <!-- Bottom notifications -->
+  <div id="bottom">
+    <div class="bottom-inner">
+      <div class="notif" id="notif-email">
+        <div class="notif-hdr"><div class="notif-icon ni-em">&#9993;</div><div class="notif-lbl">Notified Immediately · Just now</div></div>
+        <div class="notif-body">
+          <div class="notif-subj">Unauthorized use detected</div>
+          <div class="notif-prev" style="margin-bottom:6px">&#9993; Email → Creator &amp; Vendor · businesswebsite.com/about-us found using your content without consent.</div>
+          <div class="notif-prev">&#128241; SMS → Creator · IPS: REVOKED. Evidence packet ready. Open DDT to act.</div>
+        </div>
+      </div>
+      <div class="notif" id="notif-sms">
+        <div class="notif-hdr"><div class="notif-icon" style="background:#1a1a3a;color:#8a6fd4;font-size:9px">&#9632;</div><div class="notif-lbl">Manifest Updated · DDT App · Just now</div></div>
+        <div class="notif-body">
+          <div class="notif-subj" style="color:#8a6fd4">New Consent Event Logged</div>
+          <div class="notif-prev" style="margin-bottom:4px">&#9679; CONTENT_ACCESSED_UNAUTHORIZED · businesswebsite.com</div>
+          <div class="notif-prev" style="margin-bottom:4px">&#9679; IPS_QUERY · REVOKED · signed + timestamped</div>
+          <div class="notif-prev">&#9679; EVIDENCE_PACKET_GENERATED · legally admissible</div>
+        </div>
+      </div>
+      <div class="action-card" id="action-card">
+        <div class="action-lbl">Creator can act — evidence ready</div>
+        <div class="action-btns">
+          <button class="abtn abtn-rev">Revoke consent &#8594;</button>
+          <button class="abtn abtn-ev">View evidence packet &#8594;</button>
+          <button class="abtn abtn-flg">Flag for review</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="caption-bar"></div>
+
+
+</body>
+</html>
