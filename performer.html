@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+function vdelay(ms){return new Promise(r=>setTimeout(r,ms));}
+function vdot(p,n){for(var i=0;i<5;i++){var d=document.getElementById(p+i);if(!d)continue;d.classList.remove('done','active');if(i<n)d.classList.add('done');if(i===n)d.classList.add('active');}}
+function vcap(id,t,on){var c=document.getElementById(id);if(c){c.textContent=t;c.className='vcap'+(on?' on':'');}}
+function vswitchScene(id,el){document.querySelectorAll('.vscene').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.vstab').forEach(function(t){t.classList.remove('active');});var sc=document.getElementById('vsc-'+id);if(sc)sc.classList.add('active');el.classList.add('active');}
+function toggleTheme(){var html=document.documentElement;var isLight=html.getAttribute('data-theme')==='light';html.setAttribute('data-theme',isLight?'dark':'light');var btn=document.getElementById('theme-btn');if(btn)btn.textContent=isLight?'☀ Light':'☽ Dark';try{localStorage.setItem('ddt_demo_theme',isLight?'dark':'light');}catch(e){}}
+(function(){try{var t=localStorage.getItem('ddt_demo_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+async function vrunWeb(){
+  var btn=document.getElementById('vw-btn');if(!btn)return;btn.disabled=true;btn.classList.add('vrun');btn.textContent='Running...';
+  ['vw-notifs','vw-actions','vw-ov','vw-pop'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('show');});
+  var wi=document.getElementById('vw-img');if(wi)wi.classList.remove('blur');
+  vdot('vw',0);vcap('vw-cap','IPS extension scanning page content...',true);
+  await vdelay(1100);vdot('vw',1);vcap('vw-cap','C2PA manifest found. Querying IPS...',true);
+  await vdelay(1300);vdot('vw',2);vcap('vw-cap','IPS returned REVOKED. Blurring content.',true);
+  if(wi)wi.classList.add('blur');
+  var ov=document.getElementById('vw-ov');if(ov)ov.classList.add('show');
+  await vdelay(400);var pp=document.getElementById('vw-pop');if(pp)pp.classList.add('show');
+  await vdelay(1000);vdot('vw',3);vcap('vw-cap','Creator notified via email and SMS.',true);
+  var wn=document.getElementById('vw-notifs');if(wn)wn.classList.add('show');
+  await vdelay(1000);vdot('vw',4);vcap('vw-cap','Evidence generated. Creator can act.',true);
+  var wa=document.getElementById('vw-actions');if(wa)wa.classList.add('show');
+  btn.textContent='▶ Play again';btn.classList.remove('vrun');btn.disabled=false;
+}
+async function vrunAI(){
+  var btn=document.getElementById('vai-btn');if(!btn)return;btn.disabled=true;btn.classList.add('vrun');btn.textContent='Running...';
+  ['vai-notifs','vai-actions','vai-ov','vai-pop'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('show');});
+  var vi=document.getElementById('vai-img');if(vi)vi.classList.remove('blur');
+  for(var i=0;i<5;i++){var t=document.getElementById('vat'+i);if(t)t.classList.remove('vis');}
+  vdot('va',0);vcap('vai-cap','C2PA-aware pipeline reading asset...',true);
+  await vdelay(800);var t0=document.getElementById('vat0');if(t0)t0.classList.add('vis');
+  await vdelay(600);var t1=document.getElementById('vat1');if(t1)t1.classList.add('vis');vdot('va',1);
+  await vdelay(700);var t2=document.getElementById('vat2');if(t2)t2.classList.add('vis');vdot('va',2);vcap('vai-cap','IPS query fired...',true);
+  await vdelay(900);var t3=document.getElementById('vat3');if(t3)t3.classList.add('vis');
+  await vdelay(400);var t4=document.getElementById('vat4');if(t4)t4.classList.add('vis');vdot('va',3);
+  vcap('vai-cap','OUT OF SCOPE — ingestion halted.',true);
+  if(vi)vi.classList.add('blur');
+  var vo=document.getElementById('vai-ov');if(vo)vo.classList.add('show');
+  await vdelay(400);var vp=document.getElementById('vai-pop');if(vp)vp.classList.add('show');
+  await vdelay(900);vdot('va',4);vcap('vai-cap','Creator notified. Audit packet generated.',true);
+  var vn=document.getElementById('vai-notifs');if(vn)vn.classList.add('show');
+  await vdelay(900);var va=document.getElementById('vai-actions');if(va)va.classList.add('show');
+  btn.textContent='▶ Play again';btn.classList.remove('vrun');btn.disabled=false;
+}
+async function vrunLayers(){
+  var btn=document.getElementById('vl-btn');if(!btn)return;btn.disabled=true;btn.classList.add('vrun');btn.textContent='Running...';
+  ['vl-notifs','vl-actions','vl-ov','vl-pop'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('show');});
+  ['vl1b','vl2b','vl3b'].forEach(function(id){var e=document.getElementById(id);if(e)e.style.width='0';});
+  ['vl1s','vl2s','vl3s','vl4s'].forEach(function(id){var e=document.getElementById(id);if(e){e.textContent='Pending';e.style.color='#555';}});
+  vdot('vl',0);vcap('vl-cap','Hostile pipeline stripping C2PA manifest...',true);
+  await vdelay(900);
+  var l1b=document.getElementById('vl1b');if(l1b)l1b.style.width='100%';
+  var l1s=document.getElementById('vl1s');if(l1s){l1s.textContent='STRIPPED';l1s.style.color='#c84f4f';}
+  vdot('vl',1);vcap('vl-cap','Layer 1 stripped. Layer 2 watermark activating...',true);
+  await vdelay(1000);
+  var l2b=document.getElementById('vl2b');if(l2b)l2b.style.width='100%';
+  var l2s=document.getElementById('vl2s');if(l2s){l2s.textContent='SURVIVED';l2s.style.color='#c8963a';}
+  vdot('vl',2);vcap('vl-cap','Watermark survived. CRO ID recovered.',true);
+  await vdelay(900);
+  var l3b=document.getElementById('vl3b');if(l3b)l3b.style.width='100%';
+  var l3s=document.getElementById('vl3s');if(l3s){l3s.textContent='CONFIRMED';l3s.style.color='#5ab888';}
+  vdot('vl',3);vcap('vl-cap','Neural fingerprint confirms. IPS query firing...',true);
+  await vdelay(900);
+  var l4s=document.getElementById('vl4s');if(l4s){l4s.textContent='AUTHORIZED';l4s.style.color='#5ab888';}
+  var lv=document.getElementById('vl-ov');if(lv)lv.classList.add('show');
+  await vdelay(400);var lp=document.getElementById('vl-pop');if(lp)lp.classList.add('show');
+  vdot('vl',4);vcap('vl-cap','CRO recovered. Creator notified.',true);
+  await vdelay(700);var ln=document.getElementById('vl-notifs');if(ln)ln.classList.add('show');
+  await vdelay(900);var la=document.getElementById('vl-actions');if(la)la.classList.add('show');
+  btn.textContent='▶ Play again';btn.classList.remove('vrun');btn.disabled=false;
+}
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DDT — Your Likeness. Your Terms. Your Payment.</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Syne:wght@400;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080808;--surface:#111;--surface2:#181818;--border:#1e1e1e;--border2:#272727;
+  --text:#e8e6df;--dim:#5a5855;
+  --green:#5ab888;--green-dim:rgba(90,184,136,0.1);--green-border:rgba(90,184,136,0.25);
+  --red:#c86060;--red-dim:rgba(200,96,96,0.1);--red-border:rgba(200,96,96,0.25);
+  --amber:#c8963a;--amber-dim:rgba(200,150,58,0.1);--amber-border:rgba(200,150,58,0.25);
+  --accent:#e8d5a3;
+  --mono:'JetBrains Mono',monospace;--display:'Syne',sans-serif;
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--display)}
+
+.shell{max-width:640px;margin:0 auto;padding:40px 24px}
+
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-name{font-size:13px;font-weight:700;letter-spacing:0.14em;color:var(--accent)}
+.live-pill{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--dim)}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:glow 2s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(90,184,136,0.6)}50%{box-shadow:0 0 0 5px rgba(90,184,136,0)}}
+
+/* Tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:36px;background:var(--surface2);border:1px solid var(--border2);border-radius:3px;padding:3px}
+.tab{flex:1;font-family:var(--mono);font-size:9px;letter-spacing:0.08em;padding:9px 12px;background:none;border:none;color:var(--dim);cursor:pointer;transition:all 0.2s;border-radius:2px;text-align:center}
+.tab.active{background:var(--bg);color:var(--text);border:1px solid var(--border2)}
+.scenario{display:none}
+.scenario.active{display:block}
+
+/* Hero */
+.hero{text-align:center;margin-bottom:44px}
+.hero-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:0.25em;color:var(--dim);text-transform:uppercase;margin-bottom:14px}
+.hero-headline{font-size:34px;font-weight:800;line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.hero-headline em{font-style:normal;color:var(--accent)}
+.hero-body{font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.9;max-width:460px;margin:0 auto}
+
+/* Steps */
+.steps{display:flex;flex-direction:column;gap:2px;margin-bottom:32px}
+.step{border:1px solid var(--border);border-radius:4px;overflow:hidden;transition:border-color 0.3s}
+.step.active{border-color:var(--accent)}
+.step.done{border-color:var(--green-border)}
+.step.blocked{border-color:var(--red-border)}
+.step-top{display:flex;align-items:center;gap:14px;padding:16px 18px}
+.step-num{font-family:var(--mono);font-size:9px;color:var(--dim);letter-spacing:0.1em;min-width:18px}
+.step-icon{font-size:15px;flex-shrink:0;width:22px;text-align:center}
+.step-info{flex:1}
+.step-title{font-size:14px;font-weight:700;letter-spacing:0.01em;margin-bottom:2px;transition:color 0.3s}
+.step.active .step-title{color:var(--accent)}
+.step.done .step-title{color:var(--green)}
+.step.blocked .step-title{color:var(--red)}
+.step-sub{font-family:var(--mono);font-size:10px;color:var(--dim);line-height:1.6}
+.step-badge{font-family:var(--mono);font-size:8px;letter-spacing:0.1em;padding:3px 9px;border-radius:2px;flex-shrink:0;border:1px solid var(--border);color:var(--dim);transition:all 0.3s}
+.step-badge.live{color:var(--green);border-color:var(--green-border);background:var(--green-dim)}
+.step-badge.done{color:var(--green);border-color:var(--green-border);background:var(--green-dim)}
+.step-badge.blocked{color:var(--red);border-color:var(--red-border);background:var(--red-dim)}
+.step-badge.active{color:var(--accent);border-color:rgba(232,213,163,0.3);background:rgba(232,213,163,0.06)}
+.step-detail{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s}
+.step.active .step-detail,.step.done .step-detail,.step.blocked .step-detail{max-height:160px;padding:0 18px 16px}
+.step-detail-inner{font-family:var(--mono);font-size:10px;color:var(--dim);line-height:1.9;border-top:1px solid var(--border);padding-top:12px}
+.step-detail-inner strong{color:var(--text);font-weight:500}
+
+/* CRO card */
+.cro-card{background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:18px;margin-bottom:24px}
+.cro-card-label{font-family:var(--mono);font-size:8px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;margin-bottom:12px}
+.cro-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-family:var(--mono);font-size:10px}
+.cro-key{color:var(--dim);min-width:120px;flex-shrink:0}
+.cro-val{color:var(--text);line-height:1.6}
+.cro-val.g{color:var(--green)}
+.cro-val.r{color:var(--red)}
+.cro-val.a{color:var(--amber)}
+
+/* CTA */
+.cta{text-align:center;margin-bottom:32px}
+.btn{background:none;border:1px solid var(--accent);color:var(--accent);font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:14px 32px;cursor:pointer;border-radius:2px;transition:all 0.2s;width:100%;max-width:300px}
+.btn:hover{background:rgba(232,213,163,0.06)}
+.btn:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--dim);color:var(--dim)}
+.btn.running{border-color:var(--amber-border);color:var(--amber)}
+
+/* Outcome panels */
+.outcome{display:none;border-radius:4px;padding:24px;margin-bottom:16px;text-align:center}
+.outcome.show{display:block}
+.outcome.paid{background:var(--green-dim);border:1px solid var(--green-border)}
+.outcome.blocked{background:var(--red-dim);border:1px solid var(--red-border)}
+.outcome.suspended{background:var(--amber-dim);border:1px solid var(--amber-border)}
+.outcome-icon{font-size:28px;margin-bottom:8px}
+.outcome-label{font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px}
+.outcome.paid .outcome-label{color:var(--green)}
+.outcome.blocked .outcome-label{color:var(--red)}
+.outcome.suspended .outcome-label{color:var(--amber)}
+.outcome-amount{font-family:var(--display);font-size:42px;font-weight:800;margin-bottom:4px}
+.outcome.paid .outcome-amount{color:var(--green)}
+.outcome-sub{font-family:var(--mono);font-size:10px;color:var(--dim);line-height:1.8;margin-bottom:16px}
+.outcome-rows{display:flex;flex-direction:column;gap:4px;border-top:1px solid;padding-top:14px;text-align:left}
+.outcome.paid .outcome-rows{border-color:var(--green-border)}
+.outcome.blocked .outcome-rows{border-color:var(--red-border)}
+.outcome.suspended .outcome-rows{border-color:var(--amber-border)}
+.orow{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--dim)}
+.orow span:last-child{color:var(--text)}
+
+/* Bottom */
+.bottom{text-align:center;padding-top:24px;border-top:1px solid var(--border)}
+.bottom-line{font-family:var(--mono);font-size:10px;color:var(--dim);line-height:1.9}
+.bottom-line strong{color:var(--accent);font-weight:500}
+.reset{font-family:var(--mono);font-size:9px;color:var(--dim);cursor:pointer;text-decoration:underline;margin-top:12px;display:inline-block}
+.reset:hover{color:var(--text)}
+
+/* Divider */
+.divider{height:1px;background:var(--border);margin:24px 0}
+
+  [data-theme="light"]{--bg:#f4f2ec;--surface:#fff;--surface2:#eeece6;--border:#dedad2;--border2:#d0cdc4;--text:#1a1a18;--dim:#6b6860;--green:#1a6b3a;--green-dim:rgba(26,107,58,0.08);--green-border:rgba(26,107,58,0.25);--red:#a83030;--red-dim:rgba(168,48,48,0.08);--red-border:rgba(168,48,48,0.25);--amber:#7a5a10;--amber-dim:rgba(122,90,16,0.08);--amber-border:rgba(122,90,16,0.25);--blue:#1a4a7a;--blue-dim:rgba(26,74,122,0.08);--blue-border:rgba(26,74,122,0.25);--purple:#4a2a8a;--purple-dim:rgba(74,42,138,0.08);--purple-border:rgba(74,42,138,0.25);--accent:#7a5a10}
+  [data-theme="light"] body{background:#f4f2ec;color:#1a1a18}
+  [data-theme="light"] .browser,[data-theme="light"] .vbrowser{background:#fff;border-color:#dedad2}
+  [data-theme="light"] .bbar,[data-theme="light"] .vbbar{background:#eeece6;border-color:#dedad2}
+  [data-theme="light"] .ubar,[data-theme="light"] .vubar{background:#fff;border-color:#dedad2;color:#6b6860}
+  [data-theme="light"] .extbtn,[data-theme="light"] .vext{background:#eeece6;border-color:#dedad2}
+  [data-theme="light"] .extlbl,[data-theme="light"] .vextlbl{color:#6b6860}
+  [data-theme="light"] .wp,[data-theme="light"] .vwp{background:#e8e4dc}
+  [data-theme="light"] .scene{background:#fff}
+  [data-theme="light"] .scene-hdr{background:#eeece6;border-color:#dedad2}
+  [data-theme="light"] .terminal,[data-theme="light"] .vdark{background:#eeece6}
+  [data-theme="light"] .pn{background:#eeece6;border-color:#dedad2;color:#1a1a18}
+  [data-theme="light"] .pn small{color:#6b6860}
+  [data-theme="light"] .layer{border-color:#dedad2}
+  [data-theme="light"] .lhdr{background:#eeece6}
+  [data-theme="light"] .ldetail-inner{color:#6b6860}
+  [data-theme="light"] .ldetail-inner span{color:#1a1a18}
+  [data-theme="light"] .notif,[data-theme="light"] .vnotif{background:#eeece6;border-color:#dedad2}
+  [data-theme="light"] .nhdr,[data-theme="light"] .vnhdr{border-color:#dedad2}
+  [data-theme="light"] .nbody .nprev,[data-theme="light"] .vnbody .vnprev{color:#6b6860}
+  [data-theme="light"] .nbody .nfrom,[data-theme="light"] .vnbody .vnfrom{color:#9a9690}
+  [data-theme="light"] .ips-resp{border-color:#dedad2}
+  [data-theme="light"] .rkey{color:#6b6860}
+  [data-theme="light"] .rval{color:#1a1a18}
+  [data-theme="light"] .audit{border-color:#dedad2}
+  [data-theme="light"] .aline{color:#6b6860}
+  [data-theme="light"] .aline span{color:#1a1a18}
+  [data-theme="light"] .aline .hi{color:#7a5a10}
+  [data-theme="light"] .info-card{background:#fff;border-color:#dedad2}
+  [data-theme="light"] .info-label{color:#6b6860}
+  [data-theme="light"] .cro-scope{background:#fff;border-color:#dedad2}
+  [data-theme="light"] .scope-key{color:#6b6860}
+  [data-theme="light"] .thesis{background:#eeece6}
+  [data-theme="light"] .thesis strong{color:#1a1a18}
+  [data-theme="light"] .tag{border-color:#dedad2;color:#6b6860}
+  [data-theme="light"] .live-pill{color:#6b6860}
+  [data-theme="light"] .tabs .tab{border-color:#dedad2;color:#6b6860}
+  [data-theme="light"] .tabs .tab.active{background:#eeece6;border-color:#d0cdc4;color:#1a1a18}
+  [data-theme="light"] .btn{border-color:#dedad2;color:#1a1a18}
+  [data-theme="light"] .btn:hover{border-color:#7a5a10;color:#7a5a10}
+  [data-theme="light"] .hero-title{color:#1a1a18}
+  [data-theme="light"] .hero-sub,[data-theme="light"] .hero-eyebrow{color:#6b6860}
+  [data-theme="light"] .ipspop,[data-theme="light"] .vipspop{background:#fff}
+  [data-theme="light"] .ippop-sub,[data-theme="light"] .vippop-sub{color:#9a9690}
+  [data-theme="light"] .vlbar-row{background:#fff}
+  [data-theme="light"] .vlbar-lbl{color:#6b6860}
+  [data-theme="light"] .vtline{color:#6b6860}
+  [data-theme="light"] .vscene-wrap{background:#eeece6}
+  [data-theme="light"] .vstabs .vstab{border-color:#dedad2;color:#6b6860}
+  [data-theme="light"] .vstabs .vstab.active{background:#fff;border-color:#d0cdc4;color:#7a5a10}
+  [data-theme="light"] .vplaybtn{border-color:#dedad2;color:#6b6860}
+  [data-theme="light"] .vcap.on{color:#6b6860}
+  [data-theme="light"] .payment{background:rgba(26,107,58,0.06);border-color:rgba(26,107,58,0.25)}
+  [data-theme="light"] .pay-sub,[data-theme="light"] .prow{color:#6b6860}
+  [data-theme="light"] .prow span:last-child{color:#1a1a18}
+  [data-theme="light"] .step{border-color:#dedad2}
+  [data-theme="light"] .step-detail-inner{color:#6b6860;border-color:#dedad2}
+  [data-theme="light"] .step-detail-inner strong{color:#1a1a18}
+  [data-theme="light"] .step-badge{border-color:#dedad2;color:#6b6860}
+  [data-theme="light"] .cro-card{background:#fff;border-color:#dedad2}
+  [data-theme="light"] .cro-key,[data-theme="light"] .cro-card-label{color:#6b6860}
+  [data-theme="light"] .bottom-line,[data-theme="light"] .reset{color:#6b6860}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <svg width="26" height="26" viewBox="0 0 120 120" fill="none">
+        <path d="M8 28L8 8L28 8" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M92 8L112 8L112 28" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M8 92L8 112L28 112" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M92 112L112 112L112 92" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M11 60C11 60 35 22 60 22C85 22 109 60 109 60C109 60 85 98 60 98C35 98 11 60 11 60Z" stroke="#e8d5a3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="60" cy="60" r="18" stroke="#e8d5a3" stroke-width="4" fill="none"/>
+        <text x="60" y="64" text-anchor="middle" font-family="Syne,sans-serif" font-size="11" font-weight="800" letter-spacing="1.5" fill="#e8d5a3">DDT</text>
+      </svg>
+      <div class="logo-name">Digital Double Technologies</div>
+    </div>
+    <div class="live-pill"><div class="live-dot"></div>IPS LIVE</div>
+    <button id="theme-btn" onclick="toggleTheme()" style="background:none;border:1px solid #2a2a2a;color:#888;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;padding:4px 10px;border-radius:2px;cursor:pointer">&#9728; Light</button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs" style="flex-wrap:wrap;gap:3px">
+    <button class="tab active" onclick="switchTab('create',this)">Create &amp; Protect</button>
+    <button class="tab" onclick="switchTab('blocked',this)">Blocked Use</button>
+    <button class="tab" onclick="switchTab('paid',this)">Get Paid</button>
+    <button class="tab" onclick="switchTab('ai',this)">AI Pipeline</button>
+    <button class="tab" onclick="switchTab('web',this)">Webpage Use</button>
+    <button class="tab" onclick="switchTab('layers',this)">It Survives</button>
+  </div>
+
+  <!-- ── TAB 1: CREATE ── -->
+  <div class="scenario active" id="sc-create">
+    <div class="hero">
+      <div class="hero-eyebrow">Your identity. Your terms.</div>
+      <div class="hero-headline">Set the rules once.<br><em>Everything else is automatic.</em></div>
+      <div class="hero-body">Your Consent Receipt Object is a live, revocable record attached to your content. It tells every downstream system exactly what you've agreed to — and what you haven't.</div>
+    </div>
+
+    <div class="cro-card">
+      <div class="cro-card-label">Your CRO — Justin Hofstad · SAG-AFTRA:11597294</div>
+      <div class="cro-row"><span class="cro-key">Permitted uses</span><span class="cro-val g">Casting · Audition · AI-generated video (at your rate)</span></div>
+      <div class="cro-row"><span class="cro-key">Prohibited uses</span><span class="cro-val r">AI training · Deepfake · Biometric extraction · Social media</span></div>
+      <div class="cro-row"><span class="cro-key">Your rate</span><span class="cro-val a">$850 / day · SAG-AFTRA New Media floor</span></div>
+      <div class="cro-row"><span class="cro-key">Revocation</span><span class="cro-val">One tap. Propagates everywhere. Immediately.</span></div>
+      <div class="cro-row"><span class="cro-key">Protection layers</span><span class="cro-val">Manifest · Watermark · Neural fingerprint</span></div>
+    </div>
+
+    <div class="steps">
+      <div class="step" id="c-s1">
+        <div class="step-top">
+          <div class="step-num">01</div>
+          <div class="step-icon">✦</div>
+          <div class="step-info">
+            <div class="step-title">You set your terms</div>
+            <div class="step-sub">What's permitted, what's prohibited, and your rate — once.</div>
+          </div>
+          <div class="step-badge" id="c-s1b">Waiting</div>
+        </div>
+        <div class="step-detail"><div class="step-detail-inner">Your CRO is machine-readable from the moment it's created. Every system that encounters your content can read your terms before doing anything with it. <strong>You don't have to be in the room.</strong></div></div>
+      </div>
+      <div class="step" id="c-s2">
+        <div class="step-top">
+          <div class="step-num">02</div>
+          <div class="step-icon">◎</div>
+          <div class="step-info">
+            <div class="step-title">It goes live — and it survives</div>
+            <div class="step-sub">Your consent is embedded in the content itself, not just the filename.</div>
+          </div>
+          <div class="step-badge" id="c-s2b">Waiting</div>
+        </div>
+        <div class="step-detail"><div class="step-detail-inner">Even if someone strips the metadata, your consent record survives inside the pixels — watermarked and fingerprinted. <strong>Three layers. All roads lead back to you.</strong></div></div>
+      </div>
+      <div class="step" id="c-s3">
+        <div class="step-top">
+          <div class="step-num">03</div>
+          <div class="step-icon">⟳</div>
+          <div class="step-info">
+            <div class="step-title">Every use is verified in real time</div>
+            <div class="step-sub">The system checks your terms the moment your content is encountered.</div>
+          </div>
+          <div class="step-badge" id="c-s3b">Waiting</div>
+        </div>
+        <div class="step-detail"><div class="step-detail-inner">The IPS endpoint responds instantly: AUTHORIZED, REVOKED, SUSPENDED, or OUT OF SCOPE. Every check is logged. <strong>You have a record of every time anyone looked.</strong></div></div>
+      </div>
+      <div class="step" id="c-s4">
+        <div class="step-top">
+          <div class="step-num">04</div>
+          <div class="step-icon">⚡</div>
+          <div class="step-info">
+            <div class="step-title">You stay in control</div>
+            <div class="step-sub">Change your mind? Revoke instantly. Your terms update everywhere at once.</div>
+          </div>
+          <div class="step-badge" id="c-s4b">Waiting</div>
+        </div>
+        <div class="step-detail"><div class="step-detail-inner">SUSPENDED propagates fail-closed across every downstream system immediately. No phone calls. No emails. No waiting. <strong>One tap and it's done.</strong></div></div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <button class="btn" id="btn-create" onclick="runCreate()">▶ &nbsp; See your CRO go live</button>
+    </div>
+
+    <div class="outcome" id="create-outcome" style="border-color:var(--green-border);background:var(--green-dim)">
+      <div class="outcome-label" style="color:var(--green)">CRO Active</div>
+      <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--green);margin-bottom:6px">IPS LIVE ●</div>
+      <div class="outcome-sub">Your consent record is live. Every downstream system can query it in real time.</div>
+      <div class="outcome-rows" style="border-color:var(--green-border)">
+        <div class="orow"><span>Status</span><span>AUTHORIZED — terms active</span></div>
+        <div class="orow"><span>Protection</span><span>3 layers active — manifest, watermark, fingerprint</span></div>
+        <div class="orow"><span>Checked at</span><span id="create-ts">—</span></div>
+        <div class="orow"><span>Revocable</span><span>Yes — instantly, from anywhere</span></div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="bottom-line">Your content travels the world. <strong>Your consent travels with it.</strong></div>
+      <a class="reset" onclick="resetCreate()">↺ Reset</a>
+    </div>
+  </div>
+
+  <!-- ── TAB 2: BLOCKED ── -->
+  <div class="scenario" id="sc-blocked">
+    <div class="hero">
+      <div class="hero-eyebrow">What happens when someone tries to use your content without permission</div>
+      <div class="hero-headline">They get blocked.<br><em>You get the record.</em></div>
+      <div class="hero-body">When a use doesn't match your terms, the system stops it. The audit packet becomes your evidence — timestamped, signed, and legally admissible.</div>
+    </div>
+
+    <div class="steps">
+      <div class="step" id="b-s1">
+        <div class="step-top">
+          <div class="step-num">01</div>
+          <div class="step-icon">⚠</div>
+          <div class="step-info">
+            <div class="step-title">Someone tries to use your content for AI training</div>
+            <div class="step-sub">Your CRO explicitly prohibits it. The system checks before proceeding.</div>
+          </div>
+          <div class="step-badge" id="b-s1b">Waiting</div>
+        </div>
+        <div class="step-detail"><div class="step-detail-inner">AI training is in your prohibited list. The IPS endpoint receives the query — declared use: <strong>ai training</strong>. It checks your CRO. The answer is instant.</div></div>
+      </div>
+      <div class="step" id="b-s2">
+        <div class="step-top">
+          <div class="step-num">02</div>
+          <div class="step-icon">✗</div>
+          <div class="step-info">
+            <div class="step-title">Access is denied — automatically</div>
+            <div class="step-sub">No lawyer required. No takedown notice. The system just stops.</div>
+          </div>
+          <div class="step-badge" id="b-s2b">Waiting</div>
+        </div>
+        <div class="step-detail"><div class="step-detail-inner">IPS returns <strong>OUT_OF_SCOPE</strong>. A compliant system cannot proceed. The use is blocked at the point of access — before any harm occurs.</div></div>
+      </div>
+      <div class="step" id="b-s3">
+        <div class="step-top">
+          <div class="step-num">03</div>
+          <div class="step-icon">📋</div>
+          <div class="step-info">
+            <div class="step-title">The evidence is already generated</div>
+            <div class="step-sub">Timestamped. Signed. Admissible. You have proof they tried.</div>
+          </div>
+          <div class="step-badge" id="b-s3b">Waiting</div>
+        </div>
+        <div class="step-detail"><div class="step-detail-inner">The audit packet documents that the query was made, what use was declared, and what the IPS returned. The "I didn't know" defense is closed. <strong>The record exists regardless of what they do next.</strong></div></div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <button class="btn" id="btn-blocked" onclick="runBlocked()">▶ &nbsp; See it get blocked</button>
+    </div>
+
+    <div class="outcome blocked" id="blocked-outcome">
+      <div class="outcome-label">Use Blocked</div>
+      <div style="font-family:var(--mono);font-size:13px;font-weight:500;color:var(--red);margin-bottom:8px;letter-spacing:0.06em">OUT OF SCOPE — ACCESS DENIED</div>
+      <div class="outcome-sub" style="color:#e08080">AI training is prohibited by your CRO. The attempt was blocked and logged. You have the record.</div>
+      <div class="outcome-rows">
+        <div class="orow"><span>Declared use</span><span>ai training — prohibited</span></div>
+        <div class="orow"><span>IPS response</span><span>OUT_OF_SCOPE</span></div>
+        <div class="orow"><span>Access granted</span><span>No</span></div>
+        <div class="orow"><span>Evidence generated</span><span>Yes — timestamped, signed</span></div>
+        <div class="orow"><span>Checked at</span><span id="blocked-ts">—</span></div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="bottom-line">If they proceed anyway, you have the signed record that proves they knew.<br><strong>The "I didn't know" defense is closed.</strong></div>
+      <a class="reset" onclick="resetBlocked()">↺ Reset</a>
+    </div>
+  </div>
+
+  <!-- ── TAB 3: PAID ── -->
+  <div class="scenario" id="sc-paid">
+    <div class="hero">
+      <div class="hero-eyebrow">What happens when someone uses your content the right way</div>
+      <div class="hero-headline">They get access.<br><em>You get paid.</em></div>
+      <div class="hero-body">When a use matches your terms, the verification receipt is the payment trigger. Directly to your account. No claim to file. No negotiation after the fact.</div>
+    </div>
+
+    <div class="steps">
+      <div class="step" id="p-s1">
+        <div class="step-top">
+          <div class="step-num">01</div>
+          <div class="step-icon">✦</div>
+          <div class="step-info">
+            <div class="step-title">A platform wants to use your likeness in an AI video</div>
+            <div class="step-sub">You authorized this use. Your rate is in the CRO. The system checks.</div>
+          </div>
+          <div class="step-badge" id="p-s1b">Waiting</div>
+        </div>
+        <div class="step-detail"><div class="step-detail-inner">AI-generated video is in your permitted list, at <strong>$850/day — SAG-AFTRA New Media floor</strong>. The platform queries IPS. Declared use matches your terms.</div></div>
+      </div>
+      <div class="step" id="p-s2">
+        <div class="step-top">
+          <div class="step-num">02</div>
+          <div class="step-icon">✓</div>
+          <div class="step-info">
+            <div class="step-title">IPS confirms — AUTHORIZED</div>
+            <div class="step-sub">Use type matches. Rate confirmed. Verification receipt generated.</div>
+          </div>
+          <div class="step-badge" id="p-s2b">Waiting</div>
+        </div>
+        <div class="step-detail"><div class="step-detail-inner">The IPS endpoint returns <strong>AUTHORIZED</strong> with scope confirmed. The verification receipt is timestamped, signed, and causally connected to your CRO. The receipt is the trigger.</div></div>
+      </div>
+      <div class="step" id="p-s3">
+        <div class="step-top">
+          <div class="step-num">03</div>
+          <div class="step-icon">$</div>
+          <div class="step-info">
+            <div class="step-title">Payment goes directly to you</div>
+            <div class="step-sub">No intermediary. No claim to file. Your agreed rate, automatically.</div>
+          </div>
+          <div class="step-badge" id="p-s3b">Waiting</div>
+        </div>
+        <div class="step-detail"><div class="step-detail-inner">The verification receipt triggers payment at your confirmed rate. Directly to your account. The SAG-AFTRA compliance record is generated automatically. <strong>You didn't have to discover the use. The architecture made it pay you.</strong></div></div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <button class="btn" id="btn-paid" onclick="runPaid()">▶ &nbsp; See yourself get paid</button>
+    </div>
+
+    <div class="outcome paid" id="paid-outcome">
+      <div class="outcome-label">Payment Triggered</div>
+      <div class="outcome-amount">$850</div>
+      <div class="outcome-sub">Direct to your account · No intermediary · No claim filed</div>
+      <div class="outcome-rows">
+        <div class="orow"><span>Use confirmed</span><span>AI-generated video · within scope</span></div>
+        <div class="orow"><span>Rate applied</span><span>$850 · SAG-AFTRA New Media floor</span></div>
+        <div class="orow"><span>Payment route</span><span>Direct creator deposit</span></div>
+        <div class="orow"><span>Union record</span><span>SAG-AFTRA compliance — generated</span></div>
+        <div class="orow"><span>Triggered at</span><span id="paid-ts">—</span></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:18px;margin-bottom:24px">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;margin-bottom:12px">What the union gets</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--dim);line-height:1.9">
+        SAG-AFTRA doesn't process the payment — they set the floor and enforce the terms. Your CRO carries the applicable agreement. The verification receipt proves the use was authorized under union-compliant terms. For the first time, the union has a <strong style="color:var(--text)">timestamped, cryptographically signed audit trail</strong> of every authorized use — without chasing discovery years later.
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="bottom-line">
+        The same infrastructure that blocks unauthorized use<br>is what makes authorized use pay you automatically.<br>
+        <strong>One system. Both sides.</strong>
+      </div>
+      <a class="reset" onclick="resetPaid()">↺ Reset</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API='https://ddt-core-production.up.railway.app';
+const CRO='0bd66ac7-55c9-4e04-9e8d-f2cb71460b0c';
+function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+async function liveIPS(){
+  try{const r=await fetch(`${API}/v1/ips/permission/${CRO}`);const d=await r.json();return d.checked_at||new Date().toISOString();}
+  catch(e){return new Date().toISOString();}
+}
+
+function switchTab(id,el){
+  document.querySelectorAll('.scenario').forEach(s=>{s.classList.remove('active');s.style.display='none';});
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  const target=document.getElementById('sc-'+id);
+  if(target){target.style.display='block';target.classList.add('active');}
+  el.classList.add('active');
+}
+
+function setStep(prefix,n,state,badge){
+  const el=document.getElementById(prefix+'-s'+n);
+  const b=document.getElementById(prefix+'-s'+n+'b');
+  if(!el||!b)return;
+  el.className='step '+(state||'');
+  b.className='step-badge '+(state||'');
+  b.textContent=badge||'Waiting';
+}
+
+// ── CREATE ──
+async function runCreate(){
+  const btn=document.getElementById('btn-create');btn.disabled=true;btn.classList.add('running');btn.textContent='⟳ Going live...';
+  setStep('c',1,'active','Setting terms...');await delay(800);setStep('c',1,'done','✓ Set');
+  setStep('c',2,'active','Embedding...');await delay(900);setStep('c',2,'done','✓ Live');
+  setStep('c',3,'active','Querying IPS...');
+  const ts=await liveIPS();
+  setStep('c',3,'done','✓ Live');
+  setStep('c',4,'active','Ready');await delay(500);setStep('c',4,'done','✓ Active');
+  document.getElementById('create-ts').textContent=ts.slice(0,19).replace('T',' ')+'Z';
+  document.getElementById('create-outcome').classList.add('show');
+  btn.textContent='✓ CRO is live';btn.classList.remove('running');
+}
+function resetCreate(){
+  [1,2,3,4].forEach(n=>setStep('c',n,'','Waiting'));
+  document.getElementById('create-outcome').classList.remove('show');
+  const btn=document.getElementById('btn-create');btn.disabled=false;btn.classList.remove('running');btn.textContent='▶   See your CRO go live';
+}
+
+// ── BLOCKED ──
+async function runBlocked(){
+  const btn=document.getElementById('btn-blocked');btn.disabled=true;btn.classList.add('running');btn.textContent='⟳ Running...';
+  setStep('b',1,'active','Checking...');await delay(800);setStep('b',1,'blocked','⚠ Attempt');
+  setStep('b',2,'active','Checking...');await delay(900);setStep('b',2,'blocked','✗ Blocked');
+  setStep('b',3,'active','Logging...');
+  const ts=await liveIPS();
+  setStep('b',3,'done','✓ Logged');
+  document.getElementById('blocked-ts').textContent=ts.slice(0,19).replace('T',' ')+'Z';
+  document.getElementById('blocked-outcome').classList.add('show');
+  btn.textContent='✓ Blocked + Logged';btn.classList.remove('running');
+}
+function resetBlocked(){
+  [1,2,3].forEach(n=>setStep('b',n,'','Waiting'));
+  document.getElementById('blocked-outcome').classList.remove('show');
+  const btn=document.getElementById('btn-blocked');btn.disabled=false;btn.classList.remove('running');btn.textContent='▶   See it get blocked';
+}
+
+// ── PAID ──
+async function runPaid(){
+  const btn=document.getElementById('btn-paid');btn.disabled=true;btn.classList.add('running');btn.textContent='⟳ Verifying...';
+  setStep('p',1,'active','Checking...');await delay(800);setStep('p',1,'done','✓ Match');
+  setStep('p',2,'active','Querying IPS...');
+  const ts=await liveIPS();
+  setStep('p',2,'done','✓ Authorized');
+  setStep('p',3,'active','Paying...');await delay(700);setStep('p',3,'done','✓ Paid');
+  document.getElementById('paid-ts').textContent=ts.slice(0,19).replace('T',' ')+'Z';
+  document.getElementById('paid-outcome').classList.add('show');
+  btn.textContent='✓ Payment triggered';btn.classList.remove('running');
+}
+function resetPaid(){
+  [1,2,3].forEach(n=>setStep('p',n,'','Waiting'));
+  document.getElementById('paid-outcome').classList.remove('show');
+  const btn=document.getElementById('btn-paid');btn.disabled=false;btn.classList.remove('running');btn.textContent='▶   See yourself get paid';
+}
+
+// ── AI ──
+async function runAI(){
+  const btn=document.getElementById('btn-ai');btn.disabled=true;btn.classList.add('running');btn.textContent='⟳ Running...';
+  ['ai-r0','ai-r1'].forEach(id=>{const e=document.getElementById(id);if(e){e.classList.remove('vis');}});
+  setStep('ai',1,'active','Checking...');await delay(700);setStep('ai',1,'blocked','⚠ Attempt');
+  setStep('ai',2,'active','Querying IPS...');await delay(900);setStep('ai',2,'blocked','✗ Blocked');
+  setStep('ai',3,'active','Logging...');
+  const ts=await liveIPS();
+  setStep('ai',3,'done','✓ Logged');
+  document.getElementById('ai-ts').textContent=ts.slice(0,19).replace('T',' ')+'Z';
+  document.getElementById('ai-outcome').classList.add('show');
+  btn.textContent='✓ Blocked + Logged';btn.classList.remove('running');
+}
+function resetAI(){
+  [1,2,3].forEach(n=>setStep('ai',n,'','Waiting'));
+  document.getElementById('ai-outcome').classList.remove('show');
+  const btn=document.getElementById('btn-ai');btn.disabled=false;btn.classList.remove('running');btn.textContent='▶   See it get stopped';
+}
+
+// ── WEB ──
+async function runWeb(){
+  const btn=document.getElementById('btn-web');btn.disabled=true;btn.classList.add('running');btn.textContent='⟳ Scanning...';
+  setStep('w',1,'active','Scanning...');await delay(700);setStep('w',1,'blocked','⚠ Found');
+  setStep('w',2,'active','Checking...');await delay(900);setStep('w',2,'blocked','✗ Revoked');
+  setStep('w',3,'active','Logging...');
+  const ts=await liveIPS();
+  setStep('w',3,'done','✓ Evidence');
+  document.getElementById('web-ts').textContent=ts.slice(0,19).replace('T',' ')+'Z';
+  document.getElementById('web-outcome').classList.add('show');
+  btn.textContent='✓ Evidence generated';btn.classList.remove('running');
+}
+function resetWeb(){
+  [1,2,3].forEach(n=>setStep('w',n,'','Waiting'));
+  document.getElementById('web-outcome').classList.remove('show');
+  const btn=document.getElementById('btn-web');btn.disabled=false;btn.classList.remove('running');btn.textContent='▶   See it get caught';
+}
+
+// ── LAYERS ──
+async function runLayers(){
+  const btn=document.getElementById('btn-layers');btn.disabled=true;btn.classList.add('running');btn.textContent='⟳ Running...';
+  setStep('l',1,'blocked','Stripped');await delay(700);
+  setStep('l',2,'active','Checking...');await delay(900);setStep('l',2,'done','✓ Survived');
+  setStep('l',3,'active','Checking...');await delay(700);setStep('l',3,'done','✓ Confirmed');
+  setStep('l',4,'active','Querying...');
+  const ts=await liveIPS();
+  setStep('l',4,'done','✓ Resolved');
+  document.getElementById('layers-ts').textContent=ts.slice(0,19).replace('T',' ')+'Z';
+  document.getElementById('layers-outcome').classList.add('show');
+  btn.textContent='✓ CRO survived';btn.classList.remove('running');
+}
+function resetLayers(){
+  [1,2,3,4].forEach(n=>setStep('l',n,'','Waiting'));
+  document.getElementById('layers-outcome').classList.remove('show');
+  const btn=document.getElementById('btn-layers');btn.disabled=false;btn.classList.remove('running');btn.textContent='▶   Watch it survive';
+}
+</script>
+
+<!-- ── SCENARIO 4: AI PIPELINE (performer voice) ── -->
+<div class="scenario" id="sc-ai" style="display:none">
+  <div class="hero">
+    <div class="hero-eyebrow">What happens when an AI company tries to train on your work</div>
+    <div class="hero-headline">Your work isn't<br><em>their training data.</em></div>
+    <div class="hero-body">If AI training is on your prohibited list, any compliant AI pipeline will be stopped before it can ingest your content. The attempt is logged. You have proof it happened.</div>
+  </div>
+  <div class="steps">
+    <div class="step" id="ai-s1">
+      <div class="step-top"><div class="step-num">01</div><div class="step-icon">⚠</div>
+        <div class="step-info"><div class="step-title">A foundation model trainer encounters your content</div><div class="step-sub">Your content carries your CRO — the system checks before ingesting anything.</div></div>
+        <div class="step-badge" id="ai-s1b">Waiting</div>
+      </div>
+      <div class="step-detail"><div class="step-detail-inner">Whether it's a Netflix series you performed in or a photo shoot — if it carries your CRO, any compliant AI pipeline reads your terms before proceeding. <strong>The check happens automatically. No one has to call you.</strong></div></div>
+    </div>
+    <div class="step" id="ai-s2">
+      <div class="step-top"><div class="step-num">02</div><div class="step-icon">✗</div>
+        <div class="step-info"><div class="step-title">AI training is prohibited — the pipeline is blocked</div><div class="step-sub">IPS returns OUT OF SCOPE. A compliant system cannot proceed.</div></div>
+        <div class="step-badge" id="ai-s2b">Waiting</div>
+      </div>
+      <div class="step-detail"><div class="step-detail-inner">The IPS endpoint returns <strong>OUT_OF_SCOPE</strong>. Ingestion is halted before your likeness, voice, or performance is absorbed into a model. <strong>This is protection at the point of access — before any harm occurs.</strong></div></div>
+    </div>
+    <div class="step" id="ai-s3">
+      <div class="step-top"><div class="step-num">03</div><div class="step-icon">📋</div>
+        <div class="step-info"><div class="step-title">The attempt is on record</div><div class="step-sub">Timestamped and signed. They knew. You have proof.</div></div>
+        <div class="step-badge" id="ai-s3b">Waiting</div>
+      </div>
+      <div class="step-detail"><div class="step-detail-inner">The audit packet documents the query, the declared use, and the IPS response. If they proceed anyway, you have a signed record that proves they had access to your consent signal and ignored it. <strong>That's your legal foundation.</strong></div></div>
+    </div>
+  </div>
+  <div class="cta"><button class="btn" id="btn-ai" onclick="runAI()">▶ &nbsp; See it get stopped</button></div>
+  <div class="outcome blocked" id="ai-outcome">
+    <div class="outcome-label">AI Training Blocked</div>
+    <div style="font-family:var(--mono);font-size:13px;font-weight:500;color:var(--red);margin-bottom:8px;letter-spacing:0.06em">OUT OF SCOPE — ACCESS DENIED</div>
+    <div class="outcome-sub" style="color:#e08080">AI training is prohibited by your CRO. The attempt was blocked and the evidence is already generated.</div>
+    <div class="outcome-rows">
+      <div class="orow"><span>Declared use</span><span>ai training — prohibited</span></div>
+      <div class="orow"><span>IPS response</span><span>OUT_OF_SCOPE</span></div>
+      <div class="orow"><span>Pipeline halted</span><span>Yes — before ingestion</span></div>
+      <div class="orow"><span>Audit packet</span><span>Generated — timestamped, signed</span></div>
+      <div class="orow"><span>Checked at</span><span id="ai-ts">—</span></div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="bottom-line">Your SAG-AFTRA AI protections are encoded in your CRO.<br><strong>The system enforces them automatically.</strong></div>
+    <a class="reset" onclick="resetAI()">↺ Reset</a>
+  </div>
+</div>
+
+<!-- ── SCENARIO 5: WEBPAGE (performer voice) ── -->
+<div class="scenario" id="sc-web" style="display:none">
+  <div class="hero">
+    <div class="hero-eyebrow">What happens when your photos show up somewhere without your permission</div>
+    <div class="hero-headline">They can't hide<br><em>behind "I didn't know."</em></div>
+    <div class="hero-body">When your content is used without authorization, any compliant scanner can detect it — and your CRO is the evidence that proves the violation was knowable.</div>
+  </div>
+  <div class="steps">
+    <div class="step" id="w-s1">
+      <div class="step-top"><div class="step-num">01</div><div class="step-icon">🔍</div>
+        <div class="step-info"><div class="step-title">Your photos appear on a business website — without your consent</div><div class="step-sub">A brand safety scanner finds the image. Your CRO is embedded in it.</div></div>
+        <div class="step-badge" id="w-s1b">Waiting</div>
+      </div>
+      <div class="step-detail"><div class="step-detail-inner">The image carries your CRO pointer — in the C2PA manifest, the watermark, and the neural fingerprint. A compliant scanner reads it and queries IPS. <strong>Your consent record is the source of truth.</strong></div></div>
+    </div>
+    <div class="step" id="w-s2">
+      <div class="step-top"><div class="step-num">02</div><div class="step-icon">✗</div>
+        <div class="step-info"><div class="step-title">IPS returns REVOKED — this use is unauthorized</div><div class="step-sub">You withdrew consent. The record shows it. They had access to that information.</div></div>
+        <div class="step-badge" id="w-s2b">Waiting</div>
+      </div>
+      <div class="step-detail"><div class="step-detail-inner">The IPS endpoint returns <strong>REVOKED</strong>. The website had access to a machine-verifiable signal that told them this use was not authorized. <strong>The "I didn't know" defense is closed.</strong></div></div>
+    </div>
+    <div class="step" id="w-s3">
+      <div class="step-top"><div class="step-num">03</div><div class="step-icon">📋</div>
+        <div class="step-info"><div class="step-title">You have the evidence — right now</div><div class="step-sub">No discovery process. No waiting. The audit packet is already generated.</div></div>
+        <div class="step-badge" id="w-s3b">Waiting</div>
+      </div>
+      <div class="step-detail"><div class="step-detail-inner">The audit packet is timestamped, cryptographically signed, and documents the unauthorized use. This is your foundation for a DMCA notice, a right-of-publicity claim, or a SAG-AFTRA grievance. <strong>You didn't have to find it. The system found it for you.</strong></div></div>
+    </div>
+  </div>
+  <div class="cta"><button class="btn" id="btn-web" onclick="runWeb()">▶ &nbsp; See it get caught</button></div>
+  <div class="outcome blocked" id="web-outcome">
+    <div class="outcome-label">Unauthorized Use Detected</div>
+    <div style="font-family:var(--mono);font-size:13px;font-weight:500;color:var(--red);margin-bottom:8px;letter-spacing:0.06em">REVOKED — USE NOT AUTHORIZED</div>
+    <div class="outcome-sub" style="color:#e08080">Your consent was revoked. The business had access to that information and proceeded anyway. The evidence is generated.</div>
+    <div class="outcome-rows">
+      <div class="orow"><span>IPS response</span><span>REVOKED</span></div>
+      <div class="orow"><span>Infringing URL</span><span>businesssite.com/about-us</span></div>
+      <div class="orow"><span>Evidence generated</span><span>Yes — timestamped, signed</span></div>
+      <div class="orow"><span>Next action</span><span>DMCA · right of publicity · grievance</span></div>
+      <div class="orow"><span>Checked at</span><span id="web-ts">—</span></div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="bottom-line">The audit packet is your evidence. <strong>The "I didn't know" defense is closed.</strong></div>
+    <a class="reset" onclick="resetWeb()">↺ Reset</a>
+  </div>
+</div>
+
+<!-- ── SCENARIO 6: THREE LAYERS (performer voice) ── -->
+<div class="scenario" id="sc-layers" style="display:none">
+  <div class="hero">
+    <div class="hero-eyebrow">What happens when someone tries to strip your consent record</div>
+    <div class="hero-headline">They can erase the file.<br><em>They can't erase you.</em></div>
+    <div class="hero-body">Your consent isn't just in the file metadata. It's embedded in three separate layers. Even if someone removes every visible trace, your CRO can still be recovered.</div>
+  </div>
+  <div class="steps">
+    <div class="step" id="l-s1">
+      <div class="step-top"><div class="step-num">01</div><div class="step-icon">✗</div>
+        <div class="step-info"><div class="step-title">They strip the file metadata</div><div class="step-sub">The C2PA manifest is removed. Your name and CRO are gone from the file header.</div></div>
+        <div class="step-badge" id="l-s1b">Waiting</div>
+      </div>
+      <div class="step-detail"><div class="step-detail-inner">This is the most common attack. Metadata is easy to strip — a simple conversion or re-export can remove it. This is why Layer 1 is never the only layer.</div></div>
+    </div>
+    <div class="step" id="l-s2">
+      <div class="step-top"><div class="step-num">02</div><div class="step-icon">◎</div>
+        <div class="step-info"><div class="step-title">The watermark survives</div><div class="step-sub">Your CRO pointer is embedded invisibly in the pixels. It survives compression, cropping, and format changes.</div></div>
+        <div class="step-badge" id="l-s2b">Waiting</div>
+      </div>
+      <div class="step-detail"><div class="step-detail-inner">The TrustMark or Digimarc watermark is injected at the pixel level — not the metadata level. Resizing, recompressing, screenshotting: it still survives. <strong>Your CRO ID can be recovered from the image itself.</strong></div></div>
+    </div>
+    <div class="step" id="l-s3">
+      <div class="step-top"><div class="step-num">03</div><div class="step-icon">◈</div>
+        <div class="step-info"><div class="step-title">The neural fingerprint is the last line</div><div class="step-sub">Even if the watermark is scrubbed, your content can still be matched to your CRO record.</div></div>
+        <div class="step-badge" id="l-s3b">Waiting</div>
+      </div>
+      <div class="step-detail"><div class="step-detail-inner">A neural content hash — derived from the content itself, not injected — resolves to your CRO record even if both other layers have been removed. <strong>There is no clean scrub.</strong></div></div>
+    </div>
+    <div class="step" id="l-s4">
+      <div class="step-top"><div class="step-num">04</div><div class="step-icon">⟳</div>
+        <div class="step-info"><div class="step-title">IPS is queried — your consent record answers</div><div class="step-sub">All three paths lead to the same endpoint. Your terms stand.</div></div>
+        <div class="step-badge" id="l-s4b">Waiting</div>
+      </div>
+      <div class="step-detail"><div class="step-detail-inner">Whether it's Layer 1, 2, or 3 that resolves the CRO — the IPS query is the same. Your permission state is returned. The audit packet is generated. <strong>The system works regardless of the attack.</strong></div></div>
+    </div>
+  </div>
+  <div class="cta"><button class="btn" id="btn-layers" onclick="runLayers()">▶ &nbsp; Watch it survive</button></div>
+  <div class="outcome" id="layers-outcome" style="display:none;border-color:var(--green-border);background:var(--green-dim);border:1px solid var(--green-border);border-radius:4px;padding:24px;margin-bottom:16px;text-align:center">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.2em;color:var(--green);text-transform:uppercase;margin-bottom:10px">CRO Recovered</div>
+    <div style="font-family:var(--display);font-size:26px;font-weight:800;color:var(--green);margin-bottom:6px">Layer 2 Resolved ●</div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--dim);line-height:1.8;margin-bottom:14px">Manifest stripped. Watermark survived. CRO recovered. IPS queried. Your consent record answered.</div>
+    <div style="display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--green-border);padding-top:12px;text-align:left">
+      <div class="orow"><span>Layer 1 (manifest)</span><span style="color:var(--red)">Stripped by hostile pipeline</span></div>
+      <div class="orow"><span>Layer 2 (watermark)</span><span style="color:var(--green)">Survived — CRO ID recovered</span></div>
+      <div class="orow"><span>Layer 3 (fingerprint)</span><span style="color:var(--green)">Confirmed — last line of defense</span></div>
+      <div class="orow"><span>IPS response</span><span>Queried and answered</span></div>
+      <div class="orow"><span>Resolved at</span><span id="layers-ts">—</span></div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="bottom-line">Three layers. All roads lead back to you.<br><strong>They can't strip your consent.</strong></div>
+    <a class="reset" onclick="resetLayers()">↺ Reset</a>
+  </div>
+</div>
+
+
+<div style="max-width:640px;margin:0 auto;padding:0 24px 40px">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.2em;color:#3a3835;text-transform:uppercase;margin-bottom:12px;padding-top:32px;border-top:1px solid #1e1e1e">Live Visual Demonstrations</div>
+<!-- DDT Visual Scenes Component — paste into both demo packets -->
+<style>
+.vscene-wrap{background:#0a0a0a;border-radius:8px;padding:18px;font-family:'JetBrains Mono',monospace;margin-bottom:20px}
+.vscene-title{font-size:8px;letter-spacing:0.2em;color:#555;text-transform:uppercase;text-align:center;margin-bottom:12px}
+.vstabs{display:flex;gap:3px;margin-bottom:14px}
+.vstab{flex:1;background:none;border:1px solid #2a2a2a;color:#555;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;text-transform:uppercase;padding:7px;cursor:pointer;border-radius:2px;transition:all 0.2s}
+.vstab.active{background:#1a1a1a;border-color:#3a3a3a;color:#e8d5a3}
+.vscene{display:none}.vscene.active{display:block}
+.vbrowser{background:#1a1a1a;border-radius:5px;overflow:hidden;border:1px solid #2a2a2a}
+.vbbar{background:#222;padding:7px 11px;display:flex;align-items:center;gap:7px;border-bottom:1px solid #2a2a2a}
+.vbdots{display:flex;gap:4px}
+.vbd{width:8px;height:8px;border-radius:50%}
+.vbd-r{background:#c84f4f}.vbd-y{background:#c8963a}.vbd-g{background:#5ab888}
+.vubar{flex:1;background:#181818;border:1px solid #222;border-radius:2px;padding:4px 7px;font-size:9px;color:#555;display:flex;align-items:center;gap:4px}
+.vulock{color:#5ab888;font-size:8px}
+.vext{background:#222;border:1px solid #2a2a2a;border-radius:2px;padding:3px 6px;display:flex;align-items:center;gap:3px}
+.vextdot{width:4px;height:4px;border-radius:50%;background:#5ab888;animation:vep 2s ease-in-out infinite}
+@keyframes vep{0%,100%{opacity:1}50%{opacity:0.3}}
+.vextlbl{font-size:7px;color:#666}
+.vwp{padding:14px;background:#f4f2ec}
+.vwpnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #e0ddd5}
+.vwplogo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#1a1a1a}
+.vwplinks{display:flex;gap:10px}
+.vwplink{font-size:8px;color:#888}
+.vhero{display:grid;grid-template-columns:1fr 130px;gap:12px;align-items:start}
+.vhead{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#1a1a1a;margin-bottom:4px;line-height:1.3}
+.vbody{font-size:8px;color:#666;line-height:1.6;margin-bottom:6px}
+.vcta{background:#1a1a1a;color:#f4f2ec;font-size:7px;padding:4px 8px;border-radius:2px;display:inline-block;letter-spacing:0.06em}
+.vimgwrap{position:relative;border-radius:3px;overflow:hidden;height:100px;background:#c8b8a0;flex-shrink:0}
+.vimgface{width:100%;height:100%;background:linear-gradient(160deg,#c4b49a 0%,#9a8068 40%,#c4b49a 100%);display:flex;align-items:center;justify-content:center;font-size:7px;color:rgba(255,255,255,0.4);letter-spacing:0.1em;transition:filter 0.5s ease}
+.vimgface.blur{filter:blur(5px) brightness(0.7)}
+.vimgoverlay{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;opacity:0;transition:opacity 0.4s ease;border-radius:3px}
+.vimgoverlay.show{opacity:1}
+.vimgoverlay.vred{background:rgba(180,50,50,0.9)}
+.vimgoverlay.vamber{background:rgba(160,110,30,0.9)}
+.vimgoverlay.vgreen{background:rgba(40,130,90,0.9)}
+.vov-icon{font-size:14px;margin-bottom:3px;line-height:1}
+.vov-title{font-family:'Syne',sans-serif;font-size:9px;font-weight:800;color:white;margin-bottom:2px;text-align:center;line-height:1.2}
+.vov-sub{font-size:6px;color:rgba(255,255,255,0.8);text-align:center;line-height:1.4}
+.vov-badge{font-size:5px;color:rgba(255,255,255,0.6);margin-top:3px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.3);padding:1px 4px;border-radius:1px}
+.vipspop{position:absolute;top:4px;right:4px;background:#0f0f0f;border-radius:3px;padding:6px 8px;width:120px;opacity:0;transform:translateY(-2px);transition:all 0.3s;z-index:5}
+.vipspop.show{opacity:1;transform:none}
+.vipspop.vr{border:1px solid #c84f4f}
+.vipspop.va{border:1px solid #c8963a}
+.vipspop.vg{border:1px solid #5ab888}
+.vippop-hdr{display:flex;align-items:center;gap:3px;margin-bottom:3px}
+.vippop-dot{width:4px;height:4px;border-radius:50%}
+.vippop-dot.r{background:#c84f4f}.vippop-dot.a{background:#c8963a}.vippop-dot.g{background:#5ab888}
+.vippop-title{font-size:6px;color:#e8d5a3;letter-spacing:0.1em;text-transform:uppercase}
+.vippop-state{font-size:10px;font-family:'Syne',sans-serif;font-weight:800;margin-bottom:2px}
+.vippop-state.r{color:#c84f4f}.vippop-state.a{color:#c8963a}.vippop-state.g{color:#5ab888}
+.vippop-sub{font-size:6px;color:#555;line-height:1.4}
+.vdark{background:#0f0f0f;padding:12px}
+.vtline{font-size:8px;color:#555;line-height:2;opacity:0;transform:translateX(-3px);transition:all 0.3s}
+.vtline.vis{opacity:1;transform:none}
+.vtline .tp{color:#5ab888}.vtline .tr{color:#c84f4f}.vtline .ta{color:#c8963a}.vtline .tw{color:#888}
+.vlbar-row{background:#1a1a1a;border-radius:2px;padding:6px 8px;font-size:8px;margin-bottom:3px}
+.vlbar-top{display:flex;justify-content:space-between;margin-bottom:3px}
+.vlbar-lbl{color:#555}
+.vlbar-stat{font-size:7px}
+.vlbar-track{height:2px;background:#2a2a2a;border-radius:1px;overflow:hidden}
+.vlbar-fill{height:100%;width:0;border-radius:1px;transition:width 0.6s}
+.vsdots{display:flex;gap:4px;justify-content:center;margin:8px 0 5px}
+.vsd{width:5px;height:5px;border-radius:50%;background:#2a2a2a;transition:background 0.3s}
+.vsd.done{background:#5ab888}.vsd.active{background:#e8d5a3}
+.vcap{font-size:8px;color:#444;text-align:center;margin-bottom:8px;min-height:13px;letter-spacing:0.05em;transition:color 0.3s}
+.vcap.on{color:#777}
+.vnotifs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px;opacity:0;transform:translateY(4px);transition:all 0.4s}
+.vnotifs.show{opacity:1;transform:none}
+.vnotif{background:#141414;border:1px solid #1e1e1e;border-radius:3px;overflow:hidden}
+.vnhdr{padding:5px 8px;display:flex;align-items:center;gap:4px;border-bottom:1px solid #1a1a1a}
+.vnicon{width:16px;height:16px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0}
+.vnicon.em{background:#1a2a3a;color:#4a8fd4}
+.vnicon.sm{background:#1a2a1a;color:#5ab888}
+.vntitle{font-size:7px;color:#555;letter-spacing:0.05em}
+.vnbody{padding:6px 8px}
+.vnfrom{font-size:6px;color:#444;margin-bottom:2px}
+.vnsubj{font-size:7px;font-weight:500;margin-bottom:2px}
+.vnsubj.r{color:#c84f4f}.vnsubj.a{color:#c8963a}.vnsubj.g{color:#5ab888}
+.vnprev{font-size:6px;color:#444;line-height:1.5}
+.vactions{display:flex;gap:5px;margin-top:7px;opacity:0;transform:translateY(4px);transition:all 0.4s}
+.vactions.show{opacity:1;transform:none}
+.vabtn{flex:1;padding:6px;border-radius:2px;font-size:7px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;border:none;font-family:'JetBrains Mono',monospace;transition:background 0.2s}
+.vabtn.vrev{background:#c84f4f;color:white}
+.vabtn.vev{background:#141414;color:#5ab888;border:1px solid #1a4a1a}
+.vabtn.vflg{background:#141414;color:#c8963a;border:1px solid #4a3a1a}
+.vabtn.vok{background:#141414;color:#5ab888;border:1px solid #1a4a1a}
+.vplaybtn{width:100%;background:none;border:1px solid #2a2a2a;color:#555;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;padding:8px;cursor:pointer;border-radius:2px;margin-top:8px;transition:all 0.2s}
+.vplaybtn:hover{border-color:#e8d5a3;color:#e8d5a3}
+.vplaybtn:disabled{opacity:0.3;cursor:not-allowed}
+.vplaybtn.vrun{border-color:#c8963a;color:#c8963a}
+</style>
+
+<div class="vscene-wrap">
+  <div class="vscene-title">Live Visual Demonstrations · Press Play on Each Scenario</div>
+  <div class="vstabs">
+    <button class="vstab active" onclick="vswitchScene('vweb',this)">Webpage</button>
+    <button class="vstab" onclick="vswitchScene('vai',this)">AI Pipeline</button>
+    <button class="vstab" onclick="vswitchScene('vlayers',this)">3-Layer</button>
+  </div>
+
+  <!-- SCENE 1: WEBPAGE -->
+  <div class="vscene active" id="vsc-vweb">
+    <div class="vbrowser">
+      <div class="vbbar">
+        <div class="vbdots"><div class="vbd vbd-r"></div><div class="vbd vbd-y"></div><div class="vbd vbd-g"></div></div>
+        <div class="vubar"><span class="vulock">&#128274;</span><span>businesswebsite.com/about-us</span></div>
+        <div class="vext"><svg width="12" height="8" viewBox="0 0 120 75" fill="none"><path d="M8 22L8 5L25 5" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 5L112 5L112 22" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M8 53L8 70L25 70" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 70L112 70L112 53" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M4 37C4 37 24 14 60 14C96 14 116 37 116 37C116 37 96 60 60 60C24 60 4 37 4 37Z" stroke="#e8d5a3" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="60" cy="37" r="11" stroke="#e8d5a3" stroke-width="5" fill="none"/></svg><span class="vextlbl">DDT IPS</span><div class="vextdot"></div></div>
+      </div>
+      <div class="vwp">
+        <div class="vwpnav"><div class="vwplogo">Acme Creative</div><div class="vwplinks"><div class="vwplink">Work</div><div class="vwplink">About</div><div class="vwplink">Contact</div></div></div>
+        <div class="vhero">
+          <div><div class="vhead">Award-winning creative work</div><div class="vbody">We partner with brands to create compelling visual stories across every medium and industry.</div><div class="vcta">View our work</div></div>
+          <div class="vimgwrap">
+            <div class="vimgface" id="vw-img">PERFORMER PHOTO</div>
+            <div class="vimgoverlay vred" id="vw-ov"><div class="vov-icon">&#10005;</div><div class="vov-title">Consent not verified</div><div class="vov-sub">IPS: REVOKED<br>Creator consent withdrawn</div><div class="vov-badge">C2PA · DDT IPS</div></div>
+            <div class="vipspop vr" id="vw-pop"><div class="vippop-hdr"><div class="vippop-dot r"></div><div class="vippop-title">IPS Status</div></div><div class="vippop-state r">REVOKED</div><div class="vippop-sub">Creator withdrew consent.<br>Use not authorized.<br>Evidence generated.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="vsdots"><div class="vsd active" id="vw0"></div><div class="vsd" id="vw1"></div><div class="vsd" id="vw2"></div><div class="vsd" id="vw3"></div><div class="vsd" id="vw4"></div></div>
+    <div class="vcap" id="vw-cap">Press play to run the scenario</div>
+    <div class="vnotifs" id="vw-notifs">
+      <div class="vnotif"><div class="vnhdr"><div class="vnicon em">&#9993;</div><div class="vntitle">Email · Creator</div></div><div class="vnbody"><div class="vnfrom">noreply@ddt-pro.com</div><div class="vnsubj r">Unauthorized use detected</div><div class="vnprev">Your content was found on businesswebsite.com without consent. IPS: REVOKED. Evidence packet ready.</div></div></div>
+      <div class="vnotif"><div class="vnhdr"><div class="vnicon sm">&#128241;</div><div class="vntitle">SMS · Creator</div></div><div class="vnbody"><div class="vnfrom">DDT Pro · Consent Alert</div><div class="vnsubj r">Unauthorized use found</div><div class="vnprev">businesswebsite.com used your content without consent. Open DDT to revoke and take action.</div></div></div>
+    </div>
+    <div class="vactions" id="vw-actions">
+      <button class="vabtn vrev">Revoke &#8594;</button>
+      <button class="vabtn vev">Evidence &#8594;</button>
+      <button class="vabtn vflg">Flag</button>
+    </div>
+    <button class="vplaybtn" id="vw-btn" onclick="vrunWeb()">&#9654; &nbsp; Play — Webpage scenario</button>
+  </div>
+
+  <!-- SCENE 2: AI PIPELINE -->
+  <div class="vscene" id="vsc-vai">
+    <div class="vbrowser">
+      <div class="vbbar">
+        <div class="vbdots"><div class="vbd vbd-r"></div><div class="vbd vbd-y"></div><div class="vbd vbd-g"></div></div>
+        <div class="vubar"><span class="vulock">&#128274;</span><span>ai-trainer.internal/ingest/queue</span></div>
+        <div class="vext"><svg width="12" height="8" viewBox="0 0 120 75" fill="none"><path d="M8 22L8 5L25 5" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 5L112 5L112 22" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M8 53L8 70L25 70" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 70L112 70L112 53" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M4 37C4 37 24 14 60 14C96 14 116 37 116 37C116 37 96 60 60 60C24 60 4 37 4 37Z" stroke="#e8d5a3" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="60" cy="37" r="11" stroke="#e8d5a3" stroke-width="5" fill="none"/></svg><span class="vextlbl">DDT IPS</span><div class="vextdot"></div></div>
+      </div>
+      <div class="vdark">
+        <div style="font-size:8px;color:#444;letter-spacing:0.1em;margin-bottom:8px;text-transform:uppercase">AI Training Pipeline · Ingestion Queue</div>
+        <div class="vhero" style="grid-template-columns:1fr 120px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:2px;padding:5px 8px;display:flex;align-items:center;gap:6px;font-size:8px;color:#888"><span style="color:#5ab888">&#10003;</span>documentary_b-roll.mp4<span style="color:#5ab888;margin-left:auto;font-size:7px">CLEARED</span></div>
+            <div style="background:#1a1a1a;border:1px solid #c84f4f;border-radius:2px;padding:5px 8px;display:flex;align-items:center;gap:6px;font-size:8px;color:#888"><span style="color:#c84f4f">&#9632;</span>performer_shoot_S3E4.mp4<span style="color:#c84f4f;margin-left:auto;font-size:7px">BLOCKED</span></div>
+            <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:2px;padding:5px 8px;display:flex;align-items:center;gap:6px;font-size:8px;color:#555"><span>&#8943;</span>stock_footage.mp4<span style="margin-left:auto;font-size:7px">QUEUED</span></div>
+            <div style="margin-top:4px">
+              <div class="vtline" id="vat0"><span class="tw">&#9654;</span> Parsing C2PA manifest...</div>
+              <div class="vtline" id="vat1"><span class="tp">&#10003;</span> ddt.cro_binding found · cro_id: 0bd66ac7...</div>
+              <div class="vtline" id="vat2"><span class="tw">&#9654;</span> Querying IPS endpoint...</div>
+              <div class="vtline" id="vat3"><span class="tr">&#10005;</span> OUT_OF_SCOPE · ai_training excluded</div>
+              <div class="vtline" id="vat4"><span class="tr">&#9650;</span> INGESTION HALTED · audit packet generated</div>
+            </div>
+          </div>
+          <div class="vimgwrap" style="height:120px">
+            <div class="vimgface" id="vai-img" style="font-size:7px">VIDEO FRAME</div>
+            <div class="vimgoverlay vamber" id="vai-ov"><div class="vov-icon">&#9888;</div><div class="vov-title">Ingestion blocked</div><div class="vov-sub">IPS: OUT OF SCOPE<br>AI training prohibited</div><div class="vov-badge">C2PA · DDT IPS</div></div>
+            <div class="vipspop va" id="vai-pop"><div class="vippop-hdr"><div class="vippop-dot a"></div><div class="vippop-title">IPS Status</div></div><div class="vippop-state a">OUT OF SCOPE</div><div class="vippop-sub">AI training excluded.<br>Ingestion halted.<br>Audit packet ready.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="vsdots"><div class="vsd active" id="va0"></div><div class="vsd" id="va1"></div><div class="vsd" id="va2"></div><div class="vsd" id="va3"></div><div class="vsd" id="va4"></div></div>
+    <div class="vcap" id="vai-cap">Press play to run the scenario</div>
+    <div class="vnotifs" id="vai-notifs">
+      <div class="vnotif"><div class="vnhdr"><div class="vnicon em">&#9993;</div><div class="vntitle">Email · Creator</div></div><div class="vnbody"><div class="vnfrom">noreply@ddt-pro.com</div><div class="vnsubj a">AI training attempt blocked</div><div class="vnprev">An AI pipeline attempted to ingest your content for training. Blocked. Audit packet generated.</div></div></div>
+      <div class="vnotif"><div class="vnhdr"><div class="vnicon sm">&#128241;</div><div class="vntitle">SMS · Creator</div></div><div class="vnbody"><div class="vnfrom">DDT Pro · Consent Alert</div><div class="vnsubj a">AI training blocked</div><div class="vnprev">Someone tried to use your content for AI training. Blocked and logged. Open DDT for evidence.</div></div></div>
+    </div>
+    <div class="vactions" id="vai-actions">
+      <button class="vabtn vrev">Legal action &#8594;</button>
+      <button class="vabtn vev">Audit packet &#8594;</button>
+      <button class="vabtn vflg">Set rate</button>
+    </div>
+    <button class="vplaybtn" id="vai-btn" onclick="vrunAI()">&#9654; &nbsp; Play — AI pipeline scenario</button>
+  </div>
+
+  <!-- SCENE 3: THREE LAYERS -->
+  <div class="vscene" id="vsc-vlayers">
+    <div class="vbrowser">
+      <div class="vbbar">
+        <div class="vbdots"><div class="vbd vbd-r"></div><div class="vbd vbd-y"></div><div class="vbd vbd-g"></div></div>
+        <div class="vubar"><span class="vulock">&#128274;</span><span>scrubber.tool/upload · metadata stripped</span></div>
+        <div class="vext"><svg width="12" height="8" viewBox="0 0 120 75" fill="none"><path d="M8 22L8 5L25 5" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 5L112 5L112 22" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M8 53L8 70L25 70" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 70L112 70L112 53" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M4 37C4 37 24 14 60 14C96 14 116 37 116 37C116 37 96 60 60 60C24 60 4 37 4 37Z" stroke="#e8d5a3" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="60" cy="37" r="11" stroke="#e8d5a3" stroke-width="5" fill="none"/></svg><span class="vextlbl">DDT IPS</span><div class="vextdot"></div></div>
+      </div>
+      <div class="vdark">
+        <div style="font-size:8px;color:#444;letter-spacing:0.1em;margin-bottom:8px;text-transform:uppercase">Metadata Scrubber · Output</div>
+        <div class="vhero" style="grid-template-columns:1fr 120px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div class="vlbar-row"><div class="vlbar-top"><span class="vlbar-lbl">Layer 1 · C2PA Manifest</span><span class="vlbar-stat" id="vl1s" style="color:#555">Pending</span></div><div class="vlbar-track"><div class="vlbar-fill" id="vl1b" style="background:#c84f4f"></div></div></div>
+            <div class="vlbar-row"><div class="vlbar-top"><span class="vlbar-lbl">Layer 2 · TrustMark Watermark</span><span class="vlbar-stat" id="vl2s" style="color:#555">Pending</span></div><div class="vlbar-track"><div class="vlbar-fill" id="vl2b" style="background:#c8963a"></div></div></div>
+            <div class="vlbar-row"><div class="vlbar-top"><span class="vlbar-lbl">Layer 3 · Neural Fingerprint</span><span class="vlbar-stat" id="vl3s" style="color:#555">Pending</span></div><div class="vlbar-track"><div class="vlbar-fill" id="vl3b" style="background:#5ab888"></div></div></div>
+            <div class="vlbar-row"><div class="vlbar-top"><span class="vlbar-lbl">IPS Query · CRO Resolved</span><span class="vlbar-stat" id="vl4s" style="color:#555">Pending</span></div></div>
+          </div>
+          <div class="vimgwrap" style="height:120px">
+            <div class="vimgface" id="vl-img" style="font-size:7px">STRIPPED IMAGE</div>
+            <div class="vimgoverlay vgreen" id="vl-ov"><div class="vov-icon">&#10003;</div><div class="vov-title">CRO recovered</div><div class="vov-sub">Layer 2 resolved<br>IPS: AUTHORIZED</div><div class="vov-badge">C2PA · DDT IPS</div></div>
+            <div class="vipspop vg" id="vl-pop"><div class="vippop-hdr"><div class="vippop-dot g"></div><div class="vippop-title">IPS Status</div></div><div class="vippop-state g">AUTHORIZED</div><div class="vippop-sub">Watermark resolved CRO.<br>Consent confirmed.<br>Terms active.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="vsdots"><div class="vsd active" id="vl0"></div><div class="vsd" id="vl1"></div><div class="vsd" id="vl2"></div><div class="vsd" id="vl3"></div><div class="vsd" id="vl4"></div></div>
+    <div class="vcap" id="vl-cap">Press play — watch your CRO survive a stripping attack</div>
+    <div class="vnotifs" id="vl-notifs">
+      <div class="vnotif"><div class="vnhdr"><div class="vnicon em">&#9993;</div><div class="vntitle">Email · Creator</div></div><div class="vnbody"><div class="vnfrom">noreply@ddt-pro.com</div><div class="vnsubj g">Stripping attempt — CRO survived</div><div class="vnprev">Metadata strip detected. Layer 2 watermark recovered your CRO. Attempt logged. Your consent is intact.</div></div></div>
+      <div class="vnotif"><div class="vnhdr"><div class="vnicon sm">&#128241;</div><div class="vntitle">SMS · Creator</div></div><div class="vnbody"><div class="vnfrom">DDT Pro · Security Alert</div><div class="vnsubj g">Your CRO survived</div><div class="vnprev">Metadata strip attempted. Watermark held. Your consent record is active. No action needed.</div></div></div>
+    </div>
+    <div class="vactions" id="vl-actions">
+      <button class="vabtn vok">How it works &#8594;</button>
+      <button class="vabtn vev">Fingerprint &#8594;</button>
+      <button class="vabtn vflg">Partner stack</button>
+    </div>
+    <button class="vplaybtn" id="vl-btn" onclick="vrunLayers()">&#9654; &nbsp; Play — 3-layer protection</button>
+  </div>
+</div>
+
+
+
+</div>
+</body>
+</html>
