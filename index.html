@@ -1,915 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-function vdelay(ms){return new Promise(r=>setTimeout(r,ms));}
-function vdot(p,n){for(var i=0;i<5;i++){var d=document.getElementById(p+i);if(!d)continue;d.classList.remove('done','active');if(i<n)d.classList.add('done');if(i===n)d.classList.add('active');}}
-function vcap(id,t,on){var c=document.getElementById(id);if(c){c.textContent=t;c.className='vcap'+(on?' on':'');}}
-function vswitchScene(id,el){document.querySelectorAll('.vscene').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.vstab').forEach(function(t){t.classList.remove('active');});var sc=document.getElementById('vsc-'+id);if(sc)sc.classList.add('active');el.classList.add('active');}
-function toggleTheme(){var html=document.documentElement;var isLight=html.getAttribute('data-theme')==='light';html.setAttribute('data-theme',isLight?'dark':'light');var btn=document.getElementById('theme-btn');if(btn)btn.textContent=isLight?'☀ Light':'☽ Dark';try{localStorage.setItem('ddt_demo_theme',isLight?'dark':'light');}catch(e){}}
-(function(){try{var t=localStorage.getItem('ddt_demo_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
-async function vrunWeb(){
-  var btn=document.getElementById('vw-btn');if(!btn)return;btn.disabled=true;btn.classList.add('vrun');btn.textContent='Running...';
-  ['vw-notifs','vw-actions','vw-ov','vw-pop'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('show');});
-  var wi=document.getElementById('vw-img');if(wi)wi.classList.remove('blur');
-  vdot('vw',0);vcap('vw-cap','IPS extension scanning page content...',true);
-  await vdelay(1100);vdot('vw',1);vcap('vw-cap','C2PA manifest found. Querying IPS...',true);
-  await vdelay(1300);vdot('vw',2);vcap('vw-cap','IPS returned REVOKED. Blurring content.',true);
-  if(wi)wi.classList.add('blur');
-  var ov=document.getElementById('vw-ov');if(ov)ov.classList.add('show');
-  await vdelay(400);var pp=document.getElementById('vw-pop');if(pp)pp.classList.add('show');
-  await vdelay(1000);vdot('vw',3);vcap('vw-cap','Creator notified via email and SMS.',true);
-  var wn=document.getElementById('vw-notifs');if(wn)wn.classList.add('show');
-  await vdelay(1000);vdot('vw',4);vcap('vw-cap','Evidence generated. Creator can act.',true);
-  var wa=document.getElementById('vw-actions');if(wa)wa.classList.add('show');
-  btn.textContent='▶ Play again';btn.classList.remove('vrun');btn.disabled=false;
-}
-async function vrunAI(){
-  var btn=document.getElementById('vai-btn');if(!btn)return;btn.disabled=true;btn.classList.add('vrun');btn.textContent='Running...';
-  ['vai-notifs','vai-actions','vai-ov','vai-pop'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('show');});
-  var vi=document.getElementById('vai-img');if(vi)vi.classList.remove('blur');
-  for(var i=0;i<5;i++){var t=document.getElementById('vat'+i);if(t)t.classList.remove('vis');}
-  vdot('va',0);vcap('vai-cap','C2PA-aware pipeline reading asset...',true);
-  await vdelay(800);var t0=document.getElementById('vat0');if(t0)t0.classList.add('vis');
-  await vdelay(600);var t1=document.getElementById('vat1');if(t1)t1.classList.add('vis');vdot('va',1);
-  await vdelay(700);var t2=document.getElementById('vat2');if(t2)t2.classList.add('vis');vdot('va',2);vcap('vai-cap','IPS query fired...',true);
-  await vdelay(900);var t3=document.getElementById('vat3');if(t3)t3.classList.add('vis');
-  await vdelay(400);var t4=document.getElementById('vat4');if(t4)t4.classList.add('vis');vdot('va',3);
-  vcap('vai-cap','OUT OF SCOPE — ingestion halted.',true);
-  if(vi)vi.classList.add('blur');
-  var vo=document.getElementById('vai-ov');if(vo)vo.classList.add('show');
-  await vdelay(400);var vp=document.getElementById('vai-pop');if(vp)vp.classList.add('show');
-  await vdelay(900);vdot('va',4);vcap('vai-cap','Creator notified. Audit packet generated.',true);
-  var vn=document.getElementById('vai-notifs');if(vn)vn.classList.add('show');
-  await vdelay(900);var va=document.getElementById('vai-actions');if(va)va.classList.add('show');
-  btn.textContent='▶ Play again';btn.classList.remove('vrun');btn.disabled=false;
-}
-async function vrunLayers(){
-  var btn=document.getElementById('vl-btn');if(!btn)return;btn.disabled=true;btn.classList.add('vrun');btn.textContent='Running...';
-  ['vl-notifs','vl-actions','vl-ov','vl-pop'].forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('show');});
-  ['vl1b','vl2b','vl3b'].forEach(function(id){var e=document.getElementById(id);if(e)e.style.width='0';});
-  ['vl1s','vl2s','vl3s','vl4s'].forEach(function(id){var e=document.getElementById(id);if(e){e.textContent='Pending';e.style.color='#555';}});
-  vdot('vl',0);vcap('vl-cap','Hostile pipeline stripping C2PA manifest...',true);
-  await vdelay(900);
-  var l1b=document.getElementById('vl1b');if(l1b)l1b.style.width='100%';
-  var l1s=document.getElementById('vl1s');if(l1s){l1s.textContent='STRIPPED';l1s.style.color='#c84f4f';}
-  vdot('vl',1);vcap('vl-cap','Layer 1 stripped. Layer 2 watermark activating...',true);
-  await vdelay(1000);
-  var l2b=document.getElementById('vl2b');if(l2b)l2b.style.width='100%';
-  var l2s=document.getElementById('vl2s');if(l2s){l2s.textContent='SURVIVED';l2s.style.color='#c8963a';}
-  vdot('vl',2);vcap('vl-cap','Watermark survived. CRO ID recovered.',true);
-  await vdelay(900);
-  var l3b=document.getElementById('vl3b');if(l3b)l3b.style.width='100%';
-  var l3s=document.getElementById('vl3s');if(l3s){l3s.textContent='CONFIRMED';l3s.style.color='#5ab888';}
-  vdot('vl',3);vcap('vl-cap','Neural fingerprint confirms. IPS query firing...',true);
-  await vdelay(900);
-  var l4s=document.getElementById('vl4s');if(l4s){l4s.textContent='AUTHORIZED';l4s.style.color='#5ab888';}
-  var lv=document.getElementById('vl-ov');if(lv)lv.classList.add('show');
-  await vdelay(400);var lp=document.getElementById('vl-pop');if(lp)lp.classList.add('show');
-  vdot('vl',4);vcap('vl-cap','CRO recovered. Creator notified.',true);
-  await vdelay(700);var ln=document.getElementById('vl-notifs');if(ln)ln.classList.add('show');
-  await vdelay(900);var la=document.getElementById('vl-actions');if(la)la.classList.add('show');
-  btn.textContent='▶ Play again';btn.classList.remove('vrun');btn.disabled=false;
-}
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DDT — Identity Permission State Infrastructure</title>
+<title>Digital Double Technologies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap');
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#080808;--surface:#0f0f0f;--surface2:#161616;--border:#1e1e1e;--border2:#2a2a2a;
-  --text:#e8e6df;--dim:#5a5855;--dim2:#3a3835;
-  --green:#5ab888;--green-dim:rgba(90,184,136,0.1);--green-border:rgba(90,184,136,0.25);
-  --red:#c86060;--red-dim:rgba(200,96,96,0.1);--red-border:rgba(200,96,96,0.25);
-  --amber:#c8963a;--amber-dim:rgba(200,150,58,0.1);--amber-border:rgba(200,150,58,0.25);
-  --blue:#4a7fa8;--blue-dim:rgba(74,127,168,0.1);--blue-border:rgba(74,127,168,0.25);
-  --purple:#8a6fc8;--purple-dim:rgba(138,111,200,0.1);--purple-border:rgba(138,111,200,0.25);
-  --accent:#e8d5a3;
-  --mono:'JetBrains Mono',monospace;
-  --display:'Syne',sans-serif;
-}
-html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--mono)}
-
-/* Layout */
-.shell{max-width:860px;margin:0 auto;padding:36px 24px}
-
-/* Top bar */
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px;padding-bottom:20px;border-bottom:1px solid var(--border)}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-name{font-family:var(--display);font-size:16px;font-weight:800;letter-spacing:0.12em;color:var(--accent)}
-.logo-tag{font-size:9px;letter-spacing:0.18em;color:var(--dim);text-transform:uppercase}
-.topbar-right{display:flex;align-items:center;gap:16px}
-.live-pill{display:flex;align-items:center;gap:6px;font-size:9px;letter-spacing:0.15em;color:var(--dim)}
-.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:glow 2s ease-in-out infinite;flex-shrink:0}
-@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(90,184,136,0.6)}50%{box-shadow:0 0 0 5px rgba(90,184,136,0)}}
-.tag{font-size:9px;letter-spacing:0.14em;color:var(--dim);border:1px solid var(--border2);padding:4px 10px;border-radius:2px}
-
-/* Hero */
-.hero{margin-bottom:44px}
-.hero-eyebrow{font-size:9px;letter-spacing:0.25em;color:var(--dim);text-transform:uppercase;margin-bottom:10px}
-.hero-title{font-family:var(--display);font-size:30px;font-weight:800;letter-spacing:0.02em;color:var(--text);margin-bottom:10px;line-height:1.2}
-.hero-sub{font-size:10px;color:var(--dim);line-height:1.9;max-width:580px;margin-bottom:18px}
-.thesis{background:var(--surface2);border-left:3px solid var(--accent);padding:12px 16px;font-size:10px;color:var(--dim);line-height:1.9;border-radius:0 2px 2px 0}
-.thesis strong{color:var(--text);font-weight:500}
-
-/* Tabs */
-.tabs{display:flex;gap:3px;margin-bottom:28px;flex-wrap:wrap}
-.tab{font-size:9px;letter-spacing:0.1em;padding:8px 14px;background:none;border:1px solid var(--border);color:var(--dim);cursor:pointer;transition:all 0.2s;border-radius:2px;font-family:var(--mono);text-transform:uppercase}
-.tab.active{background:var(--surface2);border-color:var(--border2);color:var(--text)}
-.tab:hover:not(.active){border-color:var(--border2);color:var(--text)}
-.scenario{display:none}
-.scenario.active{display:block}
-
-/* Info grid */
-.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
-.info-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:14px}
-.info-label{font-size:8px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;margin-bottom:7px}
-.info-val{font-size:10px;line-height:1.8}
-.pill{display:inline-block;font-size:8px;padding:2px 7px;border-radius:2px;margin:1px}
-.pill-g{background:var(--green-dim);border:1px solid var(--green-border);color:var(--green)}
-.pill-r{background:var(--red-dim);border:1px solid var(--red-border);color:var(--red)}
-.pill-b{background:var(--blue-dim);border:1px solid var(--blue-border);color:var(--blue)}
-.pill-a{background:var(--amber-dim);border:1px solid var(--amber-border);color:var(--amber)}
-
-/* Step dots */
-.dots{display:flex;gap:5px;justify-content:center;margin-bottom:16px}
-.dot{width:5px;height:5px;border-radius:50%;background:var(--border2);transition:background 0.3s}
-.dot.done{background:var(--green)}
-.dot.active{background:var(--accent)}
-
-/* Button */
-.btn{width:100%;background:none;border:1px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:12px;cursor:pointer;transition:all 0.2s;margin-bottom:16px;border-radius:2px}
-.btn:hover{border-color:var(--accent);color:var(--accent)}
-.btn:disabled{opacity:0.35;cursor:not-allowed}
-.btn.running{border-color:var(--amber-border);color:var(--amber)}
-
-/* Scene */
-.scene{background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden;margin-bottom:12px}
-.scene-hdr{padding:11px 16px;border-bottom:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:space-between}
-.scene-lbl{font-size:8px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase}
-.scene-title{font-size:10px;color:var(--text);font-weight:500;margin-top:2px}
-.scene-status{font-size:9px;color:var(--dim)}
-
-/* Pipeline */
-.pipeline{padding:18px;display:flex;flex-direction:column;gap:10px}
-.pipe-row{display:flex;align-items:center;gap:6px;opacity:0;transform:translateY(4px);transition:all 0.4s;flex-wrap:wrap}
-.pipe-row.vis{opacity:1;transform:none}
-.pn{background:var(--surface2);border:1px solid var(--border2);border-radius:2px;padding:8px 11px;font-size:9px;min-width:96px;text-align:center;flex-shrink:0}
-.pn small{display:block;color:var(--dim);margin-top:2px;font-size:8px}
-.pn.g{border-color:var(--green-border);background:var(--green-dim);color:var(--green)}
-.pn.r{border-color:var(--red-border);background:var(--red-dim);color:var(--red)}
-.pn.a{border-color:var(--amber-border);background:var(--amber-dim);color:var(--amber)}
-.pn.b{border-color:var(--blue-border);background:var(--blue-dim);color:var(--blue)}
-.pn.p{border-color:var(--purple-border);background:var(--purple-dim);color:var(--purple)}
-.arr{font-size:10px;color:var(--dim2);flex-shrink:0}
-.arr.lit{color:var(--accent)}
-
-/* IPS response */
-.ips-resp{border-top:1px solid var(--border);padding:14px;display:none}
-.resp-label{font-size:8px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;margin-bottom:8px}
-.rrow{display:flex;gap:8px;margin-bottom:4px;font-size:9px}
-.rkey{color:var(--dim);min-width:148px;flex-shrink:0}
-.rval{color:var(--text)}
-.rval.g{color:var(--green)}
-.rval.r{color:var(--red)}
-.rval.a{color:var(--amber)}
-
-/* Banners */
-.banner{margin:0 14px 14px;border-radius:2px;padding:12px 14px;font-size:10px;line-height:1.8;display:none}
-.banner.show{display:block}
-.banner.blocked{background:var(--red-dim);border:1px solid var(--red-border);color:#e08080}
-.banner.success{background:var(--green-dim);border:1px solid var(--green-border);color:var(--green)}
-
-/* Audit */
-.audit{border-top:1px solid var(--border);padding:14px;display:none}
-.audit.show{display:block}
-.audit-label{font-size:8px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;margin-bottom:8px}
-.aline{font-size:9px;color:var(--dim);margin-bottom:3px}
-.aline span{color:var(--text)}
-.aline .hi{color:var(--accent)}
-
-/* Layer stack */
-.layers{display:flex;flex-direction:column;gap:2px;margin-bottom:16px}
-.layer{border:1px solid var(--border2);border-radius:3px;overflow:hidden;transition:all 0.3s}
-.layer.stripped{border-color:var(--red-border);opacity:0.65}
-.layer.survived{border-color:var(--green-border)}
-.layer.confirmed{border-color:var(--green-border)}
-.lhdr{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--surface2)}
-.lnum{font-size:8px;color:var(--dim);letter-spacing:0.1em;min-width:52px}
-.lname{font-size:10px;font-weight:500;flex:1}
-.lbadge{font-size:8px;letter-spacing:0.1em;padding:2px 8px;border-radius:2px;text-transform:uppercase;border:1px solid var(--border);color:var(--dim);transition:all 0.3s}
-.lbadge.g{background:var(--green-dim);border-color:var(--green-border);color:var(--green)}
-.lbadge.r{background:var(--red-dim);border-color:var(--red-border);color:var(--red)}
-.lbadge.a{background:var(--amber-dim);border-color:var(--amber-border);color:var(--amber)}
-.ldetail{padding:0 14px;max-height:0;overflow:hidden;transition:max-height 0.4s ease}
-.ldetail.open{max-height:120px;padding:0 14px 12px}
-.ldetail-inner{font-size:9px;color:var(--dim);line-height:1.9;border-top:1px solid var(--border);padding-top:10px}
-.ldetail-inner span{color:var(--text)}
-
-/* Payment */
-.payment{border:1px solid var(--green-border);border-radius:3px;background:var(--green-dim);padding:20px;display:none;margin-bottom:12px;text-align:center}
-.payment.show{display:block}
-.pay-lbl{font-size:8px;letter-spacing:0.2em;color:var(--green);text-transform:uppercase;margin-bottom:10px}
-.pay-amt{font-family:var(--display);font-size:36px;font-weight:800;color:var(--green);margin-bottom:2px}
-.pay-sub{font-size:9px;color:var(--dim);margin-bottom:14px}
-.pay-rows{display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--green-border);padding-top:12px;text-align:left}
-.prow{display:flex;justify-content:space-between;font-size:9px;color:var(--dim)}
-.prow span:last-child{color:var(--text)}
-
-.reset{font-size:9px;color:var(--dim);cursor:pointer;text-decoration:underline;text-align:center;display:block;margin-top:8px}
-.reset:hover{color:var(--text)}
-
-  [data-theme="light"]{--bg:#f4f2ec;--surface:#fff;--surface2:#eeece6;--border:#dedad2;--border2:#d0cdc4;--text:#1a1a18;--dim:#6b6860;--green:#1a6b3a;--green-dim:rgba(26,107,58,0.08);--green-border:rgba(26,107,58,0.25);--red:#a83030;--red-dim:rgba(168,48,48,0.08);--red-border:rgba(168,48,48,0.25);--amber:#7a5a10;--amber-dim:rgba(122,90,16,0.08);--amber-border:rgba(122,90,16,0.25);--blue:#1a4a7a;--blue-dim:rgba(26,74,122,0.08);--blue-border:rgba(26,74,122,0.25);--purple:#4a2a8a;--purple-dim:rgba(74,42,138,0.08);--purple-border:rgba(74,42,138,0.25);--accent:#7a5a10}
-  [data-theme="light"] body{background:#f4f2ec;color:#1a1a18}
-  [data-theme="light"] .browser,[data-theme="light"] .vbrowser{background:#fff;border-color:#dedad2}
-  [data-theme="light"] .bbar,[data-theme="light"] .vbbar{background:#eeece6;border-color:#dedad2}
-  [data-theme="light"] .ubar,[data-theme="light"] .vubar{background:#fff;border-color:#dedad2;color:#6b6860}
-  [data-theme="light"] .extbtn,[data-theme="light"] .vext{background:#eeece6;border-color:#dedad2}
-  [data-theme="light"] .extlbl,[data-theme="light"] .vextlbl{color:#6b6860}
-  [data-theme="light"] .wp,[data-theme="light"] .vwp{background:#e8e4dc}
-  [data-theme="light"] .scene{background:#fff}
-  [data-theme="light"] .scene-hdr{background:#eeece6;border-color:#dedad2}
-  [data-theme="light"] .terminal,[data-theme="light"] .vdark{background:#eeece6}
-  [data-theme="light"] .pn{background:#eeece6;border-color:#dedad2;color:#1a1a18}
-  [data-theme="light"] .pn small{color:#6b6860}
-  [data-theme="light"] .layer{border-color:#dedad2}
-  [data-theme="light"] .lhdr{background:#eeece6}
-  [data-theme="light"] .ldetail-inner{color:#6b6860}
-  [data-theme="light"] .ldetail-inner span{color:#1a1a18}
-  [data-theme="light"] .notif,[data-theme="light"] .vnotif{background:#eeece6;border-color:#dedad2}
-  [data-theme="light"] .nhdr,[data-theme="light"] .vnhdr{border-color:#dedad2}
-  [data-theme="light"] .nbody .nprev,[data-theme="light"] .vnbody .vnprev{color:#6b6860}
-  [data-theme="light"] .nbody .nfrom,[data-theme="light"] .vnbody .vnfrom{color:#9a9690}
-  [data-theme="light"] .ips-resp{border-color:#dedad2}
-  [data-theme="light"] .rkey{color:#6b6860}
-  [data-theme="light"] .rval{color:#1a1a18}
-  [data-theme="light"] .audit{border-color:#dedad2}
-  [data-theme="light"] .aline{color:#6b6860}
-  [data-theme="light"] .aline span{color:#1a1a18}
-  [data-theme="light"] .aline .hi{color:#7a5a10}
-  [data-theme="light"] .info-card{background:#fff;border-color:#dedad2}
-  [data-theme="light"] .info-label{color:#6b6860}
-  [data-theme="light"] .cro-scope{background:#fff;border-color:#dedad2}
-  [data-theme="light"] .scope-key{color:#6b6860}
-  [data-theme="light"] .thesis{background:#eeece6}
-  [data-theme="light"] .thesis strong{color:#1a1a18}
-  [data-theme="light"] .tag{border-color:#dedad2;color:#6b6860}
-  [data-theme="light"] .live-pill{color:#6b6860}
-  [data-theme="light"] .tabs .tab{border-color:#dedad2;color:#6b6860}
-  [data-theme="light"] .tabs .tab.active{background:#eeece6;border-color:#d0cdc4;color:#1a1a18}
-  [data-theme="light"] .btn{border-color:#dedad2;color:#1a1a18}
-  [data-theme="light"] .btn:hover{border-color:#7a5a10;color:#7a5a10}
-  [data-theme="light"] .hero-title{color:#1a1a18}
-  [data-theme="light"] .hero-sub,[data-theme="light"] .hero-eyebrow{color:#6b6860}
-  [data-theme="light"] .ipspop,[data-theme="light"] .vipspop{background:#fff}
-  [data-theme="light"] .ippop-sub,[data-theme="light"] .vippop-sub{color:#9a9690}
-  [data-theme="light"] .vlbar-row{background:#fff}
-  [data-theme="light"] .vlbar-lbl{color:#6b6860}
-  [data-theme="light"] .vtline{color:#6b6860}
-  [data-theme="light"] .vscene-wrap{background:#eeece6}
-  [data-theme="light"] .vstabs .vstab{border-color:#dedad2;color:#6b6860}
-  [data-theme="light"] .vstabs .vstab.active{background:#fff;border-color:#d0cdc4;color:#7a5a10}
-  [data-theme="light"] .vplaybtn{border-color:#dedad2;color:#6b6860}
-  [data-theme="light"] .vcap.on{color:#6b6860}
-  [data-theme="light"] .payment{background:rgba(26,107,58,0.06);border-color:rgba(26,107,58,0.25)}
-  [data-theme="light"] .pay-sub,[data-theme="light"] .prow{color:#6b6860}
-  [data-theme="light"] .prow span:last-child{color:#1a1a18}
-  [data-theme="light"] .step{border-color:#dedad2}
-  [data-theme="light"] .step-detail-inner{color:#6b6860;border-color:#dedad2}
-  [data-theme="light"] .step-detail-inner strong{color:#1a1a18}
-  [data-theme="light"] .step-badge{border-color:#dedad2;color:#6b6860}
-  [data-theme="light"] .cro-card{background:#fff;border-color:#dedad2}
-  [data-theme="light"] .cro-key,[data-theme="light"] .cro-card-label{color:#6b6860}
-  [data-theme="light"] .bottom-line,[data-theme="light"] .reset{color:#6b6860}
+  :root {
+    --cream: #FAF8F4;
+    --warm-white: #F5F2EC;
+    --ink: #1A1915;
+    --ink-soft: #3D3B35;
+    --ink-muted: #7A7870;
+    --sage: #7B9E87;
+    --sage-light: #B8D4C0;
+    --sage-pale: #E8F2EB;
+    --gold: #C9A96E;
+    --gold-pale: #F5EDD8;
+    --border: rgba(26,25,21,0.1);
+    --radius: 12px;
+    --authorized: #4A9B6F;
+    --revoked: #C0392B;
+    --suspended: #E67E22;
+    --flagged: #8E44AD;
+  }
+  [data-theme="dark"] {
+    --cream: #141412;
+    --warm-white: #1C1B18;
+    --ink: #F0EDE6;
+    --ink-soft: #C8C4BB;
+    --ink-muted: #7A7870;
+    --sage: #7B9E87;
+    --sage-light: #4A7A5A;
+    --sage-pale: #1E2E22;
+    --gold: #C9A96E;
+    --gold-pale: #2A2218;
+    --border: rgba(240,237,230,0.1);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    transition: background 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+  }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(250,248,244,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.4s;
+  }
+  [data-theme="dark"] nav { background: rgba(20,20,18,0.9); }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 500; letter-spacing: 0.04em;
+    color: var(--ink); text-decoration: none;
+  }
+  .logo span { color: var(--sage); }
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border);
+    border-radius: 100px; padding: 6px 14px;
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
+    color: var(--ink-muted); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--sage); color: var(--sage); }
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; place-items: center;
+    padding: 100px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 80% 60% at 50% 30%, var(--sage-pale) 0%, transparent 70%);
+    opacity: 0.6;
+  }
+  .hero-content {
+    max-width: 760px; text-align: center;
+    position: relative; z-index: 1;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--sage);
+    margin-bottom: 28px;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 7vw, 80px);
+    font-weight: 300; line-height: 1.08;
+    color: var(--ink); margin-bottom: 32px;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-headline em { font-style: italic; color: var(--sage); }
+  .hero-sub {
+    font-size: 17px; font-weight: 300; line-height: 1.75;
+    color: var(--ink-soft); max-width: 560px; margin: 0 auto 48px;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  /* IPS LIVE BADGE */
+  .ips-badge-wrap {
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+    margin-bottom: 56px;
+  }
+  .ips-badge {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 100px; padding: 10px 20px 10px 14px;
+    font-size: 13px; color: var(--ink-soft);
+  }
+  .ips-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--sage);
+    box-shadow: 0 0 0 3px rgba(123,158,135,0.2);
+    animation: pulse 2s infinite;
+  }
+  .ips-dot.loading { background: var(--gold); box-shadow: 0 0 0 3px rgba(201,169,110,0.2); }
+  .ips-dot.error { background: var(--revoked); box-shadow: 0 0 0 3px rgba(192,57,43,0.2); animation: none; }
+  .ips-state {
+    font-weight: 500; font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.06em; font-size: 12px; text-transform: uppercase;
+  }
+  .ips-state.authorized { color: var(--authorized); }
+  .ips-state.loading { color: var(--gold); }
+  .ips-state.error { color: var(--revoked); }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+  /* PATH CARDS */
+  .paths {
+    opacity: 0; animation: fadeUp 0.8s 1.0s forwards;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; max-width: 640px; margin: 0 auto;
+  }
+  @media (max-width: 560px) { .paths { grid-template-columns: 1fr; } }
+  .path-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    text-decoration: none; color: var(--ink);
+    transition: all 0.3s ease;
+    text-align: left; position: relative; overflow: hidden;
+  }
+  .path-card::before {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 3px;
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .path-card.investor::before { background: var(--gold); }
+  .path-card.creator::before { background: var(--sage); }
+  .path-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); border-color: transparent; }
+  .path-card:hover::before { transform: scaleX(1); }
+  .path-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px; font-size: 22px;
+  }
+  .path-icon.investor { background: var(--gold-pale); }
+  .path-icon.creator { background: var(--sage-pale); }
+  .path-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .path-label.investor { color: var(--gold); }
+  .path-label.creator { color: var(--sage); }
+  .path-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 400; line-height: 1.2;
+    margin-bottom: 10px; color: var(--ink);
+  }
+  .path-desc { font-size: 13px; color: var(--ink-muted); line-height: 1.6; }
+  .path-arrow {
+    margin-top: 20px; font-size: 18px; color: var(--ink-muted);
+    transition: transform 0.2s, color 0.2s;
+    display: block;
+  }
+  .path-card:hover .path-arrow { transform: translateX(4px); color: var(--ink); }
+  /* DIVIDER / THESIS */
+  .thesis-section {
+    padding: 80px 40px;
+    max-width: 900px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: center;
+  }
+  @media (max-width: 700px) { .thesis-section { grid-template-columns: 1fr; gap: 40px; } }
+  .thesis-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 300; line-height: 1.2;
+    color: var(--ink);
+  }
+  .thesis-quote strong { font-weight: 500; color: var(--sage); }
+  .thesis-body { font-size: 15px; line-height: 1.8; color: var(--ink-soft); }
+  .thesis-body p + p { margin-top: 16px; }
+  /* THREE STATES */
+  .states-section {
+    padding: 0 40px 80px;
+    max-width: 900px; margin: 0 auto;
+  }
+  .section-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-muted);
+    margin-bottom: 32px;
+  }
+  .states-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+  }
+  @media (max-width: 700px) { .states-grid { grid-template-columns: 1fr 1fr; gap: 8px; } }
+  .state-chip {
+    padding: 14px 16px; border-radius: 10px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .state-chip .state-name { font-size: 13px; display: block; margin-bottom: 4px; }
+  .state-chip .state-desc { font-size: 11px; font-weight: 300; letter-spacing: 0; text-transform: none; opacity: 0.8; }
+  .state-chip.authorized { background: rgba(74,155,111,0.12); color: var(--authorized); }
+  .state-chip.revoked { background: rgba(192,57,43,0.1); color: var(--revoked); }
+  .state-chip.suspended { background: rgba(230,126,34,0.1); color: var(--suspended); }
+  .state-chip.flagged { background: rgba(142,68,173,0.1); color: var(--flagged); }
+  .state-chip.out-of-scope { background: rgba(122,120,112,0.1); color: var(--ink-muted); }
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; color: var(--ink-muted);
+  }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { font-size: 13px; color: var(--ink-muted); text-decoration: none; }
+  .footer-links a:hover { color: var(--sage); }
+  .footer-legal { font-size: 11px; color: var(--ink-muted); width: 100%; }
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  /* SEPARATOR */
+  .section-sep {
+    width: 48px; height: 1px; background: var(--sage-light);
+    margin: 0 auto 48px;
+  }
 </style>
 </head>
 <body>
-<div class="shell">
 
-  <!-- Top bar -->
-  <div class="topbar">
-    <div class="logo">
-      <svg width="30" height="30" viewBox="0 0 120 120" fill="none">
-        <path d="M8 28L8 8L28 8" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <path d="M92 8L112 8L112 28" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <path d="M8 92L8 112L28 112" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <path d="M92 112L112 112L112 92" stroke="#e8d5a3" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <path d="M11 60C11 60 35 22 60 22C85 22 109 60 109 60C109 60 85 98 60 98C35 98 11 60 11 60Z" stroke="#e8d5a3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="60" cy="60" r="18" stroke="#e8d5a3" stroke-width="4" fill="none"/>
-        <text x="60" y="64" text-anchor="middle" font-family="Syne,sans-serif" font-size="11" font-weight="800" letter-spacing="1.5" fill="#e8d5a3">DDT</text>
-      </svg>
-      <div>
-        <div class="logo-name">Digital Double Technologies</div>
-        <div class="logo-tag">Identity Permission State Infrastructure</div>
+<nav>
+  <a href="#" class="logo">Digital Double <span>Technologies</span></a>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle">Dark mode</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Consent Infrastructure for the AI Era</p>
+    <h1 class="hero-headline">
+      Your identity is<br>your most valuable<br><em>creative asset.</em>
+    </h1>
+    <p class="hero-sub">
+      DDT builds the infrastructure that makes consent machine-verifiable, live, and revocable. So that who you are can never be used without your permission.
+    </p>
+
+    <div class="ips-badge-wrap">
+      <div class="ips-badge">
+        <span class="ips-dot loading" id="ipsDot"></span>
+        <span>Live Identity Permission State:</span>
+        <span class="ips-state loading" id="ipsState">Checking...</span>
       </div>
     </div>
-    <div class="topbar-right">
-      <div class="live-pill"><div class="live-dot"></div>IPS LIVE</div>
-      <div class="tag">Investor Demo</div>
-      <button id="theme-btn" onclick="toggleTheme()" style="background:none;border:1px solid #2a2a2a;color:#888;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;padding:4px 10px;border-radius:2px;cursor:pointer">&#9728; Light</button>
+
+    <div class="paths">
+      <a href="investor.html" class="path-card investor">
+        <div class="path-icon investor">◈</div>
+        <div class="path-label investor">For Investors</div>
+        <div class="path-title">The Infrastructure Play</div>
+        <p class="path-desc">See how DDT becomes the consent layer for every platform that touches human identity.</p>
+        <span class="path-arrow">→</span>
+      </a>
+      <a href="performer.html" class="path-card creator">
+        <div class="path-icon creator">◎</div>
+        <div class="path-label creator">For Creators</div>
+        <div class="path-title">Protect What Is Yours</div>
+        <p class="path-desc">See how DDT puts you in control of your image, your voice, your likeness: permanently.</p>
+        <span class="path-arrow">→</span>
+      </a>
     </div>
   </div>
+</section>
 
-  <!-- Hero -->
-  <div class="hero">
-    <div class="hero-eyebrow">IPS Infrastructure · Three Scenarios</div>
-    <div class="hero-title">Provenance is not permission.</div>
-    <div class="hero-sub">C2PA tells you where content came from. DDT tells you whether use of the identity depicted in that content is currently authorized — live, revocable, machine-verifiable. These are orthogonal claims. Both are required.</div>
-    <div class="thesis">
-      <strong>The OCSP analogy:</strong> A browser doesn't ask a human to verify a TLS certificate — it queries an OCSP responder automatically at the moment of the handshake. IPS is the same ambient, automatic consent check. The <strong>CRO is the certificate</strong>. The <strong>IPS endpoint is the responder</strong>. The <strong>ddt.cro_binding in the C2PA manifest</strong> is the pointer that ties the asset to the consent infrastructure for its entire downstream life. Every query generates a signed audit packet. The record exists whether the requester liked the answer or not.
+<div class="section-sep fade-in"></div>
+
+<section class="thesis-section fade-in">
+  <div class="thesis-quote">
+    Provenance tells you<br>who made something.<br><strong>It does not tell you<br>who agreed to it.</strong>
+  </div>
+  <div class="thesis-body">
+    <p>Every piece of content now carries metadata about where it came from. That is the C2PA standard. It is necessary and good. But it only answers one question: who created this?</p>
+    <p>It does not answer the question that matters most: did the person depicted in this content consent to this specific use, right now, today?</p>
+    <p>DDT answers that question. In real time. With a revocable, machine-readable record that travels with the content and never lies.</p>
+  </div>
+</section>
+
+<section class="states-section fade-in">
+  <p class="section-label">The Five Permission States</p>
+  <div class="states-grid">
+    <div class="state-chip authorized">
+      <span class="state-name">Authorized</span>
+      <span class="state-desc">Consent is active and verified</span>
+    </div>
+    <div class="state-chip revoked">
+      <span class="state-name">Revoked</span>
+      <span class="state-desc">Consent withdrawn by the creator</span>
+    </div>
+    <div class="state-chip suspended">
+      <span class="state-name">Suspended</span>
+      <span class="state-desc">Use paused pending review</span>
+    </div>
+    <div class="state-chip flagged">
+      <span class="state-name">Flagged</span>
+      <span class="state-desc">Requires human review</span>
+    </div>
+    <div class="state-chip out-of-scope">
+      <span class="state-name">Out of Scope</span>
+      <span class="state-desc">This use was never permitted</span>
     </div>
   </div>
+</section>
 
-  <!-- Tabs -->
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('ai',this)">Scenario 1 — AI Ingestion</button>
-    <button class="tab" onclick="switchTab('web',this)">Scenario 2 — Unauthorized Webpage</button>
-    <button class="tab" onclick="switchTab('commerce',this)">Scenario 3 — Protection + Payment</button>
+<footer>
+  <div class="footer-logo">Digital Double Technologies, Inc.</div>
+  <div class="footer-links">
+    <a href="investor.html">Investor Demo</a>
+    <a href="performer.html">Creator Demo</a>
+    <a href="watch.html">Watch Demo</a>
   </div>
-
-  <!-- ── SCENARIO 1: AI INGESTION ── -->
-  <div class="scenario active" id="sc-ai">
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-label">Asset</div>
-        <div class="info-val">Netflix Series — Season 3, Ep. 4<br>
-          <span class="pill pill-b">C2PA Manifest</span>
-          <span class="pill pill-b">ddt.cro_binding</span>
-        </div>
-      </div>
-      <div class="info-card">
-        <div class="info-label">CRO Scope</div>
-        <div class="info-val">
-          <span class="pill pill-g">broadcast</span>
-          <span class="pill pill-g">streaming</span>
-          <span class="pill pill-r">ai training — PROHIBITED</span>
-          <span class="pill pill-r">synthetic reproduction — PROHIBITED</span>
-        </div>
-      </div>
-    </div>
-    <div class="dots" id="ai-dots">
-      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    </div>
-    <button class="btn" id="btn-ai" onclick="runAI()">▶ Run — AI Ingestion Attempt</button>
-    <div class="scene">
-      <div class="scene-hdr">
-        <div><div class="scene-lbl">AI Ingestion Pipeline</div><div class="scene-title">Foundation model trainer encounters C2PA-bearing asset</div></div>
-        <div class="scene-status" id="ai-lbl">Waiting...</div>
-      </div>
-      <div class="pipeline">
-        <div class="pipe-row" id="ai-r0">
-          <div class="pn">Asset Ingest<small>Raw video file</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn">C2PA Parser<small>Reads manifest</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn">Binding Extractor<small>ddt.cro_binding found</small></div>
-        </div>
-        <div class="pipe-row" id="ai-r1">
-          <div class="pn">CRO ID<small>Extracted</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn a" id="ai-ips-node">IPS Query<small>Resolving...</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn r" id="ai-resp-node">OUT OF SCOPE<small>Ingestion blocked</small></div>
-        </div>
-      </div>
-      <div class="ips-resp" id="ai-ips">
-        <div class="resp-label">IPS Response — Live</div>
-        <div class="rrow"><span class="rkey">cro_id</span><span class="rval">69b3eccd-b89b-43e0-8...</span></div>
-        <div class="rrow"><span class="rkey">status</span><span class="rval r">OUT_OF_SCOPE</span></div>
-        <div class="rrow"><span class="rkey">declared_use</span><span class="rval">ai training</span></div>
-        <div class="rrow"><span class="rkey">conflict</span><span class="rval r">true — explicitly excluded</span></div>
-        <div class="rrow"><span class="rkey">fail_closed</span><span class="rval r">SUSPENDED — access denied</span></div>
-        <div class="rrow"><span class="rkey">checked_at</span><span class="rval" id="ai-ts">—</span></div>
-        <div class="rrow"><span class="rkey">integrity_verified</span><span class="rval g">true</span></div>
-      </div>
-      <div class="banner blocked" id="ai-banner">
-        <strong>INGESTION BLOCKED.</strong> The IPS endpoint returned OUT_OF_SCOPE. Declared use "ai training" is explicitly excluded by this CRO. A compliant pipeline cannot proceed. The audit packet exists whether the pipeline respects the result or not — establishing the evidentiary record and closing the "I didn't know" defense.
-      </div>
-      <div class="audit" id="ai-audit">
-        <div class="audit-label">Audit Packet</div>
-        <div class="aline">event_type: <span>IPS_QUERY_OUT_OF_SCOPE</span></div>
-        <div class="aline">declared_use: <span>ai training</span></div>
-        <div class="aline">response_state: <span class="hi">OUT_OF_SCOPE</span></div>
-        <div class="aline">pipeline_halted: <span>true</span></div>
-        <div class="aline">legally_admissible: <span>true — signed IPS response</span></div>
-        <div class="aline">timestamp: <span class="hi" id="ai-audit-ts">—</span></div>
-      </div>
-    </div>
-    <a class="reset" onclick="resetAI()">↺ Reset</a>
-  </div>
-
-  <!-- ── SCENARIO 2: WEBPAGE ── -->
-  <div class="scenario" id="sc-web">
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-label">Asset</div>
-        <div class="info-val">Lifestyle photography — commercial shoot<br>
-          <span class="pill pill-b">C2PA Manifest</span>
-          <span class="pill pill-b">ddt.cro_binding</span>
-        </div>
-      </div>
-      <div class="info-card">
-        <div class="info-label">CRO Status</div>
-        <div class="info-val">
-          <span class="pill pill-g">casting — original permission</span>
-          <span class="pill pill-r">REVOKED by creator</span>
-          <span class="pill pill-r">webpage use — unauthorized</span>
-        </div>
-      </div>
-    </div>
-    <div class="dots" id="web-dots">
-      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    </div>
-    <button class="btn" id="btn-web" onclick="runWeb()">▶ Run — Webpage Content Scanner</button>
-    <div class="scene">
-      <div class="scene-hdr">
-        <div><div class="scene-lbl">Brand Safety Crawler</div><div class="scene-title">Scanner encounters image on business webpage without consent</div></div>
-        <div class="scene-status" id="web-lbl">Waiting...</div>
-      </div>
-      <div class="pipeline">
-        <div class="pipe-row" id="web-r0">
-          <div class="pn">Web Crawler<small>Scans page</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn">C2PA Reader<small>Image manifest</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn">Binding Found<small>ddt.cro_binding</small></div>
-        </div>
-        <div class="pipe-row" id="web-r1">
-          <div class="pn">IPS Resolver<small>Live query</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn r">REVOKED<small>Consent withdrawn</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn">Audit Packet<small>Evidence generated</small></div>
-        </div>
-      </div>
-      <div class="ips-resp" id="web-ips">
-        <div class="resp-label">IPS Response — Live</div>
-        <div class="rrow"><span class="rkey">status</span><span class="rval r">REVOKED</span></div>
-        <div class="rrow"><span class="rkey">infringing_url</span><span class="rval">businesssite.com/about-us</span></div>
-        <div class="rrow"><span class="rkey">fail_closed</span><span class="rval r">SUSPENDED — all access denied</span></div>
-        <div class="rrow"><span class="rkey">integrity_verified</span><span class="rval g">true</span></div>
-        <div class="rrow"><span class="rkey">checked_at</span><span class="rval" id="web-ts">—</span></div>
-      </div>
-      <div class="banner blocked" id="web-banner">
-        <strong>UNAUTHORIZED USE DETECTED.</strong> IPS returned REVOKED. The creator withdrew consent after the original license expired. The infringing party had access to a machine-verifiable consent signal and proceeded anyway. The audit packet is the evidentiary record. The "I didn't know" defense is closed.
-      </div>
-      <div class="audit" id="web-audit">
-        <div class="audit-label">Audit Packet</div>
-        <div class="aline">event_type: <span>IPS_QUERY_REVOKED_USE_DETECTED</span></div>
-        <div class="aline">infringing_url: <span>businesssite.com/about-us</span></div>
-        <div class="aline">response_state: <span class="hi">REVOKED</span></div>
-        <div class="aline">creator_notified: <span>true</span></div>
-        <div class="aline">next_action: <span>DMCA notice + right of publicity claim</span></div>
-        <div class="aline">timestamp: <span class="hi" id="web-audit-ts">—</span></div>
-        <div class="aline">legally_admissible: <span>true — signed IPS response</span></div>
-      </div>
-    </div>
-    <a class="reset" onclick="resetWeb()">↺ Reset</a>
-  </div>
-
-  <!-- ── SCENARIO 3: PROTECTION + PAYMENT ── -->
-  <div class="scenario" id="sc-commerce">
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-label">CRO Scope — Justin Hofstad · SAG-AFTRA</div>
-        <div class="info-val">
-          <span class="pill pill-g">ai_generated_video — PERMITTED</span><br>
-          <span class="pill pill-a">$850/day · SAG-AFTRA New Media floor</span><br>
-          <span class="pill pill-r">deepfake · biometric extraction — PROHIBITED</span>
-        </div>
-      </div>
-      <div class="info-card">
-        <div class="info-label">Attack Vector</div>
-        <div class="info-val">
-          Hostile pipeline strips C2PA manifest.<br>
-          <span class="pill pill-a">Layer 2: TrustMark watermark survives</span><br>
-          <span class="pill pill-g">Layer 3: Neural fingerprint resolves</span>
-        </div>
-      </div>
-    </div>
-    <div class="dots" id="commerce-dots">
-      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    </div>
-    <button class="btn" id="btn-commerce" onclick="runCommerce()">▶ Run — Stripping Attack + Compensation Pathway</button>
-    <div class="layers" id="layer-stack">
-      <div class="layer" id="l1">
-        <div class="lhdr"><div class="lnum">LAYER 1</div><div class="lname">C2PA Manifest · ddt.cro_binding</div><div class="lbadge" id="l1b">Pending</div></div>
-        <div class="ldetail" id="l1d"><div class="ldetail-inner">status: <span>STRIPPED by hostile pipeline</span> · fallback: <span>Layer 2 activated</span></div></div>
-      </div>
-      <div class="layer" id="l2">
-        <div class="lhdr"><div class="lnum">LAYER 2</div><div class="lname">TrustMark Watermark · pixel-domain CRO pointer</div><div class="lbadge" id="l2b">Pending</div></div>
-        <div class="ldetail" id="l2d"><div class="ldetail-inner">survived: <span>recompression, resize, format conversion</span> · cro_id: <span>recovered from watermark payload</span></div></div>
-      </div>
-      <div class="layer" id="l3">
-        <div class="lhdr"><div class="lnum">LAYER 3</div><div class="lname">Neural Fingerprint · OSCAR-Net passive content ID</div><div class="lbadge" id="l3b">Pending</div></div>
-        <div class="ldetail" id="l3d"><div class="ldetail-inner">resolves_even_if: <span>manifest stripped AND watermark scrubbed</span> · last_defense: <span>adversarial attack surface closed</span></div></div>
-      </div>
-    </div>
-    <div class="scene">
-      <div class="scene-hdr">
-        <div><div class="scene-lbl">IPS Query · Layer 2 Resolution Path</div><div class="scene-title">Watermark resolved CRO — scope confirmed — payment triggered</div></div>
-        <div class="scene-status" id="commerce-lbl">Waiting...</div>
-      </div>
-      <div class="pipeline">
-        <div class="pipe-row" id="com-r0">
-          <div class="pn">Watermark<br>Reader<small>CRO ID extracted</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn">IPS Query<small>Live</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn g">AUTHORIZED<small>Scope match</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn b">Verification<br>Receipt<small>Signed</small></div>
-        </div>
-        <div class="pipe-row" id="com-r1">
-          <div class="pn b">Receipt<br>Logged<small>Audit packet</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn p">Payment<br>Trigger<small>Scope match → pay</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn g">Creator<br>Account<small>Direct · no intermediary</small></div>
-          <div class="arr lit">→</div>
-          <div class="pn">Union<br>Audit Log<small>SAG-AFTRA</small></div>
-        </div>
-      </div>
-      <div class="ips-resp" id="commerce-ips">
-        <div class="resp-label">IPS Response — Live</div>
-        <div class="rrow"><span class="rkey">status</span><span class="rval g">AUTHORIZED</span></div>
-        <div class="rrow"><span class="rkey">use_type_match</span><span class="rval g">true — ai_generated_video confirmed</span></div>
-        <div class="rrow"><span class="rkey">rate_confirmed</span><span class="rval g">true — $850/day SAG-AFTRA floor</span></div>
-        <div class="rrow"><span class="rkey">resolution_path</span><span class="rval a">Layer 2 — TrustMark watermark</span></div>
-        <div class="rrow"><span class="rkey">integrity_verified</span><span class="rval g">true</span></div>
-        <div class="rrow"><span class="rkey">checked_at</span><span class="rval" id="com-ts">—</span></div>
-      </div>
-    </div>
-    <div class="payment" id="com-payment">
-      <div class="pay-lbl">Payment Triggered</div>
-      <div class="pay-amt">$850</div>
-      <div class="pay-sub">Direct to creator · No intermediary · No claim filed</div>
-      <div class="pay-rows">
-        <div class="prow"><span>Performer</span><span>Justin Hofstad · SAG-AFTRA:11597294</span></div>
-        <div class="prow"><span>Use confirmed</span><span>AI-generated video · within scope</span></div>
-        <div class="prow"><span>Resolution path</span><span>Layer 2 — watermark survived stripping</span></div>
-        <div class="prow"><span>Union record</span><span>SAG-AFTRA AI Protections Agreement (2023)</span></div>
-        <div class="prow"><span>Triggered at</span><span id="com-pay-ts">—</span></div>
-      </div>
-    </div>
-    <div class="audit" id="commerce-audit">
-      <div class="audit-label">Audit Packet — Union Compliance Record</div>
-      <div class="aline">event_type: <span>IPS_AUTHORIZED_USE + PAYMENT_TRIGGERED</span></div>
-      <div class="aline">resolution_path: <span class="hi">LAYER_2_TRUSTMARK_WATERMARK</span></div>
-      <div class="aline">manifest_status: <span>STRIPPED — adversarial removal detected</span></div>
-      <div class="aline">rate_applied: <span>$850.00 · SAG-AFTRA New Media floor</span></div>
-      <div class="aline">payment_status: <span class="hi">TRIGGERED — direct creator deposit</span></div>
-      <div class="aline">timestamp: <span class="hi" id="com-audit-ts">—</span></div>
-      <div class="aline">legally_admissible: <span>true — signed IPS response</span></div>
-    </div>
-    <a class="reset" onclick="resetCommerce()">↺ Reset</a>
-  </div>
-
-</div>
+  <p class="footer-legal">© 2025 Digital Double Technologies, Inc. Provisional patent filed (Application 63/997,237). All rights reserved.</p>
+</footer>
 
 <script>
-const API = 'https://ddt-core-production.up.railway.app';
-const CRO = '0bd66ac7-55c9-4e04-9e8d-f2cb71460b0c';
-function delay(ms){return new Promise(r=>setTimeout(r,ms));}
-async function liveIPS(){
-  try{const r=await fetch(`${API}/v1/ips/permission/${CRO}`);const d=await r.json();return d.checked_at||new Date().toISOString();}
-  catch(e){return new Date().toISOString();}
-}
+  // Theme toggle
+  const toggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  let dark = false;
+  toggle.addEventListener('click', () => {
+    dark = !dark;
+    html.setAttribute('data-theme', dark ? 'dark' : 'light');
+    toggle.textContent = dark ? 'Light mode' : 'Dark mode';
+  });
 
-function switchTab(id,el){
-  document.querySelectorAll('.scenario').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('sc-'+id).classList.add('active');
-  el.classList.add('active');
-}
+  // IPS live check
+  async function checkIPS() {
+    const dot = document.getElementById('ipsDot');
+    const state = document.getElementById('ipsState');
+    try {
+      const res = await fetch('https://ddt-core-production.up.railway.app/v1/ips/permission/0bd66ac7-55c9-4e04-9e8d-f2cb71460b0c');
+      const data = await res.json();
+      const s = (data.state || data.permission_state || 'UNKNOWN').toUpperCase();
+      const classMap = {
+        'AUTHORIZED': 'authorized', 'REVOKED': 'error',
+        'SUSPENDED': 'error', 'FLAGGED': 'error', 'OUT_OF_SCOPE': 'error'
+      };
+      const dotMap = {
+        'AUTHORIZED': '', 'REVOKED': 'error',
+        'SUSPENDED': 'error', 'FLAGGED': 'error'
+      };
+      dot.className = 'ips-dot ' + (dotMap[s] || '');
+      state.className = 'ips-state ' + (classMap[s] || 'authorized');
+      state.textContent = s.replace(/_/g, ' ');
+    } catch(e) {
+      dot.className = 'ips-dot';
+      state.className = 'ips-state authorized';
+      state.textContent = 'AUTHORIZED';
+    }
+  }
+  checkIPS();
 
-// Dots
-function setDots(id,idx,total){
-  const c=document.getElementById(id);if(!c)return;
-  c.querySelectorAll('.dot').forEach((d,i)=>{d.classList.remove('active','done');if(i<idx)d.classList.add('done');if(i===idx)d.classList.add('active');});
-}
-
-// ── AI ──
-async function runAI(){
-  const btn=document.getElementById('btn-ai');btn.disabled=true;btn.classList.add('running');btn.textContent='⟳ Running...';
-  ['ai-r0','ai-r1'].forEach(id=>{const e=document.getElementById(id);if(e){e.classList.remove('vis');e.style.opacity='0';}});
-  setDots('ai-dots',0,5);
-  document.getElementById('ai-lbl').textContent='Parsing C2PA manifest...';
-  await delay(600);document.getElementById('ai-r0').classList.add('vis');setDots('ai-dots',1,5);
-  await delay(900);document.getElementById('ai-lbl').textContent='Extracting ddt.cro_binding...';setDots('ai-dots',2,5);
-  await delay(700);document.getElementById('ai-lbl').textContent='Querying IPS endpoint...';
-  document.getElementById('ai-r1').classList.add('vis');setDots('ai-dots',3,5);
-  const ts=await liveIPS();
-  document.getElementById('ai-ts').textContent=ts;document.getElementById('ai-audit-ts').textContent=ts;
-  document.getElementById('ai-ips').style.display='block';setDots('ai-dots',4,5);
-  await delay(400);document.getElementById('ai-banner').classList.add('show');
-  await delay(300);document.getElementById('ai-audit').classList.add('show');
-  document.getElementById('ai-lbl').textContent='Complete — blocked';btn.textContent='✓ Complete';btn.classList.remove('running');
-}
-function resetAI(){
-  const btn=document.getElementById('btn-ai');btn.disabled=false;btn.classList.remove('running');btn.textContent='▶ Run — AI Ingestion Attempt';
-  document.getElementById('ai-lbl').textContent='Waiting...';
-  document.getElementById('ai-ips').style.display='none';
-  ['ai-banner','ai-audit'].forEach(id=>document.getElementById(id).classList.remove('show'));
-  ['ai-r0','ai-r1'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.remove('vis');});
-  setDots('ai-dots',0,5);
-}
-
-// ── WEB ──
-async function runWeb(){
-  const btn=document.getElementById('btn-web');btn.disabled=true;btn.classList.add('running');btn.textContent='⟳ Scanning...';
-  ['web-r0','web-r1'].forEach(id=>{const e=document.getElementById(id);if(e){e.classList.remove('vis');e.style.opacity='0';}});
-  setDots('web-dots',0,4);
-  document.getElementById('web-lbl').textContent='Crawling page...';
-  await delay(700);document.getElementById('web-r0').classList.add('vis');setDots('web-dots',1,4);
-  await delay(900);document.getElementById('web-lbl').textContent='Reading C2PA manifest...';setDots('web-dots',2,4);
-  await delay(700);document.getElementById('web-lbl').textContent='Querying IPS...';
-  document.getElementById('web-r1').classList.add('vis');
-  const ts=await liveIPS();
-  document.getElementById('web-ts').textContent=ts;document.getElementById('web-audit-ts').textContent=ts;
-  document.getElementById('web-ips').style.display='block';setDots('web-dots',3,4);
-  await delay(400);document.getElementById('web-banner').classList.add('show');
-  await delay(300);document.getElementById('web-audit').classList.add('show');
-  document.getElementById('web-lbl').textContent='Complete — unauthorized use detected';btn.textContent='✓ Complete';btn.classList.remove('running');
-}
-function resetWeb(){
-  const btn=document.getElementById('btn-web');btn.disabled=false;btn.classList.remove('running');btn.textContent='▶ Run — Webpage Content Scanner';
-  document.getElementById('web-lbl').textContent='Waiting...';
-  document.getElementById('web-ips').style.display='none';
-  ['web-banner','web-audit'].forEach(id=>document.getElementById(id).classList.remove('show'));
-  ['web-r0','web-r1'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.remove('vis');});
-  setDots('web-dots',0,4);
-}
-
-// ── COMMERCE ──
-function setLayer(n,state,badge){
-  const l=document.getElementById('l'+n);const b=document.getElementById('l'+n+'b');const d=document.getElementById('l'+n+'d');
-  if(!l||!b)return;
-  l.className='layer '+(state||'');
-  b.className='lbadge '+(state==='stripped'?'r':state==='survived'||state==='confirmed'?'g':'');
-  b.textContent=badge||'Pending';
-  if(d&&(state==='stripped'||state==='survived'||state==='confirmed'))d.classList.add('open');
-}
-async function runCommerce(){
-  const btn=document.getElementById('btn-commerce');btn.disabled=true;btn.classList.add('running');btn.textContent='⟳ Running...';
-  ['com-r0','com-r1'].forEach(id=>{const e=document.getElementById(id);if(e){e.classList.remove('vis');e.style.opacity='0';}});
-  [1,2,3].forEach(n=>setLayer(n,'','Pending'));
-  setDots('commerce-dots',0,6);
-  document.getElementById('commerce-lbl').textContent='Layer 1: Reading C2PA manifest...';
-  await delay(700);setLayer(1,'stripped','STRIPPED');setDots('commerce-dots',1,6);
-  await delay(900);document.getElementById('commerce-lbl').textContent='Layer 2: TrustMark watermark...';
-  setLayer(2,'survived','SURVIVED');setDots('commerce-dots',2,6);
-  await delay(700);document.getElementById('commerce-lbl').textContent='Layer 3: Neural fingerprint...';
-  setLayer(3,'confirmed','CONFIRMED');setDots('commerce-dots',3,6);
-  await delay(600);document.getElementById('commerce-lbl').textContent='Querying IPS endpoint...';
-  document.getElementById('com-r0').classList.add('vis');setDots('commerce-dots',4,6);
-  const ts=await liveIPS();
-  document.getElementById('com-ts').textContent=ts;
-  document.getElementById('com-pay-ts').textContent=ts;
-  document.getElementById('com-audit-ts').textContent=ts;
-  document.getElementById('commerce-ips').style.display='block';
-  await delay(500);document.getElementById('com-r1').classList.add('vis');setDots('commerce-dots',5,6);
-  await delay(500);document.getElementById('com-payment').classList.add('show');
-  await delay(300);document.getElementById('commerce-audit').classList.add('show');
-  document.getElementById('commerce-lbl').textContent='Complete — creator paid';btn.textContent='✓ Complete';btn.classList.remove('running');
-}
-function resetCommerce(){
-  const btn=document.getElementById('btn-commerce');btn.disabled=false;btn.classList.remove('running');btn.textContent='▶ Run — Stripping Attack + Compensation Pathway';
-  document.getElementById('commerce-lbl').textContent='Waiting...';
-  document.getElementById('commerce-ips').style.display='none';
-  ['com-payment','commerce-audit'].forEach(id=>document.getElementById(id).classList.remove('show'));
-  ['com-r0','com-r1'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.remove('vis');});
-  [1,2,3].forEach(n=>setLayer(n,'','Pending'));
-  setDots('commerce-dots',0,6);
-}
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
-
-<div style="max-width:860px;margin:0 auto;padding:0 24px 40px">
-  <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.2em;color:#3a3835;text-transform:uppercase;margin-bottom:12px;padding-top:32px;border-top:1px solid #1e1e1e">Live Visual Demonstrations</div>
-<!-- DDT Visual Scenes Component — paste into both demo packets -->
-<style>
-.vscene-wrap{background:#0a0a0a;border-radius:8px;padding:18px;font-family:'JetBrains Mono',monospace;margin-bottom:20px}
-.vscene-title{font-size:8px;letter-spacing:0.2em;color:#555;text-transform:uppercase;text-align:center;margin-bottom:12px}
-.vstabs{display:flex;gap:3px;margin-bottom:14px}
-.vstab{flex:1;background:none;border:1px solid #2a2a2a;color:#555;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;text-transform:uppercase;padding:7px;cursor:pointer;border-radius:2px;transition:all 0.2s}
-.vstab.active{background:#1a1a1a;border-color:#3a3a3a;color:#e8d5a3}
-.vscene{display:none}.vscene.active{display:block}
-.vbrowser{background:#1a1a1a;border-radius:5px;overflow:hidden;border:1px solid #2a2a2a}
-.vbbar{background:#222;padding:7px 11px;display:flex;align-items:center;gap:7px;border-bottom:1px solid #2a2a2a}
-.vbdots{display:flex;gap:4px}
-.vbd{width:8px;height:8px;border-radius:50%}
-.vbd-r{background:#c84f4f}.vbd-y{background:#c8963a}.vbd-g{background:#5ab888}
-.vubar{flex:1;background:#181818;border:1px solid #222;border-radius:2px;padding:4px 7px;font-size:9px;color:#555;display:flex;align-items:center;gap:4px}
-.vulock{color:#5ab888;font-size:8px}
-.vext{background:#222;border:1px solid #2a2a2a;border-radius:2px;padding:3px 6px;display:flex;align-items:center;gap:3px}
-.vextdot{width:4px;height:4px;border-radius:50%;background:#5ab888;animation:vep 2s ease-in-out infinite}
-@keyframes vep{0%,100%{opacity:1}50%{opacity:0.3}}
-.vextlbl{font-size:7px;color:#666}
-.vwp{padding:14px;background:#f4f2ec}
-.vwpnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #e0ddd5}
-.vwplogo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#1a1a1a}
-.vwplinks{display:flex;gap:10px}
-.vwplink{font-size:8px;color:#888}
-.vhero{display:grid;grid-template-columns:1fr 130px;gap:12px;align-items:start}
-.vhead{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:#1a1a1a;margin-bottom:4px;line-height:1.3}
-.vbody{font-size:8px;color:#666;line-height:1.6;margin-bottom:6px}
-.vcta{background:#1a1a1a;color:#f4f2ec;font-size:7px;padding:4px 8px;border-radius:2px;display:inline-block;letter-spacing:0.06em}
-.vimgwrap{position:relative;border-radius:3px;overflow:hidden;height:100px;background:#c8b8a0;flex-shrink:0}
-.vimgface{width:100%;height:100%;background:linear-gradient(160deg,#c4b49a 0%,#9a8068 40%,#c4b49a 100%);display:flex;align-items:center;justify-content:center;font-size:7px;color:rgba(255,255,255,0.4);letter-spacing:0.1em;transition:filter 0.5s ease}
-.vimgface.blur{filter:blur(5px) brightness(0.7)}
-.vimgoverlay{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;opacity:0;transition:opacity 0.4s ease;border-radius:3px}
-.vimgoverlay.show{opacity:1}
-.vimgoverlay.vred{background:rgba(180,50,50,0.9)}
-.vimgoverlay.vamber{background:rgba(160,110,30,0.9)}
-.vimgoverlay.vgreen{background:rgba(40,130,90,0.9)}
-.vov-icon{font-size:14px;margin-bottom:3px;line-height:1}
-.vov-title{font-family:'Syne',sans-serif;font-size:9px;font-weight:800;color:white;margin-bottom:2px;text-align:center;line-height:1.2}
-.vov-sub{font-size:6px;color:rgba(255,255,255,0.8);text-align:center;line-height:1.4}
-.vov-badge{font-size:5px;color:rgba(255,255,255,0.6);margin-top:3px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.3);padding:1px 4px;border-radius:1px}
-.vipspop{position:absolute;top:4px;right:4px;background:#0f0f0f;border-radius:3px;padding:6px 8px;width:120px;opacity:0;transform:translateY(-2px);transition:all 0.3s;z-index:5}
-.vipspop.show{opacity:1;transform:none}
-.vipspop.vr{border:1px solid #c84f4f}
-.vipspop.va{border:1px solid #c8963a}
-.vipspop.vg{border:1px solid #5ab888}
-.vippop-hdr{display:flex;align-items:center;gap:3px;margin-bottom:3px}
-.vippop-dot{width:4px;height:4px;border-radius:50%}
-.vippop-dot.r{background:#c84f4f}.vippop-dot.a{background:#c8963a}.vippop-dot.g{background:#5ab888}
-.vippop-title{font-size:6px;color:#e8d5a3;letter-spacing:0.1em;text-transform:uppercase}
-.vippop-state{font-size:10px;font-family:'Syne',sans-serif;font-weight:800;margin-bottom:2px}
-.vippop-state.r{color:#c84f4f}.vippop-state.a{color:#c8963a}.vippop-state.g{color:#5ab888}
-.vippop-sub{font-size:6px;color:#555;line-height:1.4}
-.vdark{background:#0f0f0f;padding:12px}
-.vtline{font-size:8px;color:#555;line-height:2;opacity:0;transform:translateX(-3px);transition:all 0.3s}
-.vtline.vis{opacity:1;transform:none}
-.vtline .tp{color:#5ab888}.vtline .tr{color:#c84f4f}.vtline .ta{color:#c8963a}.vtline .tw{color:#888}
-.vlbar-row{background:#1a1a1a;border-radius:2px;padding:6px 8px;font-size:8px;margin-bottom:3px}
-.vlbar-top{display:flex;justify-content:space-between;margin-bottom:3px}
-.vlbar-lbl{color:#555}
-.vlbar-stat{font-size:7px}
-.vlbar-track{height:2px;background:#2a2a2a;border-radius:1px;overflow:hidden}
-.vlbar-fill{height:100%;width:0;border-radius:1px;transition:width 0.6s}
-.vsdots{display:flex;gap:4px;justify-content:center;margin:8px 0 5px}
-.vsd{width:5px;height:5px;border-radius:50%;background:#2a2a2a;transition:background 0.3s}
-.vsd.done{background:#5ab888}.vsd.active{background:#e8d5a3}
-.vcap{font-size:8px;color:#444;text-align:center;margin-bottom:8px;min-height:13px;letter-spacing:0.05em;transition:color 0.3s}
-.vcap.on{color:#777}
-.vnotifs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px;opacity:0;transform:translateY(4px);transition:all 0.4s}
-.vnotifs.show{opacity:1;transform:none}
-.vnotif{background:#141414;border:1px solid #1e1e1e;border-radius:3px;overflow:hidden}
-.vnhdr{padding:5px 8px;display:flex;align-items:center;gap:4px;border-bottom:1px solid #1a1a1a}
-.vnicon{width:16px;height:16px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0}
-.vnicon.em{background:#1a2a3a;color:#4a8fd4}
-.vnicon.sm{background:#1a2a1a;color:#5ab888}
-.vntitle{font-size:7px;color:#555;letter-spacing:0.05em}
-.vnbody{padding:6px 8px}
-.vnfrom{font-size:6px;color:#444;margin-bottom:2px}
-.vnsubj{font-size:7px;font-weight:500;margin-bottom:2px}
-.vnsubj.r{color:#c84f4f}.vnsubj.a{color:#c8963a}.vnsubj.g{color:#5ab888}
-.vnprev{font-size:6px;color:#444;line-height:1.5}
-.vactions{display:flex;gap:5px;margin-top:7px;opacity:0;transform:translateY(4px);transition:all 0.4s}
-.vactions.show{opacity:1;transform:none}
-.vabtn{flex:1;padding:6px;border-radius:2px;font-size:7px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;border:none;font-family:'JetBrains Mono',monospace;transition:background 0.2s}
-.vabtn.vrev{background:#c84f4f;color:white}
-.vabtn.vev{background:#141414;color:#5ab888;border:1px solid #1a4a1a}
-.vabtn.vflg{background:#141414;color:#c8963a;border:1px solid #4a3a1a}
-.vabtn.vok{background:#141414;color:#5ab888;border:1px solid #1a4a1a}
-.vplaybtn{width:100%;background:none;border:1px solid #2a2a2a;color:#555;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;padding:8px;cursor:pointer;border-radius:2px;margin-top:8px;transition:all 0.2s}
-.vplaybtn:hover{border-color:#e8d5a3;color:#e8d5a3}
-.vplaybtn:disabled{opacity:0.3;cursor:not-allowed}
-.vplaybtn.vrun{border-color:#c8963a;color:#c8963a}
-</style>
-
-<div class="vscene-wrap">
-  <div class="vscene-title">Live Visual Demonstrations · Press Play on Each Scenario</div>
-  <div class="vstabs">
-    <button class="vstab active" onclick="vswitchScene('vweb',this)">Webpage</button>
-    <button class="vstab" onclick="vswitchScene('vai',this)">AI Pipeline</button>
-    <button class="vstab" onclick="vswitchScene('vlayers',this)">3-Layer</button>
-  </div>
-
-  <!-- SCENE 1: WEBPAGE -->
-  <div class="vscene active" id="vsc-vweb">
-    <div class="vbrowser">
-      <div class="vbbar">
-        <div class="vbdots"><div class="vbd vbd-r"></div><div class="vbd vbd-y"></div><div class="vbd vbd-g"></div></div>
-        <div class="vubar"><span class="vulock">&#128274;</span><span>businesswebsite.com/about-us</span></div>
-        <div class="vext"><svg width="12" height="8" viewBox="0 0 120 75" fill="none"><path d="M8 22L8 5L25 5" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 5L112 5L112 22" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M8 53L8 70L25 70" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 70L112 70L112 53" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M4 37C4 37 24 14 60 14C96 14 116 37 116 37C116 37 96 60 60 60C24 60 4 37 4 37Z" stroke="#e8d5a3" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="60" cy="37" r="11" stroke="#e8d5a3" stroke-width="5" fill="none"/></svg><span class="vextlbl">DDT IPS</span><div class="vextdot"></div></div>
-      </div>
-      <div class="vwp">
-        <div class="vwpnav"><div class="vwplogo">Acme Creative</div><div class="vwplinks"><div class="vwplink">Work</div><div class="vwplink">About</div><div class="vwplink">Contact</div></div></div>
-        <div class="vhero">
-          <div><div class="vhead">Award-winning creative work</div><div class="vbody">We partner with brands to create compelling visual stories across every medium and industry.</div><div class="vcta">View our work</div></div>
-          <div class="vimgwrap">
-            <div class="vimgface" id="vw-img">PERFORMER PHOTO</div>
-            <div class="vimgoverlay vred" id="vw-ov"><div class="vov-icon">&#10005;</div><div class="vov-title">Consent not verified</div><div class="vov-sub">IPS: REVOKED<br>Creator consent withdrawn</div><div class="vov-badge">C2PA · DDT IPS</div></div>
-            <div class="vipspop vr" id="vw-pop"><div class="vippop-hdr"><div class="vippop-dot r"></div><div class="vippop-title">IPS Status</div></div><div class="vippop-state r">REVOKED</div><div class="vippop-sub">Creator withdrew consent.<br>Use not authorized.<br>Evidence generated.</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="vsdots"><div class="vsd active" id="vw0"></div><div class="vsd" id="vw1"></div><div class="vsd" id="vw2"></div><div class="vsd" id="vw3"></div><div class="vsd" id="vw4"></div></div>
-    <div class="vcap" id="vw-cap">Press play to run the scenario</div>
-    <div class="vnotifs" id="vw-notifs">
-      <div class="vnotif"><div class="vnhdr"><div class="vnicon em">&#9993;</div><div class="vntitle">Email · Creator</div></div><div class="vnbody"><div class="vnfrom">noreply@ddt-pro.com</div><div class="vnsubj r">Unauthorized use detected</div><div class="vnprev">Your content was found on businesswebsite.com without consent. IPS: REVOKED. Evidence packet ready.</div></div></div>
-      <div class="vnotif"><div class="vnhdr"><div class="vnicon sm">&#128241;</div><div class="vntitle">SMS · Creator</div></div><div class="vnbody"><div class="vnfrom">DDT Pro · Consent Alert</div><div class="vnsubj r">Unauthorized use found</div><div class="vnprev">businesswebsite.com used your content without consent. Open DDT to revoke and take action.</div></div></div>
-    </div>
-    <div class="vactions" id="vw-actions">
-      <button class="vabtn vrev">Revoke &#8594;</button>
-      <button class="vabtn vev">Evidence &#8594;</button>
-      <button class="vabtn vflg">Flag</button>
-    </div>
-    <button class="vplaybtn" id="vw-btn" onclick="vrunWeb()">&#9654; &nbsp; Play — Webpage scenario</button>
-  </div>
-
-  <!-- SCENE 2: AI PIPELINE -->
-  <div class="vscene" id="vsc-vai">
-    <div class="vbrowser">
-      <div class="vbbar">
-        <div class="vbdots"><div class="vbd vbd-r"></div><div class="vbd vbd-y"></div><div class="vbd vbd-g"></div></div>
-        <div class="vubar"><span class="vulock">&#128274;</span><span>ai-trainer.internal/ingest/queue</span></div>
-        <div class="vext"><svg width="12" height="8" viewBox="0 0 120 75" fill="none"><path d="M8 22L8 5L25 5" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 5L112 5L112 22" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M8 53L8 70L25 70" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 70L112 70L112 53" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M4 37C4 37 24 14 60 14C96 14 116 37 116 37C116 37 96 60 60 60C24 60 4 37 4 37Z" stroke="#e8d5a3" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="60" cy="37" r="11" stroke="#e8d5a3" stroke-width="5" fill="none"/></svg><span class="vextlbl">DDT IPS</span><div class="vextdot"></div></div>
-      </div>
-      <div class="vdark">
-        <div style="font-size:8px;color:#444;letter-spacing:0.1em;margin-bottom:8px;text-transform:uppercase">AI Training Pipeline · Ingestion Queue</div>
-        <div class="vhero" style="grid-template-columns:1fr 120px">
-          <div style="display:flex;flex-direction:column;gap:3px">
-            <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:2px;padding:5px 8px;display:flex;align-items:center;gap:6px;font-size:8px;color:#888"><span style="color:#5ab888">&#10003;</span>documentary_b-roll.mp4<span style="color:#5ab888;margin-left:auto;font-size:7px">CLEARED</span></div>
-            <div style="background:#1a1a1a;border:1px solid #c84f4f;border-radius:2px;padding:5px 8px;display:flex;align-items:center;gap:6px;font-size:8px;color:#888"><span style="color:#c84f4f">&#9632;</span>performer_shoot_S3E4.mp4<span style="color:#c84f4f;margin-left:auto;font-size:7px">BLOCKED</span></div>
-            <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:2px;padding:5px 8px;display:flex;align-items:center;gap:6px;font-size:8px;color:#555"><span>&#8943;</span>stock_footage.mp4<span style="margin-left:auto;font-size:7px">QUEUED</span></div>
-            <div style="margin-top:4px">
-              <div class="vtline" id="vat0"><span class="tw">&#9654;</span> Parsing C2PA manifest...</div>
-              <div class="vtline" id="vat1"><span class="tp">&#10003;</span> ddt.cro_binding found · cro_id: 0bd66ac7...</div>
-              <div class="vtline" id="vat2"><span class="tw">&#9654;</span> Querying IPS endpoint...</div>
-              <div class="vtline" id="vat3"><span class="tr">&#10005;</span> OUT_OF_SCOPE · ai_training excluded</div>
-              <div class="vtline" id="vat4"><span class="tr">&#9650;</span> INGESTION HALTED · audit packet generated</div>
-            </div>
-          </div>
-          <div class="vimgwrap" style="height:120px">
-            <div class="vimgface" id="vai-img" style="font-size:7px">VIDEO FRAME</div>
-            <div class="vimgoverlay vamber" id="vai-ov"><div class="vov-icon">&#9888;</div><div class="vov-title">Ingestion blocked</div><div class="vov-sub">IPS: OUT OF SCOPE<br>AI training prohibited</div><div class="vov-badge">C2PA · DDT IPS</div></div>
-            <div class="vipspop va" id="vai-pop"><div class="vippop-hdr"><div class="vippop-dot a"></div><div class="vippop-title">IPS Status</div></div><div class="vippop-state a">OUT OF SCOPE</div><div class="vippop-sub">AI training excluded.<br>Ingestion halted.<br>Audit packet ready.</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="vsdots"><div class="vsd active" id="va0"></div><div class="vsd" id="va1"></div><div class="vsd" id="va2"></div><div class="vsd" id="va3"></div><div class="vsd" id="va4"></div></div>
-    <div class="vcap" id="vai-cap">Press play to run the scenario</div>
-    <div class="vnotifs" id="vai-notifs">
-      <div class="vnotif"><div class="vnhdr"><div class="vnicon em">&#9993;</div><div class="vntitle">Email · Creator</div></div><div class="vnbody"><div class="vnfrom">noreply@ddt-pro.com</div><div class="vnsubj a">AI training attempt blocked</div><div class="vnprev">An AI pipeline attempted to ingest your content for training. Blocked. Audit packet generated.</div></div></div>
-      <div class="vnotif"><div class="vnhdr"><div class="vnicon sm">&#128241;</div><div class="vntitle">SMS · Creator</div></div><div class="vnbody"><div class="vnfrom">DDT Pro · Consent Alert</div><div class="vnsubj a">AI training blocked</div><div class="vnprev">Someone tried to use your content for AI training. Blocked and logged. Open DDT for evidence.</div></div></div>
-    </div>
-    <div class="vactions" id="vai-actions">
-      <button class="vabtn vrev">Legal action &#8594;</button>
-      <button class="vabtn vev">Audit packet &#8594;</button>
-      <button class="vabtn vflg">Set rate</button>
-    </div>
-    <button class="vplaybtn" id="vai-btn" onclick="vrunAI()">&#9654; &nbsp; Play — AI pipeline scenario</button>
-  </div>
-
-  <!-- SCENE 3: THREE LAYERS -->
-  <div class="vscene" id="vsc-vlayers">
-    <div class="vbrowser">
-      <div class="vbbar">
-        <div class="vbdots"><div class="vbd vbd-r"></div><div class="vbd vbd-y"></div><div class="vbd vbd-g"></div></div>
-        <div class="vubar"><span class="vulock">&#128274;</span><span>scrubber.tool/upload · metadata stripped</span></div>
-        <div class="vext"><svg width="12" height="8" viewBox="0 0 120 75" fill="none"><path d="M8 22L8 5L25 5" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 5L112 5L112 22" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M8 53L8 70L25 70" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M95 70L112 70L112 53" stroke="#e8d5a3" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M4 37C4 37 24 14 60 14C96 14 116 37 116 37C116 37 96 60 60 60C24 60 4 37 4 37Z" stroke="#e8d5a3" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="60" cy="37" r="11" stroke="#e8d5a3" stroke-width="5" fill="none"/></svg><span class="vextlbl">DDT IPS</span><div class="vextdot"></div></div>
-      </div>
-      <div class="vdark">
-        <div style="font-size:8px;color:#444;letter-spacing:0.1em;margin-bottom:8px;text-transform:uppercase">Metadata Scrubber · Output</div>
-        <div class="vhero" style="grid-template-columns:1fr 120px">
-          <div style="display:flex;flex-direction:column;gap:3px">
-            <div class="vlbar-row"><div class="vlbar-top"><span class="vlbar-lbl">Layer 1 · C2PA Manifest</span><span class="vlbar-stat" id="vl1s" style="color:#555">Pending</span></div><div class="vlbar-track"><div class="vlbar-fill" id="vl1b" style="background:#c84f4f"></div></div></div>
-            <div class="vlbar-row"><div class="vlbar-top"><span class="vlbar-lbl">Layer 2 · TrustMark Watermark</span><span class="vlbar-stat" id="vl2s" style="color:#555">Pending</span></div><div class="vlbar-track"><div class="vlbar-fill" id="vl2b" style="background:#c8963a"></div></div></div>
-            <div class="vlbar-row"><div class="vlbar-top"><span class="vlbar-lbl">Layer 3 · Neural Fingerprint</span><span class="vlbar-stat" id="vl3s" style="color:#555">Pending</span></div><div class="vlbar-track"><div class="vlbar-fill" id="vl3b" style="background:#5ab888"></div></div></div>
-            <div class="vlbar-row"><div class="vlbar-top"><span class="vlbar-lbl">IPS Query · CRO Resolved</span><span class="vlbar-stat" id="vl4s" style="color:#555">Pending</span></div></div>
-          </div>
-          <div class="vimgwrap" style="height:120px">
-            <div class="vimgface" id="vl-img" style="font-size:7px">STRIPPED IMAGE</div>
-            <div class="vimgoverlay vgreen" id="vl-ov"><div class="vov-icon">&#10003;</div><div class="vov-title">CRO recovered</div><div class="vov-sub">Layer 2 resolved<br>IPS: AUTHORIZED</div><div class="vov-badge">C2PA · DDT IPS</div></div>
-            <div class="vipspop vg" id="vl-pop"><div class="vippop-hdr"><div class="vippop-dot g"></div><div class="vippop-title">IPS Status</div></div><div class="vippop-state g">AUTHORIZED</div><div class="vippop-sub">Watermark resolved CRO.<br>Consent confirmed.<br>Terms active.</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="vsdots"><div class="vsd active" id="vl0"></div><div class="vsd" id="vl1"></div><div class="vsd" id="vl2"></div><div class="vsd" id="vl3"></div><div class="vsd" id="vl4"></div></div>
-    <div class="vcap" id="vl-cap">Press play — watch your CRO survive a stripping attack</div>
-    <div class="vnotifs" id="vl-notifs">
-      <div class="vnotif"><div class="vnhdr"><div class="vnicon em">&#9993;</div><div class="vntitle">Email · Creator</div></div><div class="vnbody"><div class="vnfrom">noreply@ddt-pro.com</div><div class="vnsubj g">Stripping attempt — CRO survived</div><div class="vnprev">Metadata strip detected. Layer 2 watermark recovered your CRO. Attempt logged. Your consent is intact.</div></div></div>
-      <div class="vnotif"><div class="vnhdr"><div class="vnicon sm">&#128241;</div><div class="vntitle">SMS · Creator</div></div><div class="vnbody"><div class="vnfrom">DDT Pro · Security Alert</div><div class="vnsubj g">Your CRO survived</div><div class="vnprev">Metadata strip attempted. Watermark held. Your consent record is active. No action needed.</div></div></div>
-    </div>
-    <div class="vactions" id="vl-actions">
-      <button class="vabtn vok">How it works &#8594;</button>
-      <button class="vabtn vev">Fingerprint &#8594;</button>
-      <button class="vabtn vflg">Partner stack</button>
-    </div>
-    <button class="vplaybtn" id="vl-btn" onclick="vrunLayers()">&#9654; &nbsp; Play — 3-layer protection</button>
-  </div>
-</div>
-
-
-
-</div>
 </body>
 </html>

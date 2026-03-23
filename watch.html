@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DDT — Watch the Scan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; background: #0A0A09; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+/* ──────────────────────────────────────────
+   DDT HEADER — always on top
+────────────────────────────────────────── */
+.ddt-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 600;
+  background: rgba(10,10,9,.95); backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.ddt-header-top {
+  padding: 13px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 500; color: rgba(255,255,255,.9); text-decoration: none; letter-spacing: .02em; }
+.logo span { color: #7B9E87; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.btn-play {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #7B9E87; color: white; border: none;
+  padding: 8px 20px; border-radius: 100px;
+  font-size: 12px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: all .2s; letter-spacing: .02em;
+}
+.btn-play:hover { background: #4A9B6F; transform: translateY(-1px); }
+.btn-replay {
+  display: none; align-items: center; gap: 7px;
+  background: transparent; color: rgba(255,255,255,.5);
+  border: 1px solid rgba(255,255,255,.15);
+  padding: 7px 18px; border-radius: 100px;
+  font-size: 12px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: all .2s;
+}
+.btn-replay:hover { border-color: #7B9E87; color: #7B9E87; }
+.btn-replay.show { display: inline-flex; }
+.back-link { font-size: 12px; color: rgba(255,255,255,.35); text-decoration: none; transition: color .2s; }
+.back-link:hover { color: #7B9E87; }
+
+/* ── URL BAR — below header ── */
+.url-bar-row {
+  padding: 8px 28px 10px;
+  border-top: 1px solid rgba(255,255,255,.05);
+  display: flex; align-items: center; gap: 10px;
+}
+.url-pill {
+  flex: 1; max-width: 560px; margin: 0 auto;
+  background: #1C1C1A; border-radius: 20px;
+  padding: 6px 16px 6px 12px;
+  display: flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(255,255,255,.08);
+  transition: border-color .4s;
+}
+.url-pill.loading { border-color: rgba(123,198,135,.35); }
+.url-pill.revoked { border-color: rgba(255,95,87,.35); }
+.url-lock { font-size: 10px; transition: color .4s; color: rgba(255,255,255,.25); }
+.url-lock.ok { color: #7EE787; }
+.url-lock.bad { color: #FF5F57; }
+.url-text { font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(255,255,255,.8); min-width: 1px; flex: 1; }
+.url-cursor { display: inline-block; width: 1.5px; height: 12px; background: rgba(255,255,255,.7); animation: blink .75s infinite; vertical-align: middle; margin-left: 1px; }
+/* Loading bar under entire header */
+.loading-bar-wrap { height: 2px; background: transparent; position: relative; overflow: hidden; }
+.loading-bar-fill { position: absolute; top: 0; left: 0; bottom: 0; background: linear-gradient(90deg, #7B9E87, #B8D4C0, #7B9E87); background-size: 200% 100%; width: 0%; transition: width .35s ease; box-shadow: 0 0 8px rgba(123,198,135,.5); animation: shimmer 1.5s infinite; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+/* IPS status chip in url bar */
+.ips-chip {
+  font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+  letter-spacing: .07em; padding: 3px 10px; border-radius: 100px;
+  border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.3);
+  white-space: nowrap; transition: all .4s;
+}
+.ips-chip.scanning { border-color: rgba(123,198,135,.4); color: #7EE787; animation: chipPulse 1.2s infinite; }
+.ips-chip.revoked { border-color: rgba(255,95,87,.4); color: #FF7B72; animation: none; }
+@keyframes chipPulse { 0%,100%{opacity:1} 50%{opacity:.55} }
+
+/* header total height = ddt-header-top + url-bar + loading-bar ≈ 88px */
+.header-spacer { height: 88px; }
+
+/* ──────────────────────────────────────────
+   MAIN SCROLL AREA
+────────────────────────────────────────── */
+.main { padding: 0 0 40px; }
+
+/* ──────────────────────────────────────────
+   BROWSER SHELL
+────────────────────────────────────────── */
+.browser-shell {
+  max-width: 960px; margin: 24px auto 0;
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.06);
+  position: relative;
+}
+
+/* Chrome bar (minimal — tabs + nav only, no address) */
+.chrome-top {
+  background: #2C2C2C; padding: 10px 14px 0;
+  display: flex; flex-direction: column; gap: 7px;
+}
+.chrome-traffic { display: flex; align-items: center; gap: 7px; }
+.cd { width: 11px; height: 11px; border-radius: 50%; }
+.cd-r{background:#FF5F57}.cd-y{background:#FFBD2E}.cd-g{background:#28C840}
+.chrome-tabs { display: flex; align-items: flex-end; gap: 2px; padding-left: 6px; }
+.ctab { background: #3C3C3C; border-radius: 6px 6px 0 0; padding: 5px 14px; font-size: 11px; color: rgba(255,255,255,.35); min-width: 110px; }
+.ctab.active { background: #1A1A18; color: rgba(255,255,255,.8); }
+.chrome-inner { background: #1A1A18; padding: 7px 12px; display: flex; align-items: center; gap: 8px; }
+.chrome-nav-btns { display: flex; gap: 3px; }
+.nav-btn { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: rgba(255,255,255,.25); background: rgba(255,255,255,.04); cursor: default; }
+.nav-btn.on { color: rgba(255,255,255,.6); }
+.chrome-addr-mini { flex: 1; background: #2A2A28; border-radius: 12px; padding: 3px 12px; font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,.4); max-width: 360px; margin: 0 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ──────────────────────────────────────────
+   PAGE CONTENT
+────────────────────────────────────────── */
+.page-wrap { background: white; position: relative; min-height: 480px; overflow: hidden; }
+
+/* Page skeleton — the actual DDT-Pro page */
+.page-skeleton { opacity: 0; transition: opacity .5s; }
+.page-skeleton.show { opacity: 1; }
+
+/* Site nav */
+.site-nav { background: #0F1611; padding: 13px 36px; display: flex; align-items: center; justify-content: space-between; }
+.site-logo-text { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: white; font-weight: 400; }
+.site-logo-text span { color: #7B9E87; }
+.site-links { display: flex; gap: 22px; }
+.site-links a { font-size: 12px; color: rgba(255,255,255,.45); text-decoration: none; }
+.site-links a.on { color: #7B9E87; }
+
+/* Hero band */
+.site-hero { background: linear-gradient(135deg, #0F1611 0%, #1A2E1F 65%, #162218 100%); padding: 40px 36px 36px; text-align: center; }
+.sh-tag { font-size: 10px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: #7B9E87; margin-bottom: 10px; }
+.sh-h { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: white; line-height: 1.15; margin-bottom: 8px; }
+.sh-h em { font-style: italic; color: #B8D4C0; }
+.sh-p { font-size: 12px; color: rgba(255,255,255,.45); max-width: 440px; margin: 0 auto; line-height: 1.7; }
+
+/* About section */
+.about-sec { padding: 36px 36px 28px; background: white; }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+.about-copy h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; color: #1A1915; margin-bottom: 10px; }
+.about-copy p { font-size: 12px; color: #7A7870; line-height: 1.75; margin-bottom: 8px; }
+.founder-tag { display: inline-block; background: #E8F2EB; color: #7B9E87; font-size: 9px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; margin-bottom: 12px; }
+.about-photo-col { position: relative; }
+.about-photo {
+  border-radius: 10px; overflow: hidden;
+  background: linear-gradient(135deg, #C8D8CE 0%, #8BB89A 100%);
+  height: 260px; display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.photo-sil { font-size: 90px; opacity: .3; }
+.photo-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(15,22,17,.85); backdrop-filter: blur(6px);
+  padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;
+}
+.pc-name { font-size: 13px; font-weight: 500; color: white; }
+.pc-role { font-size: 11px; color: rgba(255,255,255,.5); }
+.pc-cro { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(123,198,135,.7); opacity: 0; transition: opacity .4s; }
+.pc-cro.show { opacity: 1; }
+
+/* ──────────────────────────────────────────
+   FULL-PAGE MATRIX SCAN OVERLAY
+────────────────────────────────────────── */
+#matrixFull {
+  position: absolute; inset: 0; z-index: 80;
+  background: rgba(5,12,8,.97);
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s;
+  overflow: hidden;
+}
+#matrixFull.active { opacity: 1; pointer-events: auto; }
+#matrixCanvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* IPS scan badge — centered in the matrix */
+.ips-scan-badge {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 90;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: 0; transition: opacity .5s;
+}
+.ips-scan-badge.show { opacity: 1; }
+.ips-core-ring {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(10,14,11,.95);
+  border: 2px solid #7EE787;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  box-shadow: 0 0 28px rgba(123,198,135,.35), inset 0 0 20px rgba(123,198,135,.05);
+  position: relative; z-index: 2;
+  transition: border-color .4s, box-shadow .4s;
+}
+.ips-core-ring.flagged { border-color: #FFD700; box-shadow: 0 0 28px rgba(255,215,0,.35); }
+.ips-core-ring.revoked { border-color: #FF5F57; box-shadow: 0 0 28px rgba(255,95,87,.4); }
+.icr-label { font-size: 13px; font-weight: 700; letter-spacing: .1em; color: #7EE787; transition: color .4s; }
+.ips-core-ring.flagged .icr-label { color: #FFD700; }
+.ips-core-ring.revoked .icr-label { color: #FF7B72; }
+.icr-sub { font-family: 'DM Mono', monospace; font-size: 7px; color: rgba(255,255,255,.4); letter-spacing: .08em; transition: color .4s; }
+.ips-core-ring.revoked .icr-sub { color: #FF7B72; }
+/* pulse rings around the core */
+.pr { position: absolute; border-radius: 50%; border: 1.5px solid rgba(123,198,135,.45); top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0); pointer-events: none; transition: border-color .4s; }
+
+/* scan status text */
+.scan-status-text {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: rgba(255,255,255,.65); letter-spacing: .06em; text-align: center;
+  min-height: 16px; transition: color .3s;
+}
+.scan-status-text.bad { color: #FF7B72; }
+
+/* CRO flag line */
+.cro-flag {
+  position: absolute; left: 0; right: 0; z-index: 91;
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 16px;
+  opacity: 0; transform: translateX(-16px);
+  transition: opacity .45s, transform .45s;
+  pointer-events: none;
+}
+.cro-flag.show { opacity: 1; transform: translateX(0); }
+.cro-flag-bar { width: 3px; height: 20px; background: #FF5F57; border-radius: 2px; box-shadow: 0 0 10px rgba(255,95,87,.7); flex-shrink: 0; }
+.cro-flag-badge { background: rgba(192,57,43,.9); color: white; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600; padding: 4px 10px; border-radius: 4px; letter-spacing: .06em; white-space: nowrap; box-shadow: 0 0 14px rgba(192,57,43,.4); }
+.cro-flag-code { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,120,100,.8); white-space: nowrap; }
+
+/* ── CRO TARGETING VISUAL ── */
+/* A CRO ID string that coalesces out of the matrix and locks onto the IPS core */
+.cro-target-wrap {
+  position: absolute; inset: 0; z-index: 88;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.cro-target-bubble {
+  position: absolute;
+  font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600;
+  color: #FFD700; letter-spacing: .08em; white-space: nowrap;
+  text-shadow: 0 0 12px rgba(255,215,0,.6), 0 0 4px rgba(255,215,0,.8);
+  opacity: 0;
+  transition: opacity .5s, transform .8s cubic-bezier(.4,0,.2,1), font-size .8s;
+}
+.cro-target-bubble.emerge {
+  opacity: 1;
+}
+.cro-target-bubble.lock {
+  opacity: 0;
+  transform: scale(0.1) !important;
+  transition: opacity .4s, transform .6s cubic-bezier(.4,0,.2,1);
+}
+/* Crosshair reticle that appears around the ID before it locks in */
+.reticle {
+  position: absolute; width: 160px; height: 60px;
+  border: 1px solid rgba(255,215,0,.5);
+  border-radius: 4px;
+  box-shadow: 0 0 14px rgba(255,215,0,.15), inset 0 0 14px rgba(255,215,0,.05);
+  opacity: 0; transition: opacity .4s;
+  pointer-events: none;
+}
+.reticle::before, .reticle::after {
+  content: ''; position: absolute;
+  background: #FFD700; opacity: .6;
+}
+.reticle::before { width: 8px; height: 1px; top: 50%; left: -8px; transform: translateY(-50%); }
+.reticle::after  { width: 1px; height: 8px; top: -8px; left: 50%; transform: translateX(-50%); }
+.reticle.show { opacity: 1; }
+/* Searching label above IPS badge */
+.search-label {
+  position: absolute; top: calc(50% - 80px); left: 50%; transform: translateX(-50%);
+  font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,.45);
+  letter-spacing: .12em; text-transform: uppercase; white-space: nowrap;
+  opacity: 0; transition: opacity .4s;
+}
+.search-label.show { opacity: 1; }
+.unverified-wrap {
+  position: absolute; inset: 0; border-radius: 10px;
+  backdrop-filter: blur(0px); background: rgba(192,57,43,0);
+  transition: backdrop-filter 1.4s ease, background 1.4s ease;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10;
+}
+.unverified-wrap.active { backdrop-filter: blur(18px); background: rgba(192,57,43,.18); }
+.unverified-card {
+  background: rgba(192,57,43,.96); color: white; text-align: center;
+  padding: 16px 20px; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  opacity: 0; transform: scale(.7);
+  transition: opacity .5s .4s, transform .5s .4s;
+  max-width: 220px;
+}
+.unverified-card.show { opacity: 1; transform: scale(1); }
+.uv-ico { font-size: 26px; margin-bottom: 6px; }
+.uv-ttl { font-size: 12px; font-weight: 700; letter-spacing: .05em; margin-bottom: 6px; }
+.uv-det { font-family: 'DM Mono', monospace; font-size: 10px; opacity: .88; line-height: 1.6; }
+
+/* ──────────────────────────────────────────
+   ACTION PANEL — appears after notifications
+────────────────────────────────────────── */
+.action-panel {
+  max-width: 960px; margin: 16px auto 0;
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 0 0 32px;
+}
+.ap-card {
+  border-radius: 12px; overflow: hidden;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity .5s, transform .5s;
+  box-shadow: 0 4px 20px rgba(0,0,0,.35);
+}
+.ap-card.show { opacity: 1; transform: translateY(0); }
+
+/* Notification cards */
+.notif-card { background: #1C1C1A; border: 1px solid rgba(255,255,255,.08); padding: 14px 18px; display: flex; gap: 12px; align-items: flex-start; border-radius: 12px; }
+.nc-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.nc-email { background: rgba(255,243,224,.12); }
+.nc-sms { background: rgba(232,245,233,.1); }
+.nc-title { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.9); margin-bottom: 3px; }
+.nc-body { font-size: 11px; color: rgba(255,255,255,.45); line-height: 1.55; }
+.nc-time { font-size: 10px; color: rgba(255,255,255,.25); margin-top: 4px; font-family: 'DM Mono', monospace; }
+
+/* Manifest updated card */
+.manifest-card {
+  background: #141410; border: 1px solid rgba(142,68,173,.3);
+  border-radius: 12px; padding: 16px 18px;
+}
+.mc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.mc-badge { background: rgba(142,68,173,.15); color: #C39BD3; font-size: 9px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; border: 1px solid rgba(142,68,173,.25); }
+.mc-title { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.8); }
+.manifest-event { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); border-radius: 8px; padding: 11px 14px; }
+.me-type { font-family: 'DM Mono', monospace; font-size: 10px; color: #C39BD3; font-weight: 600; margin-bottom: 3px; }
+.me-detail { font-size: 11px; color: rgba(255,255,255,.4); line-height: 1.6; }
+.me-detail strong { color: rgba(255,255,255,.7); }
+
+/* Creator choices card */
+.choices-card {
+  background: #141412; border: 1px solid rgba(123,198,135,.2);
+  border-radius: 12px; padding: 18px;
+}
+.cc-header { margin-bottom: 14px; }
+.cc-label { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: #7EE787; margin-bottom: 6px; }
+.cc-title { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; color: rgba(255,255,255,.9); }
+.cc-sub { font-size: 12px; color: rgba(255,255,255,.4); margin-top: 4px; line-height: 1.6; }
+.cc-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+@media(max-width:600px){ .cc-actions { grid-template-columns: 1fr; } }
+.cc-btn {
+  padding: 14px 16px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.04);
+  cursor: pointer; text-align: left;
+  transition: all .2s; font-family: 'DM Sans', sans-serif;
+}
+.cc-btn:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); transform: translateY(-1px); }
+.cc-btn.danger { border-color: rgba(192,57,43,.3); background: rgba(192,57,43,.08); }
+.cc-btn.danger:hover { background: rgba(192,57,43,.14); border-color: rgba(192,57,43,.5); }
+.cc-btn-icon { font-size: 20px; margin-bottom: 8px; }
+.cc-btn-title { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.85); margin-bottom: 4px; }
+.cc-btn.danger .cc-btn-title { color: #FF7B72; }
+.cc-btn-desc { font-size: 11px; color: rgba(255,255,255,.35); line-height: 1.55; }
+/* ips permission state shown on choices card */
+.cc-state-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; background: rgba(255,95,87,.07);
+  border: 1px solid rgba(255,95,87,.2); border-radius: 8px; margin-bottom: 14px;
+}
+.cc-state-dot { width: 8px; height: 8px; border-radius: 50%; background: #FF5F57; box-shadow: 0 0 0 3px rgba(255,95,87,.2); flex-shrink: 0; }
+.cc-state-label { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,.45); }
+.cc-state-val { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 600; color: #FF7B72; letter-spacing: .05em; }
+
+/* ──────────────────────────────────────────
+   STATUS BAR
+────────────────────────────────────────── */
+.status-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 600;
+  padding: 10px 28px;
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(10,10,9,.93); backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.sb-dot { width: 7px; height: 7px; border-radius: 50%; background: #7EE787; box-shadow: 0 0 0 3px rgba(123,198,135,.2); animation: pulse 2s infinite; flex-shrink: 0; }
+.sb-dot.warn { background: #E67E22; box-shadow: 0 0 0 3px rgba(230,126,34,.2); }
+.sb-dot.bad { background: #FF5F57; box-shadow: 0 0 0 3px rgba(255,95,87,.2); animation: none; }
+.sb-text { font-size: 12px; color: rgba(255,255,255,.5); flex: 1; }
+.sb-text strong { color: rgba(255,255,255,.85); }
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+</style>
+</head>
+<body>
+
+<!-- ═══ DDT HEADER ═══ -->
+<div class="ddt-header">
+  <div class="ddt-header-top">
+    <a href="index.html" class="logo">Digital Double <span>Technologies</span></a>
+    <div class="header-right">
+      <button class="btn-play" id="btnPlay" onclick="run()">▶ Watch the scenario</button>
+      <button class="btn-replay" id="btnReplay" onclick="restart()">↻ Watch again</button>
+      <a href="index.html" class="back-link">← Back</a>
+    </div>
+  </div>
+  <!-- URL BAR — visible below header -->
+  <div class="url-bar-row">
+    <div class="url-pill" id="urlPill">
+      <span class="url-lock" id="urlLock">🔒</span>
+      <span class="url-text" id="urlText"></span>
+      <span class="url-cursor" id="urlCursor" style="display:none"></span>
+    </div>
+    <div class="ips-chip" id="ipsChip">IPS · IDLE</div>
+  </div>
+  <div class="loading-bar-wrap"><div class="loading-bar-fill" id="loadFill" style="width:0%"></div></div>
+</div>
+<div class="header-spacer"></div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+  <div class="browser-shell">
+    <!-- Chrome tabs -->
+    <div class="chrome-top">
+      <div class="chrome-traffic">
+        <div class="cd cd-r"></div><div class="cd cd-y"></div><div class="cd cd-g"></div>
+      </div>
+      <div class="chrome-tabs">
+        <div class="ctab active" id="tabTitle">New Tab</div>
+        <div class="ctab">Gmail</div>
+      </div>
+      <div class="chrome-inner">
+        <div class="chrome-nav-btns">
+          <div class="nav-btn">‹</div>
+          <div class="nav-btn on">›</div>
+          <div class="nav-btn on" id="reloadIcon">↻</div>
+        </div>
+        <div class="chrome-addr-mini" id="chromeAddrMini">about:blank</div>
+      </div>
+    </div>
+
+    <!-- Page -->
+    <div class="page-wrap" id="pageWrap">
+      <!-- DDT-Pro page skeleton -->
+      <div class="page-skeleton" id="pageSkeleton">
+        <div class="site-nav">
+          <div class="site-logo-text">DDT <span>Pro</span></div>
+          <div class="site-links">
+            <a href="#">Platform</a>
+            <a href="#">For Creators</a>
+            <a href="#" class="on">About Us</a>
+            <a href="#">Contact</a>
+          </div>
+        </div>
+        <div class="site-hero">
+          <div class="sh-tag">Identity Infrastructure</div>
+          <div class="sh-h">Built by creators,<br>for <em>creators.</em></div>
+          <div class="sh-p">DDT was founded to give every performer, artist, and creator the tools to stay in control of who they are in an AI-driven world.</div>
+        </div>
+        <div class="about-sec">
+          <div class="about-grid">
+            <div class="about-copy">
+              <div class="founder-tag">Our Founder</div>
+              <h2>Justin Hofstad</h2>
+              <p>Justin is a SAG-AFTRA performer, Rutgers Mason Gross BFA graduate, and the founder of Digital Double Technologies. He built DDT after experiencing firsthand the gap between existing protections and the realities of AI-generated content.</p>
+              <p>Trained at Shakespeare's Globe and MGSA. A working performer who decided the infrastructure had to exist — and built it.</p>
+            </div>
+            <div class="about-photo-col">
+              <div class="about-photo" id="aboutPhoto">
+                <div class="photo-sil">🧑‍🎨</div>
+                <div class="photo-caption">
+                  <div>
+                    <div class="pc-name">Justin Hofstad</div>
+                    <div class="pc-role">Founder &amp; CEO · SAG-AFTRA</div>
+                  </div>
+                  <div class="pc-cro" id="pcCro">CRO · 0bd66ac7</div>
+                </div>
+                <!-- Unverified overlay -->
+                <div class="unverified-wrap" id="uvWrap">
+                  <div class="unverified-card" id="uvCard">
+                    <div class="uv-ico">🔴</div>
+                    <div class="uv-ttl">UNVERIFIED CONTENT</div>
+                    <div class="uv-det">
+                      permission_state: REVOKED<br>
+                      Identity: Justin Hofstad<br>
+                      DDT Protection Active
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FULL-PAGE MATRIX OVERLAY — sits inside page-wrap -->
+      <div id="matrixFull">
+        <canvas id="matrixCanvas"></canvas>
+
+        <!-- IPS scan badge — center of screen -->
+        <div class="ips-scan-badge" id="ipsBadge">
+          <!-- Searching label above -->
+          <div class="search-label" id="searchLabel">Searching for Subject CRO...</div>
+          <div class="ips-core-ring" id="ipsCoreRing">
+            <div class="pr" id="pr1" style="width:100px;height:100px"></div>
+            <div class="pr" id="pr2" style="width:160px;height:160px"></div>
+            <div class="pr" id="pr3" style="width:230px;height:230px"></div>
+            <div class="icr-label">IPS</div>
+            <div class="icr-sub" id="icrSub">SCANNING</div>
+          </div>
+          <div class="scan-status-text" id="scanStatusTxt">Scanning page content...</div>
+        </div>
+
+        <!-- CRO targeting: bubbles emerge from matrix and converge on IPS core -->
+        <div class="cro-target-wrap" id="croTargetWrap">
+          <div class="cro-target-bubble" id="ctb1">CRO · 0bd66ac7-55c9...</div>
+          <div class="cro-target-bubble" id="ctb2">subject_id · 0bd66ac7</div>
+          <div class="cro-target-bubble" id="ctb3">ddt:cro · FOUND</div>
+          <div class="reticle" id="reticle"></div>
+        </div>
+
+        <!-- CRO flag — positioned dynamically -->
+        <div class="cro-flag" id="croFlag" style="top:50%">
+          <div class="cro-flag-bar"></div>
+          <div class="cro-flag-badge">REVOKED</div>
+          <div class="cro-flag-code">data-ddt-cro="0bd66ac7-55c9..." ← permission_state: REVOKED</div>
+        </div>
+      </div>
+
+    </div><!-- /page-wrap -->
+  </div><!-- /browser-shell -->
+
+  <!-- ═══ ACTION PANELS ═══ -->
+  <div class="action-panel" id="actionPanel">
+
+    <!-- Email notification -->
+    <div class="ap-card notif-card" id="apEmail">
+      <div class="nc-icon nc-email">📧</div>
+      <div>
+        <div class="nc-title">DDT Alert — Unauthorized Use Detected</div>
+        <div class="nc-body">Your likeness was found on ddt-pro.com/about-us without your authorization. A screenshot, URL, and timestamp have been captured and saved to your evidence record.</div>
+        <div class="nc-time">Just now · ddt-pro.com/about-us</div>
+      </div>
+    </div>
+
+    <!-- SMS notification -->
+    <div class="ap-card notif-card" id="apSms">
+      <div class="nc-icon nc-sms">💬</div>
+      <div>
+        <div class="nc-title">DDT SMS Alert</div>
+        <div class="nc-body">Unauthorized use of your identity detected on ddt-pro.com. Permission state: REVOKED. Tap to review evidence and take immediate action.</div>
+        <div class="nc-time">Just now · SMS</div>
+      </div>
+    </div>
+
+    <!-- Manifest updated -->
+    <div class="ap-card manifest-card" id="apManifest">
+      <div class="mc-header">
+        <div class="mc-badge">🚩 Consent Manifest Updated</div>
+        <div class="mc-title">Your Identity Record — New Event</div>
+      </div>
+      <div class="manifest-event">
+        <div class="me-type">FLAGGED_CONSENT_EVENT · <span id="eventTs"></span></div>
+        <div class="me-detail">
+          Your likeness was detected on <strong>ddt-pro.com/about-us</strong>. Permission state at time of detection: <strong style="color:#FF7B72">REVOKED</strong>. Subject identity confirmed via DDT CRO <strong>0bd66ac7-55c9</strong>. Screenshot and full evidence packet saved. This event has been timestamped and sealed in your consent manifest.
+        </div>
+      </div>
+    </div>
+
+    <!-- Creator choices -->
+    <div class="ap-card choices-card" id="apChoices">
+      <div class="cc-header">
+        <div class="cc-label">Your Choices</div>
+        <div class="cc-title">You have evidence. You have power. What do you do?</div>
+        <div class="cc-sub">This is your identity. These are your options. Each one takes effect immediately.</div>
+      </div>
+      <div class="cc-state-row">
+        <div class="cc-state-dot"></div>
+        <div class="cc-state-label">Current permission state:</div>
+        <div class="cc-state-val">REVOKED</div>
+        <div style="flex:1"></div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.25)">subject: Justin Hofstad · ddt-pro.com</div>
+      </div>
+      <div class="cc-actions">
+        <button class="cc-btn" onclick="creatorAction('evidence')">
+          <div class="cc-btn-icon">👁</div>
+          <div class="cc-btn-title">View Evidence</div>
+          <div class="cc-btn-desc">Open your full evidence packet: screenshot, URL, timestamp, and the complete audit trail of this detection event.</div>
+        </button>
+        <button class="cc-btn" onclick="creatorAction('license')">
+          <div class="cc-btn-icon">📩</div>
+          <div class="cc-btn-title">Request Licensing</div>
+          <div class="cc-btn-desc">Open a licensing conversation on your terms. You set the permitted uses, the price, and the duration.</div>
+        </button>
+        <button class="cc-btn" onclick="creatorAction('resolve')">
+          <div class="cc-btn-icon">✓</div>
+          <div class="cc-btn-title">Resolve Flag</div>
+          <div class="cc-btn-desc">Mark this event as resolved if you reach an agreement or determine this is an authorized use you had forgotten.</div>
+        </button>
+        <button class="cc-btn danger" onclick="creatorAction('revoke')" style="grid-column:span 2">
+          <div class="cc-btn-icon">🔴</div>
+          <div class="cc-btn-title">REVOKE All Uses — Immediately</div>
+          <div class="cc-btn-desc">Issue a full REVOKE across all platforms. Every system querying the Identity Permission State endpoint will receive REVOKED in real time. Takes effect globally within seconds.</div>
+        </button>
+        <button class="cc-btn" onclick="creatorAction('contact')">
+          <div class="cc-btn-icon">⚖️</div>
+          <div class="cc-btn-title">Contact My Union</div>
+          <div class="cc-btn-desc">Send this evidence packet directly to your SAG-AFTRA or union rep. Pre-populated with all detection data.</div>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /action-panel -->
+</div><!-- /main -->
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="sb-dot" id="sbDot"></div>
+  <div class="sb-text" id="sbText">Press <strong>Watch the scenario</strong> to begin.</div>
+</div>
+
+<!-- ACTION MODAL -->
+<div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:700;place-items:center;backdrop-filter:blur(6px)">
+  <div style="background:#1C1C1A;border-radius:16px;padding:36px;max-width:420px;width:90%;text-align:center;border:1px solid rgba(255,255,255,.08)">
+    <div style="font-size:40px;margin-bottom:14px" id="modalIcon"></div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;margin-bottom:10px;color:rgba(255,255,255,.9)" id="modalTitle"></div>
+    <p style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:24px" id="modalBody"></p>
+    <button onclick="document.getElementById('modal').style.display='none'" style="background:#7B9E87;color:white;border:none;padding:10px 26px;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer">Done</button>
+  </div>
+</div>
+
+<script>
+const D = ms => new Promise(r => setTimeout(r, ms));
+
+function setStatus(msg, dotCls) {
+  document.getElementById('sbText').innerHTML = msg;
+  const dot = document.getElementById('sbDot');
+  dot.className = 'sb-dot' + (dotCls ? ' '+dotCls : '');
+}
+function setIps(txt, cls) {
+  const chip = document.getElementById('ipsChip');
+  chip.textContent = txt;
+  chip.className = 'ips-chip' + (cls ? ' '+cls : '');
+}
+
+// ── MATRIX RAIN ──
+let mRAF = null;
+function startMatrix() {
+  const canvas = document.getElementById('matrixCanvas');
+  const wrap = document.getElementById('pageWrap');
+  canvas.width = wrap.offsetWidth;
+  canvas.height = wrap.offsetHeight;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const fs = 11;
+  const cols = Math.floor(W / (fs * 0.62));
+  const drops = Array.from({length: cols}, () => Math.random() * -50);
+  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ0123456789ABCDEFconsent:cro:ips:authorized:revoked:ddt:subject:biometric:c2pa:trustmark:fingerprint'.split('');
+  function draw() {
+    ctx.fillStyle = 'rgba(5,12,8,.16)';
+    ctx.fillRect(0,0,W,H);
+    drops.forEach((y, i) => {
+      const ch = chars[Math.floor(Math.random()*chars.length)];
+      const x = i * fs * 0.62;
+      const bright = Math.random() < .03;
+      if(bright) { ctx.fillStyle = '#7EE787'; }
+      else { const a = .1 + Math.random()*.25; ctx.fillStyle = `rgba(74,155,90,${a})`; }
+      ctx.font = `${fs}px "DM Mono",monospace`;
+      ctx.fillText(ch, x, y * fs);
+      if(y * fs > H && Math.random() > .975) drops[i] = 0;
+      drops[i] += 0.55;
+    });
+    mRAF = requestAnimationFrame(draw);
+  }
+  draw();
+}
+function stopMatrix() { if(mRAF){cancelAnimationFrame(mRAF);mRAF=null;} }
+
+// ── PULSE RINGS ──
+let pRAFs = [];
+function fireRing(el, dur) {
+  return new Promise(res => {
+    let t0 = null;
+    el.style.transform='translate(-50%,-50%) scale(0)'; el.style.opacity='1';
+    function f(ts) {
+      if(!t0) t0=ts;
+      const p = Math.min((ts-t0)/dur, 1);
+      const e = 1-Math.pow(1-p,3);
+      el.style.transform=`translate(-50%,-50%) scale(${e*2.6})`;
+      el.style.opacity=String(1-p);
+      if(p<1) pRAFs.push(requestAnimationFrame(f));
+      else { el.style.opacity='0'; res(); }
+    }
+    pRAFs.push(requestAnimationFrame(f));
+  });
+}
+async function pulseWave(color) {
+  const rings = ['pr1','pr2','pr3'];
+  if(color) rings.forEach(id => document.getElementById(id).style.borderColor = color);
+  for(let i=0;i<3;i++){await D(i*200);fireRing(document.getElementById(rings[i]),1100);}
+}
+
+// ── MAIN SEQUENCE ──
+async function run() {
+  document.getElementById('btnPlay').style.display='none';
+
+  // 1. Type URL
+  setStatus('Navigating to <strong>ddt-pro.com/about-us</strong>...');
+  const urlTxt = document.getElementById('urlText');
+  const cur = document.getElementById('urlCursor');
+  const full = 'ddt-pro.com/about-us';
+  cur.style.display='inline-block';
+  for(let i=0;i<=full.length;i++){urlTxt.textContent=full.slice(0,i);await D(60+Math.random()*50);}
+  cur.style.display='none';
+  document.getElementById('urlPill').classList.add('loading');
+  document.getElementById('urlLock').className='url-lock ok';
+  document.getElementById('tabTitle').textContent='ddt-pro.com — About Us';
+  document.getElementById('chromeAddrMini').textContent='ddt-pro.com/about-us';
+  await D(300);
+
+  // 2. Loading bar starts — matrix fires immediately BEFORE page renders
+  setStatus('Connecting... DDT Identity Permission State intercept active.');
+  setIps('IPS · INTERCEPTING', 'scanning');
+  const fill = document.getElementById('loadFill');
+  fill.style.width='20%'; await D(250);
+  fill.style.width='40%';
+
+  // 3. MATRIX TAKES OVER the full page area
+  const mFull = document.getElementById('matrixFull');
+  mFull.classList.add('active');
+  startMatrix();
+  fill.style.width='60%';
+  setStatus('DDT IPS scanning <strong>all content on this page</strong> before render...');
+  await D(1200);
+
+  // 4. IPS badge appears in matrix center
+  const badge = document.getElementById('ipsBadge');
+  badge.classList.add('show');
+  document.getElementById('icrSub').textContent='SCANNING';
+  setIps('IPS · SCANNING', 'scanning');
+  setStatus('Identity Permission State system scanning page identifiers...');
+
+  const statusSteps = [
+    {d:700, t:'Reading page asset identifiers...'},
+    {d:800, t:'Parsing image metadata and attributes...'},
+    {d:600, t:'Searching for Subject CRO...'},
+    {d:900, t:'CRO identifier located — zeroing in...'},
+    {d:700, t:'Resolving subject identity...'},
+    {d:600, t:'Querying live permission endpoint...'},
+  ];
+  // Pulse while scanning
+  pulseWave('rgba(123,198,135,.5)');
+
+  for(let i=0;i<statusSteps.length;i++){
+    document.getElementById('scanStatusTxt').textContent=statusSteps[i].t;
+
+    if(i===2){
+      // "Searching for Subject CRO" — show the searching label above IPS core
+      document.getElementById('searchLabel').classList.add('show');
+      document.getElementById('icrSub').textContent='SEARCHING';
+      setStatus('IPS searching for Subject <strong>Consent Receipt Object</strong> across all page assets...');
+    }
+
+    if(i===3){
+      // CRO bubbles emerge from random positions in the matrix and drift toward center
+      const wrap = document.getElementById('croTargetWrap');
+      const pw = document.getElementById('pageWrap');
+      const W = pw.offsetWidth, H = pw.offsetHeight;
+      const cx = W/2, cy = H/2;
+
+      // Spawn bubbles at random matrix positions
+      const positions = [
+        {x: cx - 180, y: cy - 120},
+        {x: cx + 140, y: cy + 80},
+        {x: cx - 60,  y: cy + 150},
+      ];
+      const bubbles = ['ctb1','ctb2','ctb3'];
+      bubbles.forEach((id, idx) => {
+        const el = document.getElementById(id);
+        const p = positions[idx];
+        el.style.left = p.x + 'px';
+        el.style.top  = p.y + 'px';
+        el.style.transform = 'translate(-50%,-50%)';
+        el.style.transition = 'none';
+        el.style.opacity = '0';
+        el.style.fontSize = '12px';
+      });
+
+      // Stagger their emergence
+      for(let b=0;b<bubbles.length;b++){
+        await D(b * 180);
+        const el = document.getElementById(bubbles[b]);
+        el.classList.add('emerge');
+        el.style.transition = 'opacity .5s';
+      }
+      await D(400);
+
+      // Now animate them drifting toward center (the IPS core)
+      bubbles.forEach(id => {
+        const el = document.getElementById(id);
+        el.style.transition = 'left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1), opacity .5s, transform .9s';
+        el.style.left  = cx + 'px';
+        el.style.top   = (cy - 30) + 'px';
+        el.style.opacity = '0.85';
+      });
+
+      // Show reticle around the converging point
+      const reticle = document.getElementById('reticle');
+      reticle.style.left  = (cx - 80) + 'px';
+      reticle.style.top   = (cy - 60) + 'px';
+      reticle.classList.add('show');
+      document.getElementById('icrSub').textContent='TARGETING';
+      pulseWave('rgba(255,215,0,.4)');
+      setStatus('IPS zeroing in on Subject CRO: <strong>0bd66ac7-55c9-4e04-9e8d-f2cb71460b0c</strong>');
+      setIps('IPS · TARGETING', 'scanning');
+    }
+
+    if(i===4){
+      // CRO locked — bubbles shrink into the IPS core, reticle turns gold
+      const bubbles = ['ctb1','ctb2','ctb3'];
+      const pw = document.getElementById('pageWrap');
+      const cx = pw.offsetWidth/2, cy = pw.offsetHeight/2;
+      bubbles.forEach(id => {
+        const el = document.getElementById(id);
+        el.style.transition = 'left .5s, top .5s, opacity .4s, transform .5s, font-size .5s';
+        el.style.left   = cx + 'px';
+        el.style.top    = cy + 'px';
+        el.style.fontSize = '8px';
+        el.style.opacity  = '0';
+      });
+      document.getElementById('searchLabel').classList.remove('show');
+      document.getElementById('icrSub').textContent='CRO LOCKED';
+      document.getElementById('ipsCoreRing').classList.add('flagged');
+      document.getElementById('icrSub').style.color='#FFD700';
+      pulseWave('rgba(255,215,0,.6)');
+
+      // Position the CRO flag line
+      const flagTop = Math.floor(pw.offsetHeight * 0.52);
+      const croFlag = document.getElementById('croFlag');
+      croFlag.style.top = flagTop+'px';
+      croFlag.classList.add('show');
+      setStatus('CRO locked: <strong>subject Justin Hofstad · 0bd66ac7</strong>. Querying permission state...');
+      setIps('IPS · LOCKED', 'scanning');
+    }
+
+    await D(statusSteps[i].d);
+  }
+  fill.style.width='85%';
+  await D(400);
+
+  // 5. REVOKED verdict fires
+  document.getElementById('icrSub').textContent='REVOKED';
+  document.getElementById('ipsCoreRing').classList.remove('flagged');
+  document.getElementById('ipsCoreRing').classList.add('revoked');
+  document.getElementById('icrSub').style.color='#FF7B72';
+  document.getElementById('scanStatusTxt').textContent='REVOKED — blocking page render';
+  document.getElementById('scanStatusTxt').classList.add('bad');
+  document.getElementById('urlPill').classList.remove('loading');
+  document.getElementById('urlPill').classList.add('revoked');
+  document.getElementById('urlLock').className='url-lock bad';
+  setIps('IPS · REVOKED', 'revoked');
+  setStatus('<strong style="color:#FF7B72">REVOKED.</strong> This use was not authorized. Blocking render. Notifying creator.', 'bad');
+  pulseWave('rgba(255,95,87,.5)');
+  await D(1800);
+
+  // 6. Matrix fades, page renders underneath
+  fill.style.width='100%';
+  stopMatrix();
+  mFull.style.transition='opacity .9s ease';
+  mFull.style.opacity='0';
+  document.getElementById('pageSkeleton').classList.add('show');
+  document.getElementById('pcCro').classList.add('show');
+  await D(1000);
+  mFull.classList.remove('active');
+  mFull.style.opacity='';
+  mFull.style.transition='';
+  await D(200);
+
+  // 7. Unverified overlay appears on photo
+  document.getElementById('uvWrap').classList.add('active');
+  await D(700);
+  document.getElementById('uvCard').classList.add('show');
+  setStatus('<strong>UNVERIFIED CONTENT</strong> overlay applied to creator\'s likeness.');
+  await D(1000);
+
+  // 8. Action panels slide up
+  setStatus('Creator notified. Evidence captured. Review the alerts and take action.');
+  document.getElementById('eventTs').textContent = new Date().toLocaleString();
+
+  const panels = ['apEmail','apSms','apManifest','apChoices'];
+  for(const id of panels) {
+    document.getElementById(id).classList.add('show');
+    await D(400);
+  }
+
+  // Scroll to panels
+  document.getElementById('actionPanel').scrollIntoView({behavior:'smooth', block:'start'});
+  await D(600);
+  document.getElementById('btnReplay').classList.add('show');
+}
+
+function restart() {
+  document.getElementById('btnReplay').classList.remove('show');
+  // URL
+  document.getElementById('urlText').textContent='';
+  document.getElementById('urlPill').className='url-pill';
+  document.getElementById('urlLock').className='url-lock';
+  document.getElementById('urlCursor').style.display='none';
+  document.getElementById('loadFill').style.width='0%';
+  document.getElementById('tabTitle').textContent='New Tab';
+  document.getElementById('chromeAddrMini').textContent='about:blank';
+  // Matrix
+  stopMatrix(); pRAFs.forEach(r=>cancelAnimationFrame(r)); pRAFs=[];
+  const mFull=document.getElementById('matrixFull');
+  mFull.classList.remove('active'); mFull.style.opacity=''; mFull.style.transition='';
+  // IPS badge reset
+  document.getElementById('ipsBadge').classList.remove('show');
+  document.getElementById('searchLabel').classList.remove('show');
+  document.getElementById('ipsCoreRing').className='ips-core-ring';
+  document.getElementById('icrSub').textContent='SCANNING';
+  document.getElementById('icrSub').style.color='';
+  document.getElementById('scanStatusTxt').textContent='Scanning page content...';
+  document.getElementById('scanStatusTxt').classList.remove('bad');
+  // CRO targeting reset
+  ['ctb1','ctb2','ctb3'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.classList.remove('emerge','lock');
+    el.style.opacity='0'; el.style.fontSize='12px';
+    el.style.transition='none';
+  });
+  document.getElementById('reticle').classList.remove('show');
+  ['pr1','pr2','pr3'].forEach(id=>{const e=document.getElementById(id);e.style.transform='translate(-50%,-50%) scale(0)';e.style.opacity='0';e.style.borderColor='';});
+  document.getElementById('croFlag').classList.remove('show');
+  // Page
+  document.getElementById('pageSkeleton').classList.remove('show');
+  document.getElementById('pcCro').classList.remove('show');
+  // Unverified
+  document.getElementById('uvWrap').classList.remove('active');
+  document.getElementById('uvCard').classList.remove('show');
+  // Panels
+  ['apEmail','apSms','apManifest','apChoices'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  // Status
+  setStatus('Press <strong>Watch again</strong> to replay.');
+  setIps('IPS · IDLE');
+  window.scrollTo({top:0, behavior:'smooth'});
+  setTimeout(run, 600);
+}
+
+function creatorAction(t) {
+  const actions = {
+    evidence: ['👁','View Evidence','Your full evidence packet has been opened. It contains: a screenshot of ddt-pro.com/about-us, the exact URL, the detection timestamp, the CRO identifier, the IPS response, and a sealed audit trail. This packet is admissible evidence.'],
+    license:  ['📩','Request Licensing','A licensing request has been initiated. You will be connected with the platform to negotiate permitted uses, pricing, and duration — entirely on your terms. DDT facilitates the conversation.'],
+    resolve:  ['✓','Resolve Flag','This detection event has been marked as resolved. Your consent manifest is updated. You can re-flag at any time if the situation changes.'],
+    revoke:   ['🔴','REVOKE Issued — All Platforms','A full REVOKE has been issued for this subject identity. Every system querying the Identity Permission State endpoint now receives REVOKED. This takes effect globally within seconds. No platform can claim they did not know.'],
+    contact:  ['⚖️','Union Rep Notified','Your evidence packet has been pre-populated and sent to your SAG-AFTRA representative. They have the URL, the screenshot, the timestamp, the CRO identifier, and the full IPS audit trail.'],
+  };
+  const [icon, title, body] = actions[t] || ['', '', ''];
+  document.getElementById('modalIcon').textContent=icon;
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalBody').textContent=body;
+  document.getElementById('modal').style.display='grid';
+}
+</script>
+</body>
+</html>
