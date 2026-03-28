@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- DDT Consent Receipt Object -->
+  <meta name="ddt:cro-id" content="0b4b3df6-aae6-4779-bc1c-a396dd36d54c">
+  <meta name="ddt:ips-endpoint" content="https://ddt-core-production.up.railway.app/v1/ips/permission/0b4b3df6-aae6-4779-bc1c-a396dd36d54c">
+  <meta name="ddt:permission-state" content="AUTHORIZED">
+  <meta name="ddt:cro-hash" content="3bc189286b1fd4e52998cf505855e5be801b9e7c46009585941cace55cbdba4d">
+  <meta name="ddt:permitted-uses" content="internal review,archival">
+  <meta name="ddt:excluded-uses" content="casting,audition,AI training,synthetic reproduction,deepfake,biometric extraction,commercial redistribution,third-party licensing,broadcast,social media">
+  <meta name="ddt:issued" content="2026-03-28T14:14:33.369953+00:00">
+  <!-- /DDT -->
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- DDT Consent Receipt Object — Identity Permission Assertion --><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DDT; For Platforms</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -176,6 +185,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:12px 32px;display:fl
 .fade-in.visible{opacity:1;transform:none}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 </style>
+  <script src="gate.js" defer></script>
 </head>
 <body>
 
@@ -366,7 +376,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:12px 32px;display:fl
     <p>DDT's defensibility is not network effects or brand. It is architectural position. The three primitives at the core of the system are the claims on which the moat is built.</p>
 
     <div class="patent-note">
-      <strong>Provisional patent filed: Application 63/997,237</strong><br>
+      <strong>Provisional patent filed: Application </strong><br>
       Systems and Methods for Live, Revocation-Aware Identity Permission State Verification for Identity-Derived Media Using a Cryptographic Consent Receipt Architecture.
     </div>
 
@@ -381,13 +391,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:12px 32px;display:fl
     <div class="primitive-block ips">
       <div class="prim-label ips">Primitive Two</div>
       <div class="prim-title">Identity Permission State (IPS) Responder</div>
-      <p class="prim-body">A live, cryptographically verifiable endpoint that answers whether a specific identity use is currently authorized. Operates as an OCSP analogue for identity permission state: as OCSP answers "is this TLS certificate currently valid?", the IPS answers "is this identity use currently authorized?" Returns one of eight defined states: AUTHORIZED, REVOKED, EXPIRED, OUT_OF_SCOPE, SUPERSEDED, SUSPENDED, PENDING, or UNKNOWN. The SUSPENDED state is always fail-closed. It is not equivalent to UNVERIFIABLE. It is an active operational hold.</p>
+      <p class="prim-body">A live, cryptographically verifiable endpoint that answers whether a specific identity use is currently authorized. Operates as an OCSP analogue for identity permission state: as OCSP answers "is this TLS certificate currently valid?", the IPS answers "is this identity use currently authorized?" Returns a typed permission state reflecting the current lifecycle status of the consent record. SUSPENDED is always fail-closed: it is an active operational hold, not an ambiguous or unknown state.</p>
     </div>
 
     <div class="primitive-block vr">
       <div class="prim-label vr">Primitive Three</div>
       <div class="prim-title">Verification Receipt</div>
-      <p class="prim-body">A short-TTL, cryptographically signed snapshot of an IPS evaluation result. Embeddable in derivative Content Credentials for offline and edge verification without a live IPS round-trip. Operates as an OCSP stapling analogue. Minimum TTL 60 seconds, maximum 3600 seconds. Separate cryptographic keypairs enforced for IPS responder and verification service roles.</p>
+      <p class="prim-body">A short-lived, cryptographically signed snapshot of an IPS evaluation result. Embeddable in content credentials for offline verification without a live IPS query. Operates as an OCSP stapling analogue: the permission-state answer travels with the content, bounded by an expiry window.</p>
     </div>
 
     <div class="dw-rule"></div>
@@ -520,7 +530,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:12px 32px;display:fl
 
   <!-- STATE PILLS -->
   <div style="margin-top:28px;padding:18px 22px;background:var(--parchment);border-radius:12px;border:1px solid var(--border)">
-    <div style="font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px">The eight IPS permission states</div>
+    <div style="font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px">IPS permission states</div>
     <div class="state-pills">
       <span class="sp sp-ok">AUTHORIZED</span>
       <span class="sp sp-bad">REVOKED</span>
@@ -547,7 +557,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:12px 32px;display:fl
       <div class="bc-num">01</div>
       <div class="bc-title">Reduces legal risk</div>
       <p class="bc-body">The Verification Receipt is a signed, timestamped record that the platform queried, received an answer, and acted on it. That record is the difference between exposure and defense.</p>
-      <div class="bc-proof">Verification Receipt sealed per query<br>Ed25519 signed; timestamped; auditable<br>Separate keypairs for IPS and verification roles</div>
+      <div class="bc-proof">Verification Receipt sealed per query<br>Cryptographically signed; timestamped; auditable<br>Separate keypairs for IPS and verification roles</div>
     </div>
     <div class="benefit-card fade-in">
       <div class="bc-num">02</div>

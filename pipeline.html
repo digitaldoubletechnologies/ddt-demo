@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- DDT Consent Receipt Object -->
+  <meta name="ddt:cro-id" content="6f1fb86a-f9ac-49ea-aa22-ee0fef7403c8">
+  <meta name="ddt:ips-endpoint" content="https://ddt-core-production.up.railway.app/v1/ips/permission/6f1fb86a-f9ac-49ea-aa22-ee0fef7403c8">
+  <meta name="ddt:permission-state" content="AUTHORIZED">
+  <meta name="ddt:cro-hash" content="2b27e60578fc71910b2f52d3e79ca273b234753a81e897aece08c9ee5a18d683">
+  <meta name="ddt:permitted-uses" content="internal review,archival">
+  <meta name="ddt:excluded-uses" content="casting,audition,AI training,synthetic reproduction,deepfake,biometric extraction,commercial redistribution,third-party licensing,broadcast,social media">
+  <meta name="ddt:issued" content="2026-03-28T14:14:33.381846+00:00">
+  <!-- /DDT -->
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- DDT Consent Receipt Object — Identity Permission Assertion --><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DDT ; How It Works</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -196,6 +205,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @keyframes pipePulse{0%,100%{box-shadow:0 0 0 0 rgba(74,155,111,.3)}60%{box-shadow:0 0 0 7px rgba(74,155,111,0)}}
 </style>
+  <script src="gate.js" defer></script>
 </head>
 <body>
 
@@ -772,7 +782,7 @@ async function run() {
   const svg=$('sealSvg');
   svg.style.animation='sealPress .8s ease forwards'; svg.style.opacity='1';
   $('sealGlow').style.opacity='1'; $('sealCont').classList.add('lit');
-  $('sealLbl').textContent='Signing with Ed25519...';
+  $('sealLbl').textContent='Signing...';
   const btn=$('confirmBtn'); btn.textContent='Generating...'; btn.style.background='#7B9E87'; btn.style.color='white';
   $('sealDetails').style.opacity='1';
 
@@ -795,7 +805,7 @@ async function run() {
   cc("A live endpoint. Any system, anywhere, can query it right now and get a real answer.", 'narrText1a');
   await W(3500);
 
-  dot('s5d','ok'); val('s5v','ok','Ed25519 · sealed');
+  dot('s5d','ok'); val('s5v','ok','Cryptographically sealed');
   cc("Signed. Sealed. The CRO is live.", 'narrText1a');
   await W(2500);
 
