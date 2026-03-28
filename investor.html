@@ -600,6 +600,9 @@ function closeAll(restoreScroll=true){
 }
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll();});
+// Auto-open drawer from URL param
+const _dp = new URLSearchParams(location.search).get('d');
+if(_dp && drawerIds.includes(_dp)) setTimeout(()=>openDrawer(_dp), 400);
 
 const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});

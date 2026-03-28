@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DDT — For Creators</title>
+<title>DDT; For Creators</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -77,9 +77,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:16px 32px;display:fl
 .replay-btn{display:none;align-items:center;gap:8px;background:transparent;color:var(--ink-muted);padding:9px 18px;border-radius:100px;font-size:12px;font-weight:500;border:1px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;margin-top:18px;margin-left:10px}
 .replay-btn:hover{border-color:var(--sage);color:var(--sage)}
 .replay-btn.show{display:inline-flex}
+.pause-btn{display:none;align-items:center;gap:8px;background:transparent;color:var(--ink-muted);padding:9px 18px;border-radius:100px;font-size:12px;font-weight:500;border:1px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;margin-top:18px;margin-left:10px}
+.pause-btn:hover{border-color:var(--gold);color:var(--gold)}
+.pause-btn.show{display:inline-flex}
 .sc-divider{height:1px;background:var(--border);max-width:1060px;margin:0 auto 80px}
 
-/* S1 — AI PIPELINE */
+/* S1; AI PIPELINE */
 .ai-stage{padding:24px;min-height:420px}
 .pt{display:flex;align-items:center;flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;margin-bottom:24px}
 .pt-step{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:88px}
@@ -95,7 +98,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:16px 32px;display:fl
 .ll{color:#333;transition:color .4s}
 .ll.active{color:#7EE787}.ll.error{color:#FF7B72}.ll.warn{color:var(--gold)}.ll.dim{color:#555}
 
-/* S2 — CODE SCAN */
+/* S2; CODE SCAN */
 .code-stage{background:#0D1117;min-height:380px;display:flex;flex-direction:column;position:relative;overflow:hidden}
 .code-view{flex:1;padding:16px 20px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.72;overflow:hidden;position:relative}
 .code-line{display:block;white-space:nowrap;overflow:hidden;opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}
@@ -152,7 +155,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:16px 32px;display:fl
 .ea.rev{background:rgba(192,57,43,.1);border-color:rgba(192,57,43,.2);color:var(--bad)}
 .ea.rev:hover{background:rgba(192,57,43,.2)}
 
-/* S3 — FLIP CARD (single viewport) */
+/* S3; FLIP CARD (single viewport) */
 .s3-cinema{display:grid;grid-template-columns:200px 1fr;height:480px}
 .s3-left{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;border-right:1px solid var(--border);background:var(--cream)}
 [data-theme=dark] .s3-left{background:var(--warm)}
@@ -212,6 +215,12 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
   <a href="index.html" class="logo">Digital Double <span>Technologies</span></a>
   <div class="nav-r">
     <span class="nav-tag">For Creators</span>
+    <a href="investor.html?d=dMarket" class="tbtn" style="text-decoration:none">The Market</a>
+    <a href="investor.html?d=dMandate" class="tbtn" style="text-decoration:none">The Mandate</a>
+    <a href="investor.html?d=dMoment" class="tbtn" style="text-decoration:none">The Moment</a>
+    <a href="investor.html?d=dEconomy" class="tbtn" style="text-decoration:none">The New Economy</a>
+    <a href="investor.html?d=dDefense" class="tbtn" style="text-decoration:none">The Moat</a>
+    <a href="investor.html?d=dStatus" class="tbtn" style="text-decoration:none">The Now</a>
     <button class="tbtn" id="themeToggle">Dark mode</button>
     <a href="index.html" class="back-link">← Back</a>
   </div>
@@ -220,7 +229,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
 <section class="hero">
   <div class="hero-bg"></div>
   <div style="position:relative;z-index:1;max-width:780px">
-    <p class="hero-eyebrow">For Performers, Creators, and Artists</p>
+    <p class="hero-eyebrow">For Creators</p>
     <h1 class="hero-h1">You built something real.<br>It should stay <em>yours.</em></h1>
     <p class="hero-sub">Your voice. Your face. Your likeness. These are yours. Your terms. Your rights. Checked live, wherever your identity goes. DDT is the infrastructure that makes sure your consent is always asked and your identity likeness is always yours.</p>
     <div class="promise-row">
@@ -233,7 +242,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
       <div class="ips-pill">
         <span class="ips-dot load" id="ipsDot"></span>
         <span>Your permission state right now:</span>
-        <span class="ips-val" id="ipsVal">—</span>
+        <span class="ips-val" id="ipsVal">; </span>
       </div>
     </div>
   </div>
@@ -242,25 +251,36 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
 <!-- PLAIN LANGUAGE NOTE FOR PERFORMERS -->
 <div style="background:var(--cream);border-bottom:1px solid var(--border);padding:28px 32px;text-align:center">
   <p style="font-size:13px;color:var(--ink-muted);max-width:640px;margin:0 auto;line-height:1.75">
-    <strong style="color:var(--ink)">One important thing to know:</strong> DDT does not block or police anything on your behalf. It provides a live, signed answer to the question "Is this use authorized?" What platforms and systems do with that answer is up to them — and up to you. DDT gives you the signal, the evidence, and the power to act.
+    <strong style="color:var(--ink)">One important thing to know:</strong> DDT does not block or police anything on your behalf. It provides a live, signed answer to the question "Is this use authorized?" What platforms and systems do with that answer is up to them; and up to you. DDT gives you the signal, the evidence, and the power to act.
   </p>
 </div>
 <div class="manifesto fade-in">
   <p>Provenance is not permission.</p>
-  <p>Knowing where your content came from is not the same as asking whether you agreed to it. <strong>DDT makes sure your consent is always asked</strong> — live, in real time, wherever your identity goes.</p>
+  <p>Knowing where your content came from is not the same as asking whether you agreed to it. <strong>DDT makes sure your consent is always asked</strong>; live, in real time, wherever your identity goes.</p>
 </div>
 
 <div style="padding:80px 0 0">
 
+<!-- PIPELINE CTA -->
+<div style="text-align:center;padding:0 32px 48px">
+  <a href="pipeline.html" style="display:inline-flex;align-items:center;gap:9px;background:var(--warm);border:1.5px solid var(--border);border-radius:100px;padding:12px 26px;font-size:14px;font-weight:500;color:var(--ink);text-decoration:none;transition:all .25s" onmouseover="this.style.borderColor='var(--sage)';this.style.color='var(--sage)'" onmouseout="this.style.borderColor='';this.style.color=''">
+    <span style="font-size:16px">▶</span> See a Normal Workday with DDT
+  </a>
+  <p style="font-size:12px;color:var(--ink-muted);margin-top:10px">Watch the full pipeline: creation, on-set sync, and real-time IPS in action.</p>
+</div>
+
 <!-- ══════════ SCENARIO 1 ══════════ -->
 <div class="sc-wrap fade-in">
-  <p class="sc-label">Scenario 01</p>
-  <h2 class="sc-title">An AI company tries to train on your work.</h2>
+  <div class="sc-toggle" onclick="toggleSc('sc1body',this)" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:0 0 12px">
+    <div><p class="sc-label" style="margin-bottom:4px">Scenario 01</p><h2 class="sc-title" style="margin:0">An AI company tries to train on your work.</h2></div>
+    <span class="sc-chev" style="font-size:18px;color:var(--ink-muted);flex-shrink:0;margin-left:16px">▶ Play Scenario</span>
+  </div>
+  <div id="sc1body" style="display:none">
   <p class="sc-sub">This happens millions of times a day. Most creators never find out. Watch what DDT does before a single byte of your work enters that pipeline.</p>
   <div class="stage">
     <div class="bc">
       <div class="bc-dots"><div class="bcd r"></div><div class="bcd y"></div><div class="bcd g"></div></div>
-      <div class="bc-url"><span style="color:#888">AI Training Dashboard — Batch Ingestion Queue</span></div>
+      <div class="bc-url"><span style="color:#888">AI Training Dashboard; Batch Ingestion Queue</span></div>
     </div>
     <div class="ai-stage">
       <div class="pt">
@@ -289,16 +309,28 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
   </div>
   <div style="display:flex;align-items:center;flex-wrap:wrap">
     <button class="play-btn" id="s1Play" onclick="playS1()">▶ Play Scenario</button>
+    <button class="pause-btn" id="s1Pause" onclick="togglePause(this)">⏸ Pause</button>
     <button class="replay-btn" id="s1Replay" onclick="replayS1()">↻ Replay</button>
   </div>
 </div>
 
 <div class="sc-divider"></div>
 
+</div><!-- /sc1body -->
+</div><!-- /sc1wrap -->
+
 <!-- ══════════ SCENARIO 2 ══════════ -->
 <div class="sc-wrap fade-in">
-  <p class="sc-label">Scenario 02</p>
-  <h2 class="sc-title">Someone puts your photo on their website <em>without your permission.</em></h2>
+  <div class="sc-toggle" onclick="toggleSc('sc2body',this)" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:0 0 12px">
+    <div><p class="sc-label" style="margin-bottom:4px">Scenario 02</p><h2 class="sc-title" style="margin:0">Your image appears somewhere you never agreed to.</h2></div>
+    <span class="sc-chev" style="font-size:18px;color:var(--ink-muted);flex-shrink:0;margin-left:16px">▶ Play Scenario</span>
+  </div>
+  <div style="text-align:center;padding:4px 0 20px">
+    <a href="watch.html" style="display:inline-flex;align-items:center;gap:9px;background:var(--warm);border:1.5px solid var(--border);border-radius:100px;padding:12px 26px;font-size:14px;font-weight:500;color:var(--ink);text-decoration:none;transition:all .25s" onmouseover="this.style.borderColor='var(--sage)';this.style.color='var(--sage)'" onmouseout="this.style.borderColor='';this.style.color=''">
+      <span style="font-size:16px">▶</span> Watch Demo
+    </a>
+  </div>
+  <div id="sc2body" style="display:none">
   <p class="sc-sub">A green scan sweeps through every line of code as the page loads, finds your identity, and asks the question. The answer is no.</p>
   <div class="stage" style="min-height:540px">
     <div class="bc">
@@ -356,7 +388,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
       <div class="notif-layer">
         <div class="notif-popup" id="notif1">
           <div class="ni ni-e">📧</div>
-          <div><div class="nt">DDT Alert — Unauthorized Use Detected</div><div class="nb">Your likeness was found on www.AnyWebsite.com without authorization. Evidence captured.</div><div class="ntime">Just now · www.AnyWebsite.com/AboutUs</div></div>
+          <div><div class="nt">DDT Alert; Unauthorized Use Detected</div><div class="nb">Your likeness was found on www.AnyWebsite.com without authorization. Evidence captured.</div><div class="ntime">Just now · www.AnyWebsite.com/AboutUs</div></div>
         </div>
         <div class="notif-popup" id="notif2">
           <div class="ni ni-s">💬</div>
@@ -367,7 +399,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
         <div class="mp-badge">🚩 Consent Manifest Updated</div>
         <div class="mp-event">
           <div class="ev-hdr" onclick="toggleEvt()">
-            <div class="ev-type">FLAGGED_CONSENT_EVENT · just now — www.AnyWebsite.com</div>
+            <div class="ev-type">FLAGGED_CONSENT_EVENT · just now; www.AnyWebsite.com</div>
             <div id="evChev" style="color:var(--ink-muted);font-size:13px">▼</div>
           </div>
           <div class="ev-body" id="evBody">
@@ -385,6 +417,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
   </div>
   <div style="display:flex;align-items:center;flex-wrap:wrap;gap:10px">
     <button class="play-btn" id="s2Play" onclick="playS2()">▶ Play Scenario</button>
+    <button class="pause-btn" id="s2Pause" onclick="togglePause(this)">⏸ Pause</button>
     <button class="replay-btn" id="s2Replay" onclick="replayS2()">↻ Replay</button>
     <a href="watch.html" style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-muted);text-decoration:none;margin-top:18px;padding:10px 17px;border:1px solid var(--border);border-radius:100px;transition:all .2s" onmouseover="this.style.borderColor='var(--sage)';this.style.color='var(--sage)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--ink-muted)'">▶ Cinematic version</a>
   </div>
@@ -393,14 +426,20 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
 <div class="sc-divider"></div>
 
 <!-- ══════════ SCENARIO 3 ══════════ -->
+</div><!-- /sc2body -->
+</div><!-- /sc2wrap -->
+
 <div class="sc-wrap fade-in">
-  <p class="sc-label">Scenario 03 · Vision Demo</p>
-  <h2 class="sc-title">Someone strips your metadata and tries to use your content. <em>They cannot.</em></h2>
+  <div class="sc-toggle" onclick="toggleSc('sc3body',this)" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:0 0 12px">
+    <div><p class="sc-label" style="margin-bottom:4px">Scenario 03 · Vision Demo</p><h2 class="sc-title" style="margin:0">Someone strips your metadata and tries to use your content. <em>They cannot.</em></h2></div>
+    <span class="sc-chev" style="font-size:18px;color:var(--ink-muted);flex-shrink:0;margin-left:16px">▶ Play Scenario</span>
+  </div>
+  <div id="sc3body" style="display:none">
   <p class="sc-sub">The photo. The flip. The erase. The hidden layers. The blocked import. Your notification. All in one screen. <span style="font-size:13px;color:var(--gold);font-style:italic">Soft binding and watermark survivability layers are architectural roadmap capabilities. Active conversations are underway with watermarking standards partners and certificate authority infrastructure.</span></p>
   <div class="stage">
     <div class="bc">
       <div class="bc-dots"><div class="bcd r"></div><div class="bcd y"></div><div class="bcd g"></div></div>
-      <div class="bc-url"><span style="color:#888;font-size:11px" id="s3Url">Photo Asset Manager — import queue</span></div>
+      <div class="bc-url"><span style="color:#888;font-size:11px" id="s3Url">Photo Asset Manager; import queue</span></div>
     </div>
     <div class="s3-cinema">
       <!-- LEFT: card + progress -->
@@ -500,7 +539,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
         <div class="s3-panel-area">
           <!-- Panel 1 -->
           <div class="s3p active" id="sp1">
-            <div class="sp-lbl ok">Original File — Full Consent Data</div>
+            <div class="sp-lbl ok">Original File; Full Consent Data</div>
             <div class="sp-mono">
               <div><span class="mk">c2pa:manifest</span>  <span class="mv ok">✓ verified</span></div>
               <div><span class="mk">ddt:cro</span>         <span class="mv gold">0bd66ac7-55c9...</span></div>
@@ -525,20 +564,20 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
           <div class="s3p" id="sp3">
             <div class="sp-lbl ok">Hidden Layers Detected Beneath the Surface</div>
             <div class="sp-mono">
-              <div><span class="mk">layer_1  c2pa</span>      <span class="mv bad">✗ MISSING — stripped</span></div>
+              <div><span class="mk">layer_1  c2pa</span>      <span class="mv bad">✗ MISSING; stripped</span></div>
               <div><span class="mk">layer_2  trustmark</span>  <span class="mv ok">✓ FOUND IN PIXELS</span></div>
               <div><span class="mk">layer_3  neural_fp</span>  <span class="mv ok">✓ MATCH CONFIRMED</span></div>
               <div style="margin-top:6px"><span class="mk">identity</span>            <span class="mv gold">RESOLVED → Performer</span></div>
             </div>
-            <p class="sp-body">The metadata is gone. But two layers were never in the metadata. A digital watermark embedded in the image pixels carries a pointer back to the IPS endpoint — it survives metadata stripping. A biometric fingerprint confirms the subject anchor. Identity fully verified across two independent layers.</p>
+            <p class="sp-body">The metadata is gone. But two layers were never in the metadata. A digital watermark embedded in the image pixels carries a pointer back to the IPS endpoint; it survives metadata stripping. A biometric fingerprint confirms the subject anchor. Identity fully verified across two independent layers.</p>
           </div>
           <!-- Panel 4 -->
           <div class="s3p dark-bg" id="sp4">
-            <div class="sp-lbl bad" style="color:#FF7B72">DDT IPS — Import Blocked</div>
+            <div class="sp-lbl bad" style="color:#FF7B72">DDT IPS; Import Blocked</div>
             <div class="sp-mono">
               <div><span class="mk-d">permission_state:</span>  <span style="color:#FF7B72;font-weight:600">SUSPENDED</span></div>
               <div><span class="mk-d">use_context:</span>       <span style="color:#FFD700">OUT_OF_SCOPE</span></div>
-              <div><span class="mk-d">manifest_stripped:</span> <span style="color:#FF7B72">true — logged</span></div>
+              <div><span class="mk-d">manifest_stripped:</span> <span style="color:#FF7B72">true; logged</span></div>
               <div><span class="mk-d">action:</span>            <span style="color:#FF7B72">HALT_IMPORT · NOTIFY_CREATOR</span></div>
             </div>
             <div style="padding:10px 12px;background:rgba(255,123,114,.08);border-radius:8px;border:1px solid rgba(255,123,114,.2);font-size:12px;color:rgba(255,255,255,.8);line-height:1.6;margin-bottom:12px">
@@ -554,11 +593,11 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
           </div>
           <!-- Panel 5 -->
           <div class="s3p" id="sp5">
-            <div class="sp-lbl ok">✓ You Are Notified — Manifest Updated</div>
+            <div class="sp-lbl ok">✓ You Are Notified; Manifest Updated</div>
             <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:10px">
               <div style="background:white;border-radius:8px;padding:9px 11px;display:flex;gap:9px;align-items:flex-start;border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 10px rgba(0,0,0,.07)">
                 <div class="ni ni-e" style="width:28px;height:28px;font-size:13px">📧</div>
-                <div><div class="nt">DDT Alert — Strip Attempt Blocked</div><div class="nb">Someone attempted to strip your content's metadata and import it. The attempt was blocked. Evidence captured.</div></div>
+                <div><div class="nt">DDT Alert; Strip Attempt Blocked</div><div class="nb">Someone attempted to strip your content's metadata and import it. The attempt was blocked. Evidence captured.</div></div>
               </div>
               <div style="background:white;border-radius:8px;padding:9px 11px;display:flex;gap:9px;align-items:flex-start;border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 10px rgba(0,0,0,.07)">
                 <div class="ni ni-s" style="width:28px;height:28px;font-size:13px">💬</div>
@@ -566,7 +605,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
               </div>
             </div>
             <div style="background:var(--warm);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
-              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--flag);font-weight:500;margin-bottom:8px">FLAGGED_CONSENT_EVENT — strip attempt</div>
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--flag);font-weight:500;margin-bottom:8px">FLAGGED_CONSENT_EVENT; strip attempt</div>
               <div style="display:flex;gap:7px;flex-wrap:wrap">
                 <button class="ea" onclick="modal('👁','View Evidence','Full record of the strip attempt: file hash, timestamp, import destination, and intent response. All saved to your identity record.')">👁 View Evidence</button>
                 <button class="ea" onclick="modal('📩','Request Licensing','DDT opens a licensing conversation on your terms. You set the price and the permitted uses.')">📩 Request Licensing</button>
@@ -581,25 +620,28 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
   </div>
   <div style="display:flex;align-items:center;flex-wrap:wrap">
     <button class="play-btn" id="s3Play" onclick="playS3()">▶ Play Scenario</button>
+    <button class="pause-btn" id="s3Pause" onclick="togglePause(this)">⏸ Pause</button>
     <button class="replay-btn" id="s3Replay" onclick="replayS3()">↻ Replay</button>
   </div>
 </div>
 
+</div><!-- /sc3body -->
+</div><!-- /sc3wrap -->
+
 </div><!-- /scenarios -->
 
 <section class="cta-section fade-in">
-  <h2 class="cta-h">The AI era can still be a place<br>where you <em>thrive.</em></h2>
-  <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(20px,2.5vw,28px);font-weight:300;font-style:italic;color:var(--sage);margin-bottom:16px">Let DDT give your permission power.</p>
-  <p class="cta-p">DDT is in active pilot with performers. Your identity deserves this infrastructure.</p>
+  <h2 class="cta-h">The AI era doesn't have to take from you.<br>It can work <em>on your terms.</em></h2>
+  <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.2vw,26px);font-weight:300;font-style:italic;color:var(--ink-soft);margin-bottom:8px;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.6">DDT makes sure your identity is used only with permission&#8230; wherever it goes.</p>
   <div class="cta-btns">
     <a href="mailto:jhofstad@ddt-pro.com" class="cbtn pri">Get early access</a>
-    <a href="investor.html" class="cbtn sec">See the investor demo →</a>
   </div>
+  <p class="cta-p" style="margin-top:16px;margin-bottom:0">DDT is in active pilot with performers. Your identity deserves this infrastructure.</p>
 </section>
 
 <footer>
   <div class="f-logo">Digital Double Technologies, Inc.</div>
-  <div class="f-links"><a href="index.html">Home</a><a href="investor.html">Investor Demo</a><a href="watch.html">Watch Demo</a></div>
+  <div class="f-links"><a href="index.html">Home</a><a href="pipeline.html">The Pipeline</a><a href="watch.html">Watch Demo</a></div>
   <p class="f-legal">© 2026 Digital Double Technologies, Inc. Provisional patent filed (Application 63/997,237). All rights reserved.</p>
 </footer>
 
@@ -613,7 +655,34 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
 </div>
 
 <script>
-const D = ms => new Promise(r => setTimeout(r, ms));
+// Toggle scenario dropdown
+function toggleSc(bodyId, toggleEl) {
+  const body = document.getElementById(bodyId);
+  const chev = toggleEl.querySelector('.sc-chev');
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (chev) chev.textContent = isOpen ? '▶ Play Scenario' : '▲ Collapse';
+}
+
+// Pause/resume support
+let paused = false;
+let pauseResolve = null;
+function checkPause() {
+  if (!paused) return Promise.resolve();
+  return new Promise(res => { pauseResolve = res; });
+}
+function togglePause(btn) {
+  paused = !paused;
+  btn.textContent = paused ? '▶ Resume' : '⏸ Pause';
+  btn.style.borderColor = paused ? 'var(--sage)' : '';
+  btn.style.color = paused ? 'var(--sage)' : '';
+  if (!paused && pauseResolve) { pauseResolve(); pauseResolve = null; }
+}
+
+const D = ms => new Promise(r => {
+  let id = setTimeout(() => checkPause().then(r), ms);
+});
 const ann = (id, h) => { const el = document.getElementById(id); if(el) el.innerHTML = h; };
 
 // Theme
@@ -623,7 +692,7 @@ document.getElementById('themeToggle').addEventListener('click', function(){
   this.textContent = d ? 'Dark mode' : 'Light mode';
 });
 
-// IPS — live endpoint with timeout fallback
+// IPS; live endpoint with timeout fallback
 async function checkIPS() {
   const dot = document.getElementById('ipsDot'), val = document.getElementById('ipsVal');
   const controller = new AbortController();
@@ -651,12 +720,13 @@ const s1steps = [
   {n:'n2',a:'a2',log:{id:'l3',c:'active',t:'> [09:14:24] Processing: performer_headshots_2024.zip...'},msg:'<strong>Your content is discovered.</strong> The crawler reads the file. But your content carries something unexpected: a DDT Consent Receipt Object.'},
   {n:'n3',a:'a3',log:{id:'l4',c:'warn',  t:'> [09:14:26] ⚡ CRO identifier detected in asset metadata'},msg:'<strong>DDT detects the CRO.</strong> Embedded in your content is a cryptographic record tied to your identity. The ingestion queue pauses.'},
   {n:'n4',a:'a4',log:{id:'l5',c:'active',t:'> [09:14:27] Querying DDT Identity Permission State endpoint...'},msg:'<strong>The Identity Permission State is queried.</strong> One question: did this person authorize AI training? The live endpoint responds.'},
-  {n:'n5',a:'a5',log:{id:'l6',c:'error', t:'> [09:14:28] permission_state: "OUT_OF_SCOPE" — not authorized'},msg:'<strong>The answer is NO.</strong> The IPS endpoint returns OUT_OF_SCOPE. The platform\'s system — honoring that signal — stops ingestion. DDT does not block anything; it provides the answer. The platform acted on it. And now cannot claim it did not know.'},
+  {n:'n5',a:'a5',log:{id:'l6',c:'error', t:'> [09:14:28] permission_state: "OUT_OF_SCOPE"; not authorized'},msg:'<strong>The answer is NO.</strong> The IPS endpoint returns OUT_OF_SCOPE. The platform\'s system; honoring that signal; stops ingestion. DDT does not block anything; it provides the answer. The platform acted on it. And now cannot claim it did not know.'},
   {n:'n6',a:null,log:{id:'l7',c:'warn',  t:'> [09:14:28] ✓ Audit packet generated. Timestamp sealed. Logged.'},msg:'<strong>The attempt is logged permanently.</strong> A timestamped audit packet is generated. The "I didn\'t know" defense is closed.'},
 ];
 async function playS1() {
   if(s1run) return; s1run=true;
   document.getElementById('s1Play').style.display='none';
+  document.getElementById('s1Pause').classList.add('show');
   ['n1','n2','n3','n4','n5','n6'].forEach(id => document.getElementById(id).className='pt-node');
   ['a1','a2','a3','a4','a5'].forEach(id => document.getElementById(id).className='pt-arrow');
   for(let i=2;i<=9;i++){const el=document.getElementById('l'+i);if(el){el.className='ll';el.textContent='\u00a0';}}
@@ -669,11 +739,11 @@ async function playS1() {
     document.getElementById(s.n).className = s.n==='n5' ? 'pt-node blocked' : 'pt-node ok';
     await D(200);
   }
-  const extra=[{id:'l8',c:'error',t:'> [09:14:29] ✗ HALT_INGESTION — consent not granted'},{id:'l9',c:'dim',t:'> [09:14:29] Evidence record closed. Platform liability documented.'}];
+  const extra=[{id:'l8',c:'error',t:'> [09:14:29] ✗ HALT_INGESTION; consent not granted'},{id:'l9',c:'dim',t:'> [09:14:29] Evidence record closed. Platform liability documented.'}];
   for(const e of extra){const el=document.getElementById(e.id);if(el){el.className='ll '+e.c;el.textContent=e.t;await D(500);}}
-  s1run=false; document.getElementById('s1Replay').classList.add('show');
+  s1run=false; document.getElementById('s1Pause').classList.remove('show'); document.getElementById('s1Replay').classList.add('show');
 }
-function replayS1(){document.getElementById('s1Replay').classList.remove('show');document.getElementById('s1Play').style.display='inline-flex';s1run=false;ann('a1ann','Press Play to watch what happens when an AI crawler finds your content.');playS1();}
+function replayS1(){document.getElementById('s1Replay').classList.remove('show');document.getElementById('s1Pause').classList.remove('show');document.getElementById('s1Pause').textContent='⏸ Pause';paused=false;document.getElementById('s1Play').style.display='inline-flex';s1run=false;ann('a1ann','Press Play to watch what happens when an AI crawler finds your content.');playS1();}
 
 // ═══ S2 ═══
 let s2run=false;
@@ -779,8 +849,8 @@ async function runScan(){
       if(!hit&&li>=16){
         hit=true;
         lines[15].classList.add('hit');
-        badgeSt.textContent='⚠ Identity found — verifying...';
-        ann('a2ann','<strong>CRO found.</strong> Line 15: <code style="font-family:\'DM Mono\',monospace;font-size:11px;background:rgba(255,215,0,.15);padding:2px 5px;border-radius:3px">data-ddt-cro="0bd66ac7..."</code> — your identity. The IPS scan pauses.');
+        badgeSt.textContent='⚠ Identity found; verifying...';
+        ann('a2ann','<strong>CRO found.</strong> Line 15: <code style="font-family:\'DM Mono\',monospace;font-size:11px;background:rgba(255,215,0,.15);padding:2px 5px;border-radius:3px">data-ddt-cro="0bd66ac7..."</code>; your identity. The IPS scan pauses.');
       }
       if(prog<1) requestAnimationFrame(frame); else res();
     }
@@ -790,7 +860,7 @@ async function runScan(){
   badgeSt.textContent='Permission check in progress...';
   ann('a2ann','<strong>Scan complete.</strong> One identity marker found. The IPS system asks the only question that matters.');
   await D(3200);
-  badgeSt.textContent='REVOKED — blocking render';
+  badgeSt.textContent='REVOKED; blocking render';
   badge.style.borderColor='rgba(255,123,114,.5)';
   badge.querySelector('span').style.background='#FF7B72';
   badge.querySelector('span').style.boxShadow='0 0 0 3px rgba(255,123,114,.2)';
@@ -802,6 +872,7 @@ async function runScan(){
 async function playS2(){
   if(s2run) return; s2run=true;
   document.getElementById('s2Play').style.display='none';
+  document.getElementById('s2Pause').classList.add('show');
   ann('a2ann','<strong>Step 1:</strong> Someone types the URL and hits Enter. Your image is on this page. You have no idea this is about to happen.');
   await typeURL(); await D(200);
   await runScan();
@@ -809,7 +880,7 @@ async function playS2(){
   const ww=document.getElementById('webpageWrap'); ww.style.display='block';
   document.getElementById('webpageReveal').classList.add('show');
   await D(500);
-  ann('a2ann','<strong>The IPS response is REVOKED.</strong> The browser extension — acting on that signal — applies the Unverified Content overlay over your likeness. DDT answered the question. The extension acted on it.');
+  ann('a2ann','<strong>The IPS response is REVOKED.</strong> The browser extension; acting on that signal; applies the Unverified Content overlay over your likeness. DDT answered the question. The extension acted on it.');
   document.getElementById('blurOverlay').classList.add('active'); await D(800);
   document.getElementById('blurBadge').classList.add('show'); await D(1000);
   ann('a2ann','<strong>You are notified instantly.</strong> Email and SMS within seconds. URL, screenshot, timestamp. The evidence came to you.');
@@ -820,9 +891,9 @@ async function playS2(){
   document.getElementById('manifestPanel').classList.add('open'); await D(800);
   document.getElementById('evBody').classList.add('open');
   document.getElementById('evChev').textContent='▲';
-  s2run=false; document.getElementById('s2Replay').classList.add('show');
+  s2run=false; document.getElementById('s2Pause').classList.remove('show'); document.getElementById('s2Replay').classList.add('show');
 }
-function replayS2(){document.getElementById('s2Replay').classList.remove('show');document.getElementById('s2Play').style.display='inline-flex';s2run=false;resetS2();playS2();}
+function replayS2(){document.getElementById('s2Replay').classList.remove('show');document.getElementById('s2Pause').classList.remove('show');document.getElementById('s2Pause').textContent='⏸ Pause';paused=false;document.getElementById('s2Play').style.display='inline-flex';s2run=false;resetS2();playS2();}
 function toggleEvt(){const b=document.getElementById('evBody'),c=document.getElementById('evChev');b.classList.contains('open')?(b.classList.remove('open'),c.textContent='▼'):(b.classList.add('open'),c.textContent='▲');}
 
 // ═══ S3 ═══
@@ -842,16 +913,17 @@ function resetS3(){
   document.getElementById('intentResp').textContent='';
   acts.forEach(id=>{const el=document.getElementById(id);if(el)el.className='s3-act';});
   showPanel('sp1'); setCardLbl('');
-  document.getElementById('s3Url').textContent='Photo Asset Manager — import queue';
+  document.getElementById('s3Url').textContent='Photo Asset Manager; import queue';
   ann('a3ann','Press Play to watch what happens when someone tries to strip your identity from your content.');
 }
 async function playS3(){
   if(s3run)return; s3run=true;
   document.getElementById('s3Play').style.display='none';
+  document.getElementById('s3Pause').classList.add('show');
   setAct(0); setCardLbl('C2PA manifest verified ✓','var(--ok)'); showPanel('sp1');
   ann('a3ann','<strong>A photo with full consent data.</strong> The C2PA manifest is verified. The DDT CRO is attached. Consent is AUTHORIZED for specific uses only.');
   await D(4400);
-  setAct(1); document.getElementById('s3Url').textContent='Metadata Editor — stripping provenance';
+  setAct(1); document.getElementById('s3Url').textContent='Metadata Editor; stripping provenance';
   setCardLbl('Flipping file to back...','var(--gold)');
   document.getElementById('s3Card').style.transform='rotateY(180deg)';
   ann('a3ann','<strong>A malicious user takes the file.</strong> They want to strip the metadata. They believe erasing the consent record erases the obligation.');
@@ -869,17 +941,17 @@ async function playS3(){
   document.getElementById('layer-labels').style.opacity='1';
   setCardLbl('💧 Watermark + 🧬 Fingerprint active','var(--ok)');
   await D(3800);
-  setAct(4); document.getElementById('s3Url').textContent='DDT IPS — SUSPENDED · OUT_OF_SCOPE';
+  setAct(4); document.getElementById('s3Url').textContent='DDT IPS; SUSPENDED · OUT_OF_SCOPE';
   showPanel('sp4');
   ann('a3ann','<strong>SUSPENDED. OUT OF SCOPE.</strong> The import is halted. The system confronts the person and asks their intent. Every response is logged permanently.');
   await D(4500);
   setAct(5); showPanel('sp5');
   ann('a3ann','<strong>You are notified instantly.</strong> Your manifest is updated. Three choices appear. You decide: view the evidence, open licensing on your terms, or issue a full REVOKE.');
   acts.forEach((id,i)=>{if(i<=5){const el=document.getElementById(id);if(el)el.className='s3-act done';}});
-  s3run=false; document.getElementById('s3Replay').classList.add('show');
+  s3run=false; document.getElementById('s3Pause').classList.remove('show'); document.getElementById('s3Replay').classList.add('show');
 }
-function replayS3(){document.getElementById('s3Replay').classList.remove('show');document.getElementById('s3Play').style.display='inline-flex';s3run=false;resetS3();playS3();}
-function s3Intent(t){const m={commercial:'> OUT_OF_SCOPE — commercial use not authorized by subject',training:'> OUT_OF_SCOPE — AI training explicitly prohibited in CRO',editorial:'> SUSPENDED — editorial use requires verified licensing agreement'};document.getElementById('intentResp').textContent=m[t]||'> OUT_OF_SCOPE';}
+function replayS3(){document.getElementById('s3Replay').classList.remove('show');document.getElementById('s3Pause').classList.remove('show');document.getElementById('s3Pause').textContent='⏸ Pause';paused=false;document.getElementById('s3Play').style.display='inline-flex';s3run=false;resetS3();playS3();}
+function s3Intent(t){const m={commercial:'> OUT_OF_SCOPE; commercial use not authorized by subject',training:'> OUT_OF_SCOPE; AI training explicitly prohibited in CRO',editorial:'> SUSPENDED; editorial use requires verified licensing agreement'};document.getElementById('intentResp').textContent=m[t]||'> OUT_OF_SCOPE';}
 
 // Modal
 function modal(i,t,b){document.getElementById('mIcon').textContent=i;document.getElementById('mTitle').textContent=t;document.getElementById('mBody').textContent=b;document.getElementById('modalWrap').style.display='grid';}

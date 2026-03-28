@@ -204,6 +204,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
   <div class="nav-r">
     <a href="index.html" class="back-link">Back</a>
     <button class="btn-play" id="btnPlay" onclick="start()">Play</button>
+    <button id="btnPause" onclick="togglePause()" style="display:none;background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);padding:7px 16px;border-radius:100px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s">⏸ Pause</button>
     <button class="btn-replay" id="btnReplay" onclick="replay()">Replay</button>
   </div>
 </nav>
@@ -630,8 +631,22 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
 
 
 <script>
-const W = ms => new Promise(r => setTimeout(r, ms));
+const W = ms => new Promise(r => {
+  setTimeout(() => {
+    if (!paused) { r(); return; }
+    const check = setInterval(() => { if (!paused) { clearInterval(check); r(); } }, 100);
+  }, ms);
+});
 let busy = false;
+let paused = false;
+
+function togglePause() {
+  paused = !paused;
+  const btn = $('btnPause');
+  btn.textContent = paused ? '▶ Resume' : '⏸ Pause';
+  btn.style.color = paused ? 'rgba(201,169,110,.9)' : 'rgba(255,255,255,.5)';
+  btn.style.borderColor = paused ? 'rgba(201,169,110,.4)' : 'rgba(255,255,255,.15)';
+}
 
 const $ = id => document.getElementById(id);
 
@@ -674,6 +689,7 @@ async function runMorph() {
   const st=$('stage');
   st.classList.add('on');
   $('btnPlay').style.display='none';
+  $('btnPause').style.display='inline-flex';
   run();
 }
 
@@ -952,11 +968,16 @@ async function run() {
   cc("<strong>DDT makes it possible.</strong>");
   await W(3500);
 
+  $('btnPause').style.display='none'; paused=false;
   $('btnReplay').classList.add('show');
 }
 
 function replay() {
-  busy=false; $('btnReplay').classList.remove('show');
+  busy=false; paused=false; $('btnReplay').classList.remove('show');
+  $('btnPause').style.display='none';
+  $('btnPause').textContent='⏸ Pause';
+  $('btnPause').style.color='rgba(255,255,255,.5)';
+  $('btnPause').style.borderColor='rgba(255,255,255,.15)';
 
   // Reset seal
   const s=$('sealSvg'); s.style.animation=''; s.style.opacity='.14';
@@ -1016,7 +1037,7 @@ function replay() {
   const st=$('stage'); st.classList.remove('on'); st.scrollTop=0;
   const ts=$('titleScreen');
   ts.style.display='flex';
-  setTimeout(()=>{ts.style.opacity='1';ts.style.pointerEvents='auto';$('btnPlay').style.display='inline-flex';currentNarrBox='narrText1';},50);
+  setTimeout(()=>{ts.style.opacity='1';ts.style.pointerEvents='auto';$('btnPlay').style.display='inline-flex';$('btnPause').style.display='none';currentNarrBox='narrText1';},50);
 }
 </script>
 </body>
