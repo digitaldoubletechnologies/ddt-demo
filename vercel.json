@@ -1,7 +1,24 @@
 {
   "routes": [
-    { "src": "/performer", "dest": "/performer.html" },
-    { "src": "/watch", "dest": "/watch.html" },
-    { "src": "/", "dest": "/index.html" }
+    {
+      "src": "/privacy",
+      "dest": "/privacy.html"
+    },
+    {
+      "src": "/terms",
+      "dest": "/terms.html"
+    },
+    {
+      "src": "/performer",
+      "dest": "/performer.html"
+    },
+    {
+      "src": "/watch",
+      "dest": "/watch.html"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
+    }
   ]
 }
