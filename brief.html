@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Identity Liability — DDT Broker Briefing · April 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Source+Sans+3:wght@400;500;600&display=swap');
+
+  :root {
+    --sage: #6B9E87;
+    --sage-dark: #3E7A62;
+    --sage-pale: #EAF4EF;
+    --ink: #1C1C1A;
+    --ink-soft: #3A3935;
+    --ink-muted: #7A7870;
+    --cream: #FAF8F4;
+    --warm: #F3F0E8;
+    --border: #DDD9D0;
+    --red: #C0392B;
+    --red-pale: #FDF0EF;
+    --red-deep: #8B2020;
+    --amber: #B8640A;
+    --amber-pale: #FDF4E7;
+    --green: #2E6B47;
+    --green-pale: #E6F2EC;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink-soft);
+    font-family: 'Source Sans 3', Georgia, sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 48px 40px 80px;
+  }
+
+  /* HEADER */
+  .masthead {
+    border-bottom: 4px solid var(--sage);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+  .masthead-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 14px;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .masthead h1 span { color: var(--red); }
+  .masthead-sub {
+    font-size: 20px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    max-width: 800px;
+  }
+  .masthead-meta {
+    margin-top: 18px;
+    font-size: 14px;
+    color: var(--ink-muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* STAT ROW */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .stat-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 18px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .stat-lbl {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+
+  /* SECTION HEADS */
+  .sec-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    white-space: nowrap;
+  }
+  .sec-label::before, .sec-label::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: var(--sage);
+    opacity: 0.35;
+    min-width: 30px;
+  }
+  .sec-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.2;
+    text-align: center;
+  }
+  .sec-sub {
+    font-size: 17px;
+    color: var(--ink-muted);
+    margin-bottom: 24px;
+    line-height: 1.6;
+    text-align: center;
+  }
+  .divider {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 48px 0 36px;
+  }
+  .divider.sage { border-top-color: var(--sage); border-top-width: 3px; }
+  .divider.red  { border-top-color: var(--red);  border-top-width: 3px; }
+
+  /* CHART LEGEND */
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 15px;
+    color: var(--ink-muted);
+  }
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .legend-dash {
+    width: 22px;
+    height: 3px;
+    border-top: 3px dashed var(--sage);
+    flex-shrink: 0;
+  }
+
+  /* CASE CARDS */
+  .case-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .case-card:hover { border-color: var(--sage); }
+  .case-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 26px 28px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .case-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--sage);
+    min-width: 36px;
+    padding-top: 2px;
+  }
+  .case-info { flex: 1; }
+  .case-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 5px;
+    line-height: 1.25;
+  }
+  .case-meta {
+    font-size: 16px;
+    color: var(--ink-muted);
+  }
+  .case-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 700;
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-left: 10px;
+    vertical-align: middle;
+    letter-spacing: 0.02em;
+  }
+  .badge-settled  { background: #FDF0EF; color: var(--red-deep); }
+  .badge-active   { background: var(--amber-pale); color: var(--amber); }
+  .badge-judgment { background: var(--green-pale); color: var(--green); }
+
+  .case-arrow {
+    font-size: 20px;
+    color: var(--sage);
+    padding-top: 4px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .case-arrow.open { transform: rotate(90deg); }
+
+  .case-body {
+    display: none;
+    padding: 4px 28px 28px 82px;
+    border-top: 1px solid var(--border);
+  }
+  .case-body.open { display: block; }
+  .case-body p {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin: 20px 0 16px;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .detail-box {
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .detail-box .dlabel {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .detail-box .dtext {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .box-red { background: var(--red-pale); }
+  .box-red .dlabel { color: var(--red-deep); }
+  .box-red .dtext  { color: #5A1A1A; }
+  .box-grn { background: var(--green-pale); }
+  .box-grn .dlabel { color: var(--green); }
+  .box-grn .dtext  { color: #1A4A30; }
+
+  /* SECTOR TABLE */
+  .sector-thead {
+    display: grid;
+    grid-template-columns: 220px 1fr 170px 140px;
+    gap: 16px;
+    padding: 10px 20px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .sector-thead span {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .sector-thead span.r { text-align: right; }
+
+  .sector-row {
+    display: grid;
+    grid-template-columns: 220px 1fr 170px 140px;
+    gap: 16px;
+    padding: 20px 20px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    align-items: start;
+    background: white;
+    border: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .sector-row:hover { background: var(--warm); }
+
+  .sector-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .exp-pill {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .pill-red { background: var(--red-pale); color: var(--red-deep); }
+  .pill-amb { background: var(--amber-pale); color: var(--amber); }
+  .sector-trigger {
+    font-size: 16px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+  .sector-exp {
+    font-size: 17px;
+    font-weight: 600;
+    text-align: right;
+    line-height: 1.4;
+  }
+  .sector-ddt {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--green);
+    text-align: right;
+  }
+
+  /* CLOSING BOX */
+  .closing {
+    background: var(--warm);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px 36px;
+    margin-top: 40px;
+  }
+  .closing h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--sage-dark);
+    margin-bottom: 14px;
+  }
+  .closing p {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-logo {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--sage);
+    letter-spacing: 0.02em;
+  }
+  .footer-tag { font-size: 14px; color: var(--ink-muted); }
+
+  /* PRINT */
+  @media print {
+    body { background: white; font-size: 16px; }
+    .page { padding: 20px; }
+    .case-body { display: block !important; }
+    .case-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="masthead">
+    <div class="masthead-label">Digital Double Technologies, Inc. &mdash; Confidential Broker Briefing</div>
+    <h1>AI Identity Liability:<br><span>The Market Being Built Right Now</span></h1>
+    <p class="masthead-sub">The consent verification instrument that makes this risk insurable now exists &mdash; and the regulatory clock is running.</p>
+    <p class="masthead-meta">April 2026 &nbsp;&nbsp;|&nbsp;&nbsp; Prepared for broker review &nbsp;&nbsp;|&nbsp;&nbsp; jhofstad@ddt-pro.com &nbsp;&nbsp;|&nbsp;&nbsp; ddt-pro.com &nbsp;&nbsp;|&nbsp;&nbsp; Primary sources: Gallagher Re / MIT / Testudo (March 2026), Stanford HAI AI Index (April 2025)</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stat-row" style="grid-template-columns:repeat(5,minmax(0,1fr));">
+    <div class="stat-box">
+      <div class="stat-num" style="color:var(--red);">$6.1B+</div>
+      <div class="stat-lbl">Confirmed settlements &mdash; identity liability and data ingestion combined</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:var(--red);">$0</div>
+      <div class="stat-lbl">Paid by any insurer in any case</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:var(--amber);">65 &rarr; 700+</div>
+      <div class="stat-lbl">Total AI lawsuits ever filed: 2020 to 2025. 978% cumulative growth.</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:var(--amber);">137%</div>
+      <div class="stat-lbl">New filings grew 137% in 2025 alone &mdash; accelerating, not stabilising</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:var(--green);">$0&ndash;$10</div>
+      <div class="stat-lbl">DDT Verification Receipt cost per use</div>
+    </div>
+  </div>
+
+  <!-- GROWTH CHART -->
+  <div class="sec-label">The market</div>
+  <div class="sec-title">65 new AI lawsuits in 2020. 228 in 2025. 700+ total cases in the system.</div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--red);"></div>New AI lawsuits filed that year</div>
+  </div>
+  <div style="position:relative;width:100%;height:320px;margin-bottom:12px;">
+    <canvas id="growthChart" role="img" aria-label="Bar chart: new generative AI lawsuits filed per year grew from 65 in 2020 to 228 in 2025. Year-over-year growth rate accelerated from 59% in 2023-2024 to 137% in 2024-2025.">New filings per year: 65, 65, 93, 165, 152, 228. Growth rate 2024-25: 137%.</canvas>
+  </div>
+
+  <!-- SOURCE ATTRIBUTION BLOCK -->
+  <div style="background:var(--warm);border:1px solid var(--border);border-left:4px solid var(--sage);border-radius:0 8px 8px 0;padding:14px 18px;margin-top:12px;margin-bottom:0;">
+    <p style="font-size:14px;color:var(--ink-muted);line-height:1.65;margin:0;"><strong style="color:var(--ink-soft);">Source:</strong> Gallagher Re, Massachusetts Institute of Technology, and Testudo Global, Inc., <em>&ldquo;Smart Systems, Blind Spots: Rethinking Insurance for the AI Era,&rdquo;</em> March 25, 2026. Confirms 700+ cumulative US generative AI lawsuits by end of 2025, 978% cumulative growth from 2020, year-over-year rates of 59% (2023&rarr;2024) and 137% (2024&rarr;2025). Annual new filing figures derived by applying confirmed YoY rates to the confirmed 700+ total. Testudo Global is backed by IA Capital Group and operates as a Lloyd&rsquo;s coverholder. No C2PA institutional connection identified for any of the three report authors.</p>
+  </div>
+
+  <hr class="divider red">
+
+  <!-- CASE STUDIES -->
+  <div class="sec-label">Confirmed case studies</div>
+  <div class="sec-title">Click any case to expand the full detail</div>
+  <p class="sec-sub">Every defendant lacked a pre-ingestion consent record. Not one insurer paid.</p>
+
+  <!-- EXPOSURE CATEGORY FRAMING -->
+  <div style="background:var(--ink);border-radius:10px;padding:16px 24px;margin-bottom:16px;margin-top:8px;">
+    <p style="font-size:16px;color:white;margin:0;line-height:1.6;">ISO CG 40 47, effective January 1, 2026, excludes both categories below from standard commercial general liability. Every carrier using ISO forms now defaults to exclusion. These are the two gaps with no coverage product.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;">
+    <div style="background:var(--red-pale);border:1.5px solid #e8c0bc;border-radius:12px;padding:22px 24px;">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--red-deep);margin-bottom:10px;">Category A &mdash; Identity attribute use</div>
+      <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.3;">Synthetic generation without consent</div>
+      <p style="font-size:16px;color:var(--ink-soft);line-height:1.65;">A performer, musician, or public figure&rsquo;s voice, face, or likeness used to generate AI content with no <strong>pre-ingestion</strong> authorization record. Exposed party: the production company, advertiser, or platform.</p>
+    </div>
+    <div style="background:var(--amber-pale);border:1.5px solid #e8d0b0;border-radius:12px;padding:22px 24px;">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;">Category B &mdash; Training data ingestion</div>
+      <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.3;">Training on unconsented content corpus</div>
+      <p style="font-size:16px;color:var(--ink-soft);line-height:1.65;">A creator&rsquo;s work ingested to train an AI model with no <strong>pre-ingestion</strong> consent record on file. Exposed party: the AI developer or enterprise deploying the model.</p>
+    </div>
+  </div>
+
+  <!-- Case 1 -->
+  <div class="case-card">
+    <div class="case-head" onclick="toggle(this)">
+      <div class="case-num">01</div>
+      <div class="case-info">
+        <div class="case-name">Bartz v. Anthropic <span class="badge badge-settled">Settled</span></div>
+        <div class="case-meta">Entertainment &middot; Copyright &middot; Authors class action &middot; Approved September 2025</div>
+      </div>
+      <div class="case-amount" style="color:var(--red);">$1.5B</div>
+      <div class="case-arrow">&#9658;</div>
+    </div>
+    <div class="case-body">
+      <p>Anthropic downloaded over 7 million books from shadow libraries LibGen and PiLiMi to train its AI models. Three authors filed suit in August 2024. Judge Alsup certified a class of nearly 500,000 works. Statutory damages could have reached $70 billion. Settlement approved September 25, 2025 at approximately $3,000 per work, paid in four installments through September 2027. Final approval hearing May 14, 2026.</p>
+      <div class="two-col">
+        <div class="detail-box box-red"><div class="dlabel">What was missing</div><div class="dtext">No pre-ingestion consent record. No Training Receipt. No scope limitation. Once embedded in the AI algorithm, the exposure is permanent and inherits to every derivative model trained on those outputs, indefinitely.</div></div>
+        <div class="detail-box box-grn"><div class="dlabel">What DDT changes</div><div class="dtext">A Verification Receipt documents that consent was current before ingestion. Scope and duration are bounded. A breach is traceable and limited to defined works &mdash; not a permanent unbounded embedding across the entire model lineage.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 2 -->
+  <div class="case-card">
+    <div class="case-head" onclick="toggle(this)">
+      <div class="case-num">02</div>
+      <div class="case-info">
+        <div class="case-name">State of Texas v. Meta <span class="badge badge-settled">Settled</span></div>
+        <div class="case-meta">Biometric &middot; Facial geometry &middot; Texas CUBI &middot; First-ever enforcement &middot; July 2024</div>
+      </div>
+      <div class="case-amount" style="color:var(--red);">$1.4B</div>
+      <div class="case-arrow">&#9658;</div>
+    </div>
+    <div class="case-body">
+      <p>Meta ran facial recognition software on virtually every face in photos uploaded to Facebook from 2011 onward, capturing facial geometry records of millions of Texans without written informed consent. This violated the Texas Capture or Use of Biometric Identifier Act (CUBI). The first-ever CUBI enforcement action. Largest privacy settlement ever obtained by a single state attorney general. Paid over five years, announced July 30, 2024.</p>
+      <div class="two-col">
+        <div class="detail-box box-red"><div class="dlabel">What was missing</div><div class="dtext">No written consent at point of facial geometry capture. No audit trail. No record of what biometric data was collected, when, or for what purpose. CUBI requires all three before any collection begins.</div></div>
+        <div class="detail-box box-grn"><div class="dlabel">What DDT changes</div><div class="dtext">DDT's consent record documents written consent with scope and duration at the moment of capture. A live permission state query confirms authorization is current at the moment of use. Both records are cryptographically signed and timestamped.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 3 -->
+  <div class="case-card">
+    <div class="case-head" onclick="toggle(this)">
+      <div class="case-num">03</div>
+      <div class="case-info">
+        <div class="case-name">State of Texas v. Google <span class="badge badge-settled">Settled</span></div>
+        <div class="case-meta">Biometric &middot; Voiceprints &amp; facial geometry &middot; Texas CUBI + DTPA &middot; Finalized October 2025</div>
+      </div>
+      <div class="case-amount" style="color:var(--red);">$1.375B</div>
+      <div class="case-arrow">&#9658;</div>
+    </div>
+    <div class="case-body">
+      <p>Texas sued Google for collecting voiceprints and facial geometry through Google Photos, Google Assistant, and Nest Hub Max without the written consent required by CUBI. Settlement announced May 9, 2025, finalized October 31, 2025. Largest single-state settlement ever against Google. Same statute, same mechanism as the Meta case &mdash; two billion-dollar outcomes in 16 months. Voiceprints are explicitly biometric identifiers under CUBI.</p>
+      <div class="two-col">
+        <div class="detail-box box-red"><div class="dlabel">What was missing</div><div class="dtext">No consent record for voiceprint or facial geometry capture via consumer products. Voice biometric collection for AI training was never disclosed as a use case separate from device functionality.</div></div>
+        <div class="detail-box box-grn"><div class="dlabel">What DDT changes</div><div class="dtext">AI training is a separately governed scope requiring its own consent record with expiry, authorized use cases, and duration &mdash; independent from the original device consent. Every capture generates a documented, machine-verifiable audit entry.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 4 -->
+  <div class="case-card">
+    <div class="case-head" onclick="toggle(this)">
+      <div class="case-num">04</div>
+      <div class="case-info">
+        <div class="case-name">Vacker v. ElevenLabs <span class="badge badge-settled">Settled</span></div>
+        <div class="case-meta">Entertainment &middot; Voice &middot; Right of publicity &middot; DMCA circumvention &middot; First of 48 active AI copyright cases &middot; August 2025</div>
+      </div>
+      <div class="case-amount" style="color:var(--ink-muted);">Confidential</div>
+      <div class="case-arrow">&#9658;</div>
+    </div>
+    <div class="case-body">
+      <p>Voice actors Karissa Vacker and Mark Boyett sued ElevenLabs for training its AI voice synthesis platform on their audiobook recordings without consent, alleging right of publicity violations and DMCA circumvention. First settlement in any of the 48 active AI copyright cases filed against AI companies. Mediated August 18, 2025. Case officially closed November 2025. ElevenLabs had received $280M in funding at a $1&ndash;3B valuation. The risk of going to trial outweighed the cost of settling.</p>
+      <div class="two-col">
+        <div class="detail-box box-red"><div class="dlabel">What was missing</div><div class="dtext">No consent record separating audiobook narration rights from AI training rights. Consenting to narrate a book does not authorize using that recording to train a commercial AI voice product. Scope was never documented.</div></div>
+        <div class="detail-box box-grn"><div class="dlabel">What DDT changes</div><div class="dtext">Voice attribute consent is governed per use case. A consent record for audiobook narration explicitly does not authorize AI training. Training use requires a separate record with its own scope, duration, and compensation &mdash; legally distinct and machine-verifiable.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 5 -->
+  <div class="case-card">
+    <div class="case-head" onclick="toggle(this)">
+      <div class="case-num">05</div>
+      <div class="case-info">
+        <div class="case-name">Clearview AI v. BIPA class <span class="badge badge-settled">Settled</span></div>
+        <div class="case-meta">Technology &middot; Facial recognition &middot; Illinois BIPA &middot; 50 billion images &middot; Final approval March 2025</div>
+      </div>
+      <div class="case-amount" style="color:var(--red);">$51.75M</div>
+      <div class="case-arrow">&#9658;</div>
+    </div>
+    <div class="case-body">
+      <p>Clearview scraped approximately 50 billion facial images from the internet to build a facial recognition database sold to law enforcement agencies, with no consent from any individual depicted. The potential class included virtually any person whose face had appeared online since 2017. Full statutory damages would have bankrupted the company. Settlement structured as a 23% equity stake &mdash; the first settlement of its kind. Final approval March 2025.</p>
+      <div class="two-col">
+        <div class="detail-box box-red"><div class="dlabel">What was missing</div><div class="dtext">No consent at collection. No disclosure to subjects. No limitation on downstream use or resale to law enforcement. BIPA requires written consent before any biometric collection regardless of whether images are publicly accessible online.</div></div>
+        <div class="detail-box box-grn"><div class="dlabel">What DDT changes</div><div class="dtext">Any system querying a face image database gets a live signed response: AUTHORIZED, UNVERIFIABLE, or SUSPENDED. If no consent record exists, the system receives UNVERIFIABLE and cannot proceed without liability. Fail-closed at all risk tiers.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 6 -->
+  <div class="case-card">
+    <div class="case-head" onclick="toggle(this)">
+      <div class="case-num">06</div>
+      <div class="case-info">
+        <div class="case-name">Lehrman &amp; Sage v. LOVO / Voiceverse (Bored Ape Yacht Club) <span class="badge badge-active">Active</span></div>
+        <div class="case-meta">Gaming &middot; NFT &middot; Voice &middot; Right of publicity &middot; S.D.N.Y. &middot; Proceeding July 2025</div>
+      </div>
+      <div class="case-amount" style="color:var(--amber);">Pending</div>
+      <div class="case-arrow">&#9658;</div>
+    </div>
+    <div class="case-body">
+      <p>Voiceverse &mdash; a blockchain startup founded by Bored Ape Yacht Club &mdash; marketed AI voice cloning technology as purchasable and tradeable NFTs, promising buyers &ldquo;unlimited and perpetual&rdquo; commercial use rights. Parent company LOVO hired voice actors Paul Lehrman and Linnea Sage via Fiverr under false pretenses, telling them their recordings were for internal research only. Their voices became the default commercial voices in LOVO&rsquo;s subscription service, sold as NFTs. Performers received $400&ndash;$1,200. Buyers received permanent commercial licenses to their voices. A federal judge allowed breach of contract, unfair business practices, and copyright infringement claims to proceed in July 2025.</p>
+      <div class="two-col">
+        <div class="detail-box box-red"><div class="dlabel">What was missing</div><div class="dtext">Consent was obtained under false scope &mdash; &ldquo;internal research only.&rdquo; The actual use was commercial AI training and NFT monetization at scale. Identity attributes became permanently tradeable financial instruments. No record governed authorized scope, duration, or use cases. Performers had no revocation mechanism.</div></div>
+        <div class="detail-box box-grn"><div class="dlabel">What DDT changes</div><div class="dtext">A scope constraint in the consent record limits use to the stated purpose. Any use outside that scope &mdash; AI training, NFT commercialization, commercial subscription &mdash; returns OUT_OF_SCOPE on a live query. The performer retains revocation rights at any time. Every derivative use creates a lineage record.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 7 -->
+  <div class="case-card">
+    <div class="case-head" onclick="toggle(this)">
+      <div class="case-num">07</div>
+      <div class="case-info">
+        <div class="case-name">Estate of Lokken v. UnitedHealth Group <span class="badge badge-active">Active</span></div>
+        <div class="case-meta">Healthcare &middot; AI claim denial &middot; 90% error rate algorithm &middot; Class action &middot; Proceeding February 2025</div>
+      </div>
+      <div class="case-amount" style="color:var(--amber);">Pending</div>
+      <div class="case-arrow">&#9658;</div>
+    </div>
+    <div class="case-body">
+      <p>UnitedHealth subsidiary naviHealth used an AI algorithm known to have a 90% error rate to deny post-acute care claims for elderly Medicare Advantage patients, overriding physician recommendations. Cigna separately used an algorithm that rejected over 300,000 claims in two months at an average of 1.2 seconds per claim. Humana faces parallel allegations. A federal judge allowed breach of contract and bad faith claims to proceed in February 2025. Note: the defendant here is itself an insurer using AI. Every carrier deploying AI in underwriting or claims faces the same structural exposure.</p>
+      <div class="two-col">
+        <div class="detail-box box-red"><div class="dlabel">Insurance industry note</div><div class="dtext">The defendant is an insurer using AI to deny claims made by its own policyholders. Any carrier using AI in underwriting, claims assessment, or coverage decisions faces analogous exposure from the very people it is supposed to cover.</div></div>
+        <div class="detail-box box-grn"><div class="dlabel">DDT relevance</div><div class="dtext">Patient voice biometric data captured in call centers and telehealth sessions requires BIPA and HIPAA consent. Any AI system using that data in coverage decisions without a documented consent record faces simultaneous exposure across three regulatory frameworks.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Ingestion Category Label -->
+  <div style="margin:32px 0 16px;text-align:center;">
+    <div class="sec-label">Data ingestion cases &mdash; category B</div>
+    <p class="sec-sub" style="margin-top:6px;">The exposed party shifts from the producer to the AI developer. The missing instrument is the same: a consent record before ingestion.</p>
+  </div>
+
+  <!-- Case 8 -->
+  <div class="case-card">
+    <div class="case-head" onclick="toggle(this)">
+      <div class="case-num" style="color:var(--amber);">08</div>
+      <div class="case-info">
+        <div class="case-name">Bartz v. Anthropic <span class="badge badge-settled">Settled</span></div>
+        <div class="case-meta">AI training &middot; Copyright &middot; Books &middot; N.D. Cal. &middot; Settled 2025 &mdash; largest copyright settlement in U.S. history</div>
+      </div>
+      <div class="case-amount" style="color:var(--red);">$1.5B</div>
+      <div class="case-arrow">&#9658;</div>
+    </div>
+    <div class="case-body">
+      <p>Authors and rights-holders brought a class action alleging Anthropic downloaded approximately seven million pirated books to train its large language models without consent or payment. The settlement of $1.5 billion is the largest copyright settlement in U.S. history, covering roughly 500,000 copyrighted works at approximately $3,000 per work. The Northern District of California had previously ruled that Anthropic may have illegally downloaded the works; two months later the company settled rather than face potential statutory damages across the full corpus. Every AI developer training on web-sourced or third-party content faces the same structural exposure.</p>
+      <div class="two-col">
+        <div class="detail-box box-red"><div class="dlabel">What was missing</div><div class="dtext">No consent record existed for any of the roughly 500,000 works ingested. There was no mechanism to query whether a rights-holder had authorized training use at the moment of ingestion. The absence of a pre-ingestion consent record made the entire training corpus legally indefensible against a statutory damages claim.</div></div>
+        <div class="detail-box box-grn"><div class="dlabel">What DDT changes</div><div class="dtext">A DDT consent record on each work establishes, at the moment of ingestion, whether training use is authorized. A Verification Receipt provides a timestamped, signed record that the system queried authorization and received a response before ingesting. That record converts "did you have permission" from an unanswerable question into a documented, auditable fact.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 9 -->
+  <div class="case-card">
+    <div class="case-head" onclick="toggle(this)">
+      <div class="case-num" style="color:var(--amber);">09</div>
+      <div class="case-info">
+        <div class="case-name">Ted Entertainment v. Apple &mdash; YouTube scraping class action <span class="badge badge-active">Active</span></div>
+        <div class="case-meta">AI video training &middot; Copyright &middot; DMCA circumvention &middot; N.D. Cal. &middot; Filed April 3, 2026</div>
+      </div>
+      <div class="case-amount" style="color:var(--amber);">Pending</div>
+      <div class="case-arrow">&#9658;</div>
+    </div>
+    <div class="case-body">
+      <p>Filed April 3, 2026, this class action alleges Apple secretly downloaded millions of copyrighted YouTube videos to train a generative AI video model, deploying automated tools to bypass platform security, rotating IP addresses through virtual machines, and distributing requests across machines to avoid detection. The same plaintiffs filed parallel suits against Meta, Nvidia, ByteDance, and Snap over related AI training practices. YouTube's CEO publicly called unauthorized scraping a violation of creators' rights. Apple has not publicly responded. The case names five of the largest AI developers in the industry and was filed within the past three weeks, meaning this exposure category is accelerating in real time.</p>
+      <div class="two-col">
+        <div class="detail-box box-red"><div class="dlabel">What was missing</div><div class="dtext">No creator on YouTube had a mechanism to signal authorization state for AI training use in a machine-readable, queryable format. The only tools available were platform terms of service and robots.txt directives, both of which Apple allegedly circumvented. There was no consent record and no live authorization query layer.</div></div>
+        <div class="detail-box box-grn"><div class="dlabel">What DDT changes</div><div class="dtext">A DDT consent record embedded in or linked from content metadata gives any downstream system a queryable authorization signal before ingestion. A system that queries and receives REVOKED has a timestamped record of the signal. A system that bypasses the query has documented evidence of willful infringement. The Verification Receipt is the audit trail that separates negligent omission from willful conduct in discovery.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 10 -->
+  <div class="case-card">
+    <div class="case-head" onclick="toggle(this)">
+      <div class="case-num" style="color:var(--amber);">10</div>
+      <div class="case-info">
+        <div class="case-name">In re: OpenAI Copyright Litigation &mdash; NYT, Tribune, regional publishers <span class="badge badge-active">Active</span></div>
+        <div class="case-meta">AI training &middot; News publisher copyright &middot; MDL, S.D.N.Y. &middot; 16 consolidated cases &middot; Discovery phase 2026</div>
+      </div>
+      <div class="case-amount" style="color:var(--amber);">Pending</div>
+      <div class="case-arrow">&#9658;</div>
+    </div>
+    <div class="case-body">
+      <p>Sixteen copyright lawsuits from The New York Times, the Chicago Tribune, and regional publishers have been consolidated in the Southern District of New York. Judge Sidney Stein affirmed in January 2026 that OpenAI must produce 20 million ChatGPT output logs to plaintiffs, rejecting OpenAI's attempt to limit production to conversations that referenced plaintiff works specifically. The court found that output logs across all queries are discoverable because they bear on whether ChatGPT's outputs compete with or substitute for the original works. Legal analysts describe this ruling as the start of a discovery arms race in which AI companies must treat their data logs as high-velocity liabilities. The Debevoise firm predicts 2026 will bring sharper challenges to fair-use defenses, aggressive discovery into proprietary training data, and a new wave of class certification battles as plaintiff legal theories mature. Meanwhile, 23 major news organizations including the New York Times and USA Today have blocked the Wayback Machine's crawler entirely, destroying public archival records in an attempt to prevent further training data scraping. The publishers who blocked the archive did not have a consent layer. They had a drawbridge. DDT is the consent layer.</p>
+      <div class="two-col">
+        <div class="detail-box box-red"><div class="dlabel">What was missing</div><div class="dtext">News publishers had no machine-readable, live-queryable authorization signal for their content corpus. The absence of that signal meant the only available defense was blocking the crawler entirely, sacrificing three decades of public archival record in the process. In discovery, there is no consent record to produce. The governance audit trail the court is demanding does not exist.</div></div>
+        <div class="detail-box box-grn"><div class="dlabel">What DDT changes</div><div class="dtext">A publisher with DDT consent records can leave the archive open and enforce training authorization at the ingestion layer. The IPS query returns REVOKED for training use. The AI system has a timestamped record of the signal. The publisher has a timestamped record that the system was on notice. Both parties have the audit trail the S.D.N.Y. is demanding. The Verification Receipt is the governance document the court is ordering produced, generated automatically at the moment of attempted ingestion.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider sage">
+
+  <!-- CASE AMOUNT CHART -->
+  <div class="sec-label">Settlement comparison</div>
+  <div class="sec-title">Confirmed dollars versus no coverage product</div>
+  <p class="sec-sub">Settled amounts in red. Active cases still building in amber. Hover any bar for case details.</p>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--red);"></div>Confirmed settlement ($M)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--amber);"></div>Active / pending (estimated floor)</div>
+  </div>
+  <div style="position:relative;width:100%;height:440px;margin-bottom:12px;">
+    <canvas id="caseChart" role="img" aria-label="Horizontal bar chart showing AI identity liability case settlements. Bartz v. Anthropic $1.5B, Texas v. Meta $1.4B, Texas v. Google $1.375B, Clearview $51.75M settled. LOVO/Voiceverse and UnitedHealth active.">Cases: Bartz $1.5B, Meta $1.4B, Google $1.375B, Clearview $51.75M settled. LOVO and UnitedHealth pending.</canvas>
+  </div>
+
+  <hr class="divider">
+
+  <!-- INDUSTRY TABLE -->
+  <div class="sec-label">Industry exposure map</div>
+  <div class="sec-title">Eleven sectors with active exposure &mdash; no product covers any of them</div>
+  <p class="sec-sub">Every sector has live litigation or active regulatory triggers today. The DDT column shows pre-ingestion consent verification cost per use.</p>
+
+  <!-- AON PULL QUOTE -->
+  <div style="border-left:4px solid var(--sage);padding:16px 22px;margin-bottom:28px;background:var(--warm);border-radius:0 10px 10px 0;">
+    <p style="font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--ink);line-height:1.6;margin-bottom:8px;">&ldquo;The bar for accountability is shifting from &lsquo;we trust the model&rsquo; to &lsquo;we can defend the outcome.&rsquo; Carriers that embed explainability and auditability from day one are positioned to outperform those treating AI as a black-box shortcut.&rdquo;</p>
+    <p style="font-size:15px;color:var(--ink-muted);">Aon AI Risk 2026: What Business Leaders Need to Know &nbsp;&middot;&nbsp; April 2026. Underwriters are now factoring governance maturity into policy terms and capacity. DDT&rsquo;s Verification Receipt is the auditability instrument.</p>
+  </div>
+
+  <div class="sector-thead">
+    <span>Sector</span>
+    <span>Primary trigger</span>
+    <span class="r">Exposure floor</span>
+    <span class="r">DDT cost</span>
+  </div>
+
+  <div class="sector-thead" style="grid-template-columns:180px 1fr 200px 160px;">
+    <span>Sector</span>
+    <span>Regulation &amp; trigger</span>
+    <span>Companies exposed</span>
+    <span class="r">Violation floor</span>
+  </div>
+
+  <div class="sector-row" style="grid-template-columns:180px 1fr 200px 160px;">
+    <div><div class="sector-name">Entertainment &amp; media</div><span class="exp-pill pill-red">$2.9B confirmed</span></div>
+    <div class="sector-trigger">SAG-AFTRA IMA (July 2025): informed consent required for all digital replicas. NY synthetic performer law: June 9, 2026.</div>
+    <div class="sector-trigger">Studios, streamers, production companies, advertisers using AI voice or likeness.</div>
+    <div class="sector-exp" style="color:var(--red);">$150K/work willful</div>
+  </div>
+
+  <div class="sector-row" style="grid-template-columns:180px 1fr 200px 160px;border-left:3px solid var(--red);">
+    <div><div class="sector-name">AI developers</div><span class="exp-pill pill-red">$1.5B confirmed</span></div>
+    <div class="sector-trigger">ISO CG 40 47 (Jan 2026) excludes training data liability from CGL. Bartz settled $1.5B. Apple, Meta, Nvidia, ByteDance, Snap all facing YouTube scraping class actions (April 2026).</div>
+    <div class="sector-trigger">Any company training AI on third-party content or voice data.</div>
+    <div class="sector-exp" style="color:var(--red);">Per-work statutory damages</div>
+  </div>
+
+  <div class="sector-row" style="grid-template-columns:180px 1fr 200px 160px;">
+    <div><div class="sector-name">Financial services</div><span class="exp-pill pill-amb">Active</span></div>
+    <div class="sector-trigger">Texas CUBI: $25K per violation. Illinois BIPA: $5K per violation. Both proved at scale in Meta and Google settlements.</div>
+    <div class="sector-trigger">Every bank and fintech collecting voice biometrics for authentication or fraud detection.</div>
+    <div class="sector-exp" style="color:var(--amber);">$25K per violation</div>
+  </div>
+
+  <div class="sector-row" style="grid-template-columns:180px 1fr 200px 160px;">
+    <div><div class="sector-name">Advertising &amp; marketing</div><span class="exp-pill pill-amb">Active</span></div>
+    <div class="sector-trigger">NY synthetic performer law: June 9, 2026. Texas RAGA biometric restrictions: 2026. Live compliance window, no coverage product.</div>
+    <div class="sector-trigger">Publicis, IPG, Omnicom, WPP &mdash; every major holding company running AI identity content in NY or TX.</div>
+    <div class="sector-exp" style="color:var(--amber);">Uncapped civil</div>
+  </div>
+
+  <div class="sector-row" style="grid-template-columns:180px 1fr 200px 160px;">
+    <div><div class="sector-name">Telecom &amp; call centers</div><span class="exp-pill pill-amb">Active</span></div>
+    <div class="sector-trigger">Ambriz v. Google (Feb 2025): voice consent liability established for AI customer service. CIPA (California) requires disclosure for prerecorded AI voice.</div>
+    <div class="sector-trigger">AT&T, Verizon, T-Mobile, every enterprise call center using AI voice synthesis.</div>
+    <div class="sector-exp" style="color:var(--amber);">Class action</div>
+  </div>
+
+  <div class="sector-row" style="grid-template-columns:180px 1fr 200px 160px;">
+    <div><div class="sector-name">Gaming &amp; interactive</div><span class="exp-pill pill-amb">Active</span></div>
+    <div class="sector-trigger">SAG-AFTRA IMA: 7.5x scale consent requirement. LOVO/Voiceverse (Bored Ape): voice NFT commercialization held as distinct liability.</div>
+    <div class="sector-trigger">EA, Activision, Epic, Take-Two &mdash; any studio using performer voice or likeness in AI systems.</div>
+    <div class="sector-exp" style="color:var(--amber);">Per-use liability</div>
+  </div>
+
+  <div class="sector-row" style="grid-template-columns:180px 1fr 200px 160px;">
+    <div><div class="sector-name">Healthcare</div><span class="exp-pill pill-amb">Active</span></div>
+    <div class="sector-trigger">BIPA: $5K/violation for patient voice biometrics. HIPAA and state biometric laws apply simultaneously. UnitedHealth, Cigna, Humana class actions proceeding.</div>
+    <div class="sector-trigger">Insurers, hospital systems, telehealth platforms using AI in patient interactions or claims decisions.</div>
+    <div class="sector-exp" style="color:var(--amber);">$5K per violation</div>
+  </div>
+
+  <div class="sector-row" style="grid-template-columns:180px 1fr 200px 160px;">
+    <div><div class="sector-name">HR &amp; employment tech</div><span class="exp-pill pill-amb">Active</span></div>
+    <div class="sector-trigger">Mobley v. Workday: AI hiring tool liability established. Colorado AI Anti-Discrimination Act: Feb 2026. BIPA covers voice in AI interviews.</div>
+    <div class="sector-trigger">Workday, HireVue, LinkedIn, every enterprise using AI screening or assessment tools.</div>
+    <div class="sector-exp" style="color:var(--amber);">ADA + BIPA</div>
+  </div>
+
+  <div class="sector-row" style="grid-template-columns:180px 1fr 200px 160px;">
+    <div><div class="sector-name">Automotive</div><span class="exp-pill pill-amb">Active</span></div>
+    <div class="sector-trigger">BIPA: covers driver facial recognition and biometric monitoring in fleet vehicles. IL, TX, WA all active enforcement.</div>
+    <div class="sector-trigger">Tesla, GM, Ford, fleet operators using driver monitoring AI systems.</div>
+    <div class="sector-exp" style="color:var(--amber);">$5K per violation</div>
+  </div>
+
+  <div class="sector-row" style="grid-template-columns:180px 1fr 200px 160px;">
+    <div><div class="sector-name">Platforms &amp; social media</div><span class="exp-pill pill-amb">Active</span></div>
+    <div class="sector-trigger">TAKE IT DOWN Act: notice-and-removal for non-consensual AI imagery by May 19, 2026. 48-hour compliance window. FTC enforcement.</div>
+    <div class="sector-trigger">Meta, TikTok, X, Snapchat, YouTube &mdash; any platform hosting user-generated AI content.</div>
+    <div class="sector-exp" style="color:var(--amber);">FTC + civil</div>
+  </div>
+
+  <div class="sector-row" style="grid-template-columns:180px 1fr 200px 160px;border-left:3px solid var(--amber);">
+    <div><div class="sector-name">News &amp; publishing</div><span class="exp-pill pill-amb">Active</span></div>
+    <div class="sector-trigger">In re OpenAI MDL (S.D.N.Y.): Judge Stein ordered 20M ChatGPT output logs produced. 23 publishers blocked Wayback Machine rather than face discovery with no consent record.</div>
+    <div class="sector-trigger">NYT, Tribune, regional publishers, any content company with a digital archive.</div>
+    <div class="sector-exp" style="color:var(--amber);">Copyright + discovery</div>
+  </div>
+
+  <!-- CYBER FIRST MOVER PROJECTION -->
+  <div style="margin-top:40px;">
+    <div class="sec-label">First mover opportunity</div>
+    <div class="sec-title">What the first broker to cover cyber built &mdash; and what this market is worth</div>
+    <p class="sec-sub">AIG wrote the first meaningful cyber policy in 1997. The brokers who moved with them built books that define their firms today.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;">
+      <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:28px 24px;">
+        <div style="font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px;">The cyber precedent</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="background:var(--warm);border-radius:8px;padding:14px 12px;text-align:center;">
+            <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--ink-muted);">1997</div>
+            <div style="font-size:14px;color:var(--ink-muted);margin-top:4px;">AIG writes first cyber policy. Market considered uninsurable.</div>
+          </div>
+          <div style="background:var(--warm);border-radius:8px;padding:14px 12px;text-align:center;">
+            <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--amber);">$3.4B</div>
+            <div style="font-size:14px;color:var(--ink-muted);margin-top:4px;">Global cyber premium by 2017.</div>
+          </div>
+          <div style="background:var(--warm);border-radius:8px;padding:14px 12px;text-align:center;">
+            <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--red);">$14.8B</div>
+            <div style="font-size:14px;color:var(--ink-muted);margin-top:4px;">Global cyber premium 2023. Beazley cyber = ~25% of total book.</div>
+          </div>
+          <div style="background:var(--warm);border-radius:8px;padding:14px 12px;text-align:center;">
+            <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--sage-dark);">$90B</div>
+            <div style="font-size:14px;color:var(--ink-muted);margin-top:4px;">Projected global cyber premium by 2030. Source: Munich Re.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:28px 24px;">
+        <div style="font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px;">AI identity liability &mdash; projected premium</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+          <div style="text-align:center;padding:8px 0;">
+            <div style="font-size:13px;font-weight:600;color:var(--ink-muted);margin-bottom:8px;">Conservative</div>
+            <div style="background:var(--green-pale);border-radius:8px;padding:12px 8px;">
+              <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--green);">$2.1B</div>
+              <div style="font-size:13px;color:var(--green);margin-top:4px;">by 2030</div>
+            </div>
+          </div>
+          <div style="text-align:center;padding:8px 0;">
+            <div style="font-size:13px;font-weight:600;color:var(--ink-muted);margin-bottom:8px;">Base case</div>
+            <div style="background:var(--amber-pale);border-radius:8px;padding:12px 8px;">
+              <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--amber);">$8.4B</div>
+              <div style="font-size:13px;color:var(--amber);margin-top:4px;">by 2030</div>
+            </div>
+          </div>
+          <div style="text-align:center;padding:8px 0;">
+            <div style="font-size:13px;font-weight:600;color:var(--ink-muted);margin-bottom:8px;">Optimistic</div>
+            <div style="background:var(--red-pale);border-radius:8px;padding:12px 8px;">
+              <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--red);">$22B</div>
+              <div style="font-size:13px;color:var(--red);margin-top:4px;">by 2030</div>
+            </div>
+          </div>
+        </div>
+        <div style="position:relative;width:100%;height:160px;">
+          <canvas id="projChart" role="img" aria-label="Line chart showing three AI identity liability premium projection scenarios from 2026 to 2030. Conservative reaches $2.1B, base case $8.4B, optimistic $22B.">Conservative $2.1B, base $8.4B, optimistic $22B by 2030.</canvas>
+        </div>
+        <p style="font-size:14px;color:var(--ink-muted);margin-top:12px;line-height:1.6;">Projections based on: eleven-sector exposure base, $6.1B confirmed settlements across identity attribute and data ingestion categories, 137% lawsuit growth rate, regulatory mandates active June 2026. Conservative assumes cyber-equivalent 15-year ramp. Base assumes regulatory acceleration compresses timeline. Optimistic reflects EU AI Act + NY performer law + ISO CG 40 47 triggering enterprise adoption in 2026&ndash;2027. DDT internal model; not independently verified.</p>
+
+        <!-- SOURCE FOOTER -->
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
+          <p style="font-size:13px;color:var(--ink-muted);line-height:1.7;margin:0;">
+            <strong style="color:var(--ink-soft);">Key sources used in this document:</strong><br>
+            (1) Gallagher Re, Massachusetts Institute of Technology, and Testudo Global, Inc., <em>&ldquo;Smart Systems, Blind Spots: Rethinking Insurance for the AI Era,&rdquo;</em> March 25, 2026. Litigation growth data (978%, 137%, 700+ cumulative lawsuits) sourced by Testudo from proprietary underwriting dataset and S&P Global. <em>Conflict note: Testudo is a co-author and a commercial AI liability insurer with a direct interest in market growth.</em><br>
+            (2) Gallagher Re, Gallagher, and CB Insights, <em>&ldquo;Global InsurTech Report Q3 2025,&rdquo;</em> November 2025. Source for 74.8% AI-centered InsurTech funding stat and Testudo investor confirmation (IA Capital Group).<br>
+            (3) Stanford University Institute for Human-Centered AI, <em>&ldquo;AI Index 2025 Annual Report,&rdquo;</em> April 2025. Source for enterprise AI adoption rates and investment figures. <em>Personnel note: Jack Clark (Anthropic co-founder, C2PA member) serves on HAI steering committee; no institutional C2PA connection.</em><br>
+            (4) Verisk / ISO: CG 40 47, CG 40 48, CG 35 08 effective January 1, 2026, cited in Testudo and Evercore reports.<br>
+            (5) Aon, <em>&ldquo;AI Risk 2026: What Business Leaders Need to Know,&rdquo;</em> April 2026.<br>
+            <strong style="color:var(--ink-soft);">C2PA connection check:</strong> No C2PA institutional connection identified for Gallagher Re, MIT, Testudo Global, CB Insights, or Verisk/ISO. These sources are independent of the standards community in which DDT operates.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THIRD-PARTY VALIDATION STRIP -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px;margin-bottom:8px;">
+
+    <div style="background:white;border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:10px;padding:22px 20px;">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;">PwC Responsible AI, 2026</div>
+      <p style="font-size:17px;color:var(--ink-soft);line-height:1.65;margin-bottom:12px;">&ldquo;Your organization might have secured consent from users &mdash; but have those users consented to using that data to train an AI model?&rdquo;</p>
+      <p style="font-size:14px;color:var(--ink-muted);">The exact question DDT answers. The Verification Receipt is the cryptographic proof, generated automatically at the moment of use.</p>
+    </div>
+
+    <div style="background:white;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:10px;padding:22px 20px;">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--red-deep);margin-bottom:10px;">Federal court order &mdash; April 2026</div>
+      <p style="font-size:17px;color:var(--ink-soft);line-height:1.65;margin-bottom:12px;">A federal court ordered UnitedHealth to produce nearly a decade of AI governance records by April 29, 2026.</p>
+      <p style="font-size:14px;color:var(--ink-muted);">DDT creates that governance record automatically at the moment of <strong>pre-ingestion</strong> use. It is the audit trail the court is demanding, generated before the claim is ever filed.</p>
+    </div>
+
+  </div>
+
+  <!-- ATTACHMENT POINT SECTION -->
+  <div style="margin-top:40px;margin-bottom:8px;">
+    <div class="sec-label">The attachment point question</div>
+    <div class="sec-title">Why this market does not need a decade to become insurable</div>
+  </div>
+
+  <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:32px 36px;margin-bottom:16px;">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:28px;">
+
+      <div>
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:12px;">Cyber &mdash; 1997</div>
+        <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--ink);margin-bottom:12px;line-height:1.3;">Attachment point: governance posture</div>
+        <p style="font-size:16px;color:var(--ink-soft);line-height:1.75;">No loss history existed. AIG set the attachment point on evidence of governance: firewalls, access controls, incident response plans. Imprecise. Manually verified. The market accepted it because nothing better existed. NotPetya in 2017 was when carriers finally understood systemic risk at scale.</p>
+      </div>
+
+      <div>
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--red-deep);margin-bottom:12px;">AI identity &mdash; 2026</div>
+        <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--ink);margin-bottom:12px;line-height:1.3;">Attachment point: the consent record</div>
+        <p style="font-size:16px;color:var(--ink-soft);line-height:1.75;">A data breach closes. AI identity does not. A single moment of unconsented ingestion is permanent: the AI algorithm is altered, there is no surgical remedy, no restoration. The only defensible attachment point runs through a <strong>pre-ingestion</strong> consent record. Without it, the carrier is writing into open-ended, permanent exposure with no floor and no basis for a premium.</p>
+      </div>
+
+    </div>
+
+    <!-- The instrument callout -->
+    <div style="background:var(--sage-pale);border:1.5px solid var(--sage);border-radius:12px;padding:24px 28px;margin-bottom:24px;">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--sage-dark);margin-bottom:10px;">In 1997, the governance instrument was a firewall checklist. In 2026, it is DDT&rsquo;s Verification Receipt.</div>
+      <p style="font-size:16px;color:var(--ink-soft);line-height:1.7;margin:0;">Cryptographically signed. Timestamped. Machine-readable. Generated automatically at <strong>pre-ingestion</strong>. The floor is the receipt. The carrier writing coverage around it is not waiting for loss data to mature the market &mdash; it is setting the standard.</p>
+    </div>
+
+    <!-- Three comparison boxes -->
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;">
+
+      <div style="background:var(--warm);border-radius:10px;padding:20px 18px;">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px;">Cyber, 1997</div>
+        <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;">Evidence of governance</div>
+        <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0;">Firewall checklist. Manually verified. Imprecise. First movers built the category.</p>
+      </div>
+
+      <div style="background:var(--red-pale);border-radius:10px;padding:20px 18px;">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--red-deep);margin-bottom:10px;">AI identity, no consent record</div>
+        <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;">Exposure: undefined, permanent</div>
+        <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0;">Self-attestation only. No proof. No floor, no horizon. Underwriters cannot verify what was never documented. Uninsurable.</p>
+      </div>
+
+      <div style="background:var(--green-pale);border-radius:10px;padding:20px 18px;">
+        <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">AI identity, with DDT</div>
+        <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;">Exposure: bounded, documented</div>
+        <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0;">Cryptographic proof at <strong>pre-ingestion</strong>. What was authorized, when, for how long. Beazley 2026: <em>&ldquo;the underwriting bar will move from a focus on questionnaires about an organization&rsquo;s cyber security practices to proof of their implementation and operational resilience.&rdquo;</em> DDT is that proof.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CLOSING BOX -->
+  <div class="closing" style="margin-top:16px;">
+    <h3>Why no existing product covers this</h3>
+    <p>Five AI insurance products exist today: Google Cloud&rsquo;s Risk Protection Program, Armilla at Lloyd&rsquo;s, Testudo at Lloyd&rsquo;s, AXA XL&rsquo;s GenAI endorsement, and Munich Re&rsquo;s aiSure.</p>
+    <p style="margin-top:14px;">Every one covers what happens <strong>after</strong> ingestion: model malfunction, output harm, performance failure.</p>
+    <p style="margin-top:14px;">Not one covers what happens <strong><em>before</em></strong> ingestion: whether the identity subject currently authorizes that specific use at that specific moment.</p>
+    <p style="margin-top:14px;">That is why $6.1 billion has been paid and no insurer contributed a cent. ISO CG 40 47 took effect January 2026 and excludes both exposure categories from standard CGL. Every production company, AI developer, and enterprise deploying a model trained on third-party content now has an uninsured gap.</p>
+    <p style="margin-top:14px;">DDT&rsquo;s Verification Receipt is a cryptographically signed, timestamped record generated at the moment of <strong>pre-ingestion</strong> use &mdash; before the breach, before the claim. It is the underwriting instrument that transforms undefined AI identity exposure into a bounded, documented, defensible risk carriers can price and stand behind.</p>
+    <p style="margin-top:18px;font-size:20px;font-weight:600;color:var(--ink);">The conversation is not about whether this market exists. The conversation is about which broker can cover it first.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo">Digital Double Technologies, Inc.</div>
+    <div class="footer-tag">jhofstad@ddt-pro.com &nbsp;&middot;&nbsp; ddt-pro.com &nbsp;&middot;&nbsp; April 2026</div>
+  </div>
+
+</div>
+
+<script>
+function toggle(head) {
+  const body = head.parentElement.querySelector('.case-body');
+  const arrow = head.querySelector('.case-arrow');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+new Chart(document.getElementById('growthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2020', '2021', '2022', '2023', '2024', '2025'],
+    datasets: [
+      {
+        label: 'New lawsuits filed',
+        data: [65, 65, 93, 165, 152, 228],
+        backgroundColor: '#C0392B',
+        borderColor: '#8B2020',
+        borderWidth: 1,
+        borderRadius: 5,
+        yAxisID: 'y'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        padding: 20,
+        bodyFont: { size: 17 },
+        titleFont: { size: 18, weight: '600' },
+        bodySpacing: 6,
+        boxPadding: 6,
+        callbacks: {
+          label: ctx => '  ' + ctx.parsed.y + ' new lawsuits filed this year',
+          afterBody: items => {
+            const notes = [
+              'Pre-ChatGPT baseline. 65 new AI-adjacent lawsuits. This is the starting point for the 978% cumulative growth figure. Source: Gallagher Re / MIT / Testudo, March 2026.',
+              'Launch year. ChatGPT released November 2022. Filing rate holds flat — lawyers are watching, not yet filing.',
+              'First wave of copyright suits hits courts: authors, artists, musicians vs. OpenAI, Stability AI, Midjourney.',
+              'Courts begin allowing cases to proceed. Plaintiff firms see a path. Legal theories are being refined.',
+              'Firms consolidating strategy, waiting for the first big win before mass filing. Precedent is coming.',
+              '228 new filings — 137% up on 2024. Bartz ($1.5B), Texas v. Meta ($1.4B), Texas v. Google ($1.375B) all settle in the same window. Every firm that was waiting now files. Cumulative total hits 700+.'
+            ];
+            const note = notes[items[0].dataIndex];
+            if (!note) return [];
+            const words = note.split(' ');
+            const lines = [];
+            let line = '  ';
+            words.forEach(w => {
+              if ((line + w).length > 55) { lines.push(line); line = '  ' + w + ' '; }
+              else line += w + ' ';
+            });
+            lines.push(line);
+            return ['', ...lines];
+          }
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { font: { size: 16 }, color: '#7A7870' }, grid: { display: false } },
+      y: {
+        position: 'left',
+        title: { display: true, text: 'New lawsuits filed that year', font: { size: 14 }, color: '#7A7870' },
+        ticks: { font: { size: 15 }, color: '#7A7870', callback: v => v.toLocaleString() },
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        min: 0
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('caseChart'), {
+  type: 'bar',
+  data: {
+    labels: [
+      'Bartz v. Anthropic',
+      'Texas v. Meta',
+      'Texas v. Google',
+      'Clearview AI v. BIPA class',
+      'Vacker v. ElevenLabs',
+      'Lehrman & Sage v. LOVO',
+      'Lokken v. UnitedHealth'
+    ],
+    datasets: [
+      {
+        label: 'Confirmed settlement ($M)',
+        data: [1500, 1400, 1375, 51.75, 15, 0, 0],
+        backgroundColor: '#C0392B',
+        borderColor: '#8B2020',
+        borderWidth: 1,
+        borderRadius: 5
+      },
+      {
+        label: 'Active / pending ($M est.)',
+        data: [0, 0, 0, 0, 0, 250, 450],
+        backgroundColor: '#B8640A',
+        borderColor: '#7D4000',
+        borderWidth: 1,
+        borderRadius: 5
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        padding: 20,
+        bodyFont: { size: 17 },
+        titleFont: { size: 18, weight: '600' },
+        bodySpacing: 6,
+        boxPadding: 6,
+        callbacks: {
+          label: (ctx) => {
+            const v = ctx.parsed.x;
+            if (v === 0) return ctx.datasetIndex === 0 ? '' : '  Active case — no settlement yet';
+            if (v === 15) return '  Confidential settlement — first of 48 active AI copyright cases';
+            return '  $' + v.toLocaleString() + 'M';
+          },
+          afterBody: items => {
+            const notes = [
+              '  Copyright / training data piracy · ~$3K per work · 500K works covered',
+              '  Texas CUBI · Facial geometry via Facebook tag suggestions · Paid over 5 years',
+              '  Texas CUBI + DTPA · Voiceprints via Google Photos, Assistant, Nest Hub Max',
+              '  Illinois BIPA · 50B images scraped from internet without consent',
+              '  Right of publicity · Voice cloning · DMCA circumvention · Closed Nov 2025',
+              '  False-pretense Fiverr hiring · Voices sold as Bored Ape NFTs · Breach of contract proceeding',
+              '  AI claim denial algorithm · 90% error rate · Cigna, Humana parallel suits'
+            ];
+            return [notes[items[0].dataIndex]];
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          font: { size: 15 }, color: '#7A7870',
+          callback: v => v >= 1000 ? '$' + (v/1000).toFixed(1) + 'B' : v > 0 ? '$' + v + 'M' : ''
+        },
+        grid: { color: 'rgba(0,0,0,0.05)' }
+      },
+      y: {
+        ticks: { font: { size: 15 }, color: '#3A3935' },
+        grid: { display: false }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('projChart'), {
+  type: 'line',
+  data: {
+    labels: ['2026', '2027', '2028', '2029', '2030'],
+    datasets: [
+      {
+        label: 'Conservative',
+        data: [0.18, 0.42, 0.85, 1.4, 2.1],
+        borderColor: '#2E6B47',
+        backgroundColor: 'rgba(46,107,71,0.08)',
+        borderWidth: 2.5,
+        borderDash: [6,4],
+        pointBackgroundColor: '#2E6B47',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        tension: 0.4,
+        fill: false
+      },
+      {
+        label: 'Base case',
+        data: [0.3, 1.2, 2.8, 5.1, 8.4],
+        borderColor: '#B8640A',
+        backgroundColor: 'rgba(184,100,10,0.08)',
+        borderWidth: 2.5,
+        pointBackgroundColor: '#B8640A',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        tension: 0.4,
+        fill: false
+      },
+      {
+        label: 'Optimistic',
+        data: [0.5, 2.8, 7.2, 14.5, 22],
+        borderColor: '#C0392B',
+        backgroundColor: 'rgba(192,57,43,0.08)',
+        borderWidth: 2.5,
+        pointBackgroundColor: '#C0392B',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        tension: 0.4,
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        padding: 14,
+        bodyFont: { size: 16 },
+        titleFont: { size: 17, weight: '600' },
+        callbacks: {
+          label: ctx => ' ' + ctx.dataset.label + ': $' + ctx.parsed.y.toFixed(1) + 'B annual premium'
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { font: { size: 14 }, color: '#7A7870' }, grid: { display: false } },
+      y: {
+        ticks: { font: { size: 14 }, color: '#7A7870', callback: v => '$' + v + 'B' },
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        min: 0
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
