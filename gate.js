@@ -4,7 +4,7 @@
   'use strict';
 
   const SESSION_KEY = 'ddt_gate_passed';
-  const API = 'https://ddt-core-production.up.railway.app/v1/gate/log';
+  const API_BASE = 'https://ddt-core-production.up.railway.app';
 
   if (sessionStorage.getItem(SESSION_KEY)) return;
 
@@ -236,7 +236,7 @@
       <h2 class="g-title">Identity, used with <em>permission.</em></h2>
       <p class="g-sub">Enter your details to continue. Your access is logged as part of our consent infrastructure.</p>
       <input type="email" id="g-email" placeholder="Your email address" autocomplete="email">
-      <input type="text"  id="g-name"  placeholder="Your name (optional)">
+      <input type="text"  id="g-name"  placeholder="Your name">
       <button id="g-submit" onclick="ddt_gate_submit()">Continue</button>
       <p class="g-err" id="g-err"></p>
       <p class="g-legal">This is confidential pre-release material. Your email is stored securely and used only for access audit purposes.</p>
@@ -249,7 +249,17 @@
 
   overlay.addEventListener('keydown', e => { if (e.key === 'Enter') ddt_gate_submit(); });
 
+  let step = 1, retries = 0, gEmail = '', gName = '';
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
   window.ddt_gate_submit = async function() {
+    if (step === 1) await doStep1(); else await doStep2();
+  };
+
+  async function doStep1() {
     const email = (document.getElementById('g-email').value || '').trim();
     const name  = (document.getElementById('g-name').value  || '').trim();
     const err   = document.getElementById('g-err');
@@ -259,32 +269,126 @@
       err.textContent = 'Please enter a valid email address.';
       return;
     }
+    if (!name) {
+      err.textContent = 'Please enter your name.';
+      return;
+    }
 
     btn.disabled = true;
-    btn.textContent = 'Logging access...';
+    btn.textContent = 'Sending code…';
     err.textContent = '';
 
     try {
-      await fetch('https://ddt-core-production.up.railway.app/v1/gate/log', {
+      const res = await fetch(`${API_BASE}/v1/gate/verify/request`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name }),
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!res.ok) throw new Error();
+    } catch (_) {
+      err.textContent = 'Could not send code. Please try again.';
+      btn.disabled = false;
+      btn.textContent = 'Continue';
+      return;
+    }
+
+    gEmail = email;
+    gName = name;
+    step = 2;
+    retries = 0;
+    renderCodeScreen();
+  }
+
+  function renderCodeScreen() {
+    document.getElementById('ddt-gate-modal').innerHTML = `
+      <div class="g-logo">Digital Double <span>Technologies</span></div>
+      <p class="g-eyebrow">Verification</p>
+      <h2 class="g-title">Check your <em>email.</em></h2>
+      <p class="g-sub">We sent a 6-digit code to ${escHtml(gEmail)}. Enter it below to continue.</p>
+      <input type="text" id="g-code" placeholder="6-digit code" maxlength="6" autocomplete="one-time-code" inputmode="numeric">
+      <button id="g-submit" onclick="ddt_gate_submit()">Verify</button>
+      <p class="g-err" id="g-err"></p>
+      <p class="g-legal">Code expires in 10 minutes. Check your spam folder if it doesn't arrive.</p>
+      <p class="g-provenance">This page carries a DDT Consent Receipt Object &nbsp;·&nbsp; 0bd66ac7</p>
+    `;
+    setTimeout(() => { const el = document.getElementById('g-code'); if (el) el.focus(); }, 100);
+  }
+
+  async function doStep2() {
+    const code = (document.getElementById('g-code').value || '').trim();
+    const err   = document.getElementById('g-err');
+    const btn   = document.getElementById('g-submit');
+
+    if (!code || !/^\d{6}$/.test(code)) {
+      err.textContent = 'Please enter the 6-digit code.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Verifying…';
+    err.textContent = '';
+
+    let ok = false;
+    try {
+      const res = await fetch(`${API_BASE}/v1/gate/verify/confirm`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email, name: name || null,
+          email: gEmail, code, name: gName,
           page: window.location.pathname,
           referrer: document.referrer || null,
           timestamp: new Date().toISOString(),
           user_agent: navigator.userAgent,
         }),
-        signal: AbortSignal.timeout(4000),
+        signal: AbortSignal.timeout(8000),
       });
-    } catch (_) {}
-
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ email, ts: Date.now() }));
-    const el = document.getElementById('ddt-gate-overlay');
-    if (el) {
-      el.style.transition = 'opacity .5s';
-      el.style.opacity = '0';
-      setTimeout(() => el.remove(), 500);
+      ok = res.ok;
+    } catch (_) {
+      err.textContent = 'Verification failed. Please try again.';
+      btn.disabled = false;
+      btn.textContent = 'Verify';
+      return;
     }
-  };
+
+    if (ok) {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ email: gEmail, ts: Date.now() }));
+      const el = document.getElementById('ddt-gate-overlay');
+      if (el) {
+        el.style.transition = 'opacity .5s';
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 500);
+      }
+      return;
+    }
+
+    retries++;
+    if (retries >= 3) {
+      step = 1;
+      retries = 0;
+      renderStep1('Too many incorrect attempts. Please start over.');
+      return;
+    }
+
+    const left = 3 - retries;
+    err.textContent = `Invalid code. ${left} ${left === 1 ? 'attempt' : 'attempts'} remaining.`;
+    btn.disabled = false;
+    btn.textContent = 'Verify';
+  }
+
+  function renderStep1(errMsg) {
+    document.getElementById('ddt-gate-modal').innerHTML = `
+      <div class="g-logo">Digital Double <span>Technologies</span></div>
+      <p class="g-eyebrow">Private Preview</p>
+      <h2 class="g-title">Identity, used with <em>permission.</em></h2>
+      <p class="g-sub">Enter your details to continue. Your access is logged as part of our consent infrastructure.</p>
+      <input type="email" id="g-email" placeholder="Your email address" autocomplete="email">
+      <input type="text"  id="g-name"  placeholder="Your name">
+      <button id="g-submit" onclick="ddt_gate_submit()">Continue</button>
+      <p class="g-err" id="g-err">${escHtml(errMsg || '')}</p>
+      <p class="g-legal">This is confidential pre-release material. Your email is stored securely and used only for access audit purposes.</p>
+      <p class="g-provenance">This page carries a DDT Consent Receipt Object &nbsp;·&nbsp; 0bd66ac7</p>
+    `;
+    setTimeout(() => { const el = document.getElementById('g-email'); if (el) el.focus(); }, 100);
+  }
 })();
