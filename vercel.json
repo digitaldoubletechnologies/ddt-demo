@@ -1,6 +1,10 @@
 {
   "routes": [
     {
+      "src": "/.well-known/security.txt",
+      "dest": "/.well-known/security.txt"
+    },
+    {
       "src": "/brief",
       "dest": "/brief.html"
     },
