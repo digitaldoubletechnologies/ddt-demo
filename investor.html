@@ -191,6 +191,56 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:12px 32px;display:fl
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
+
+<style>
+#ddt-signup-float{position:fixed;bottom:80px;right:28px;z-index:400;background:rgba(123,158,135,.55);backdrop-filter:blur(20px);border:1px solid rgba(123,158,135,.6);border-radius:16px;padding:22px 24px;width:310px;box-shadow:0 16px 48px rgba(0,0,0,.25);font-family:"DM Sans",sans-serif;transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s}
+#ddt-signup-float.hidden{transform:translateY(130%);opacity:0;pointer-events:none}
+.sf-dismiss{position:absolute;top:12px;right:14px;background:none;border:none;color:rgba(26,25,21,.35);cursor:pointer;font-size:15px;padding:2px 6px;transition:color .2s}
+.sf-dismiss:hover{color:#1A1915}
+.sf-eyebrow{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#3D3B35;margin-bottom:6px}
+.sf-title{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:300;color:#1A1915;line-height:1.25;margin-bottom:14px}
+.sf-title em{font-style:italic;color:#A8843A}
+.sf-roles{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.sf-role{background:rgba(255,255,255,.2);border:1px solid rgba(26,25,21,.15);border-radius:8px;padding:9px 10px;font-size:12px;font-weight:500;color:#3D3B35;cursor:pointer;text-align:center;transition:all .2s;font-family:"DM Sans",sans-serif}
+.sf-role:hover{border-color:rgba(201,169,110,.4);color:#A8843A}
+.sf-role.active-creator{border-color:#7B9E87;color:#7B9E87;background:rgba(123,158,135,.1)}
+.sf-role.active-vendor{border-color:#C9A96E;color:#C9A96E;background:rgba(201,169,110,.08)}
+.sf-pitch{font-size:12px;font-weight:300;color:#3D3B35;line-height:1.7;margin-bottom:12px;display:none}
+.sf-pitch.show{display:block}
+.sf-mandate-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#A8843A;text-decoration:none;border:1px solid rgba(201,169,110,.25);border-radius:100px;padding:5px 12px;margin-top:8px;transition:all .2s;cursor:pointer;font-family:"DM Mono",monospace}
+.sf-fields{display:none}
+.sf-fields.show{display:block}
+.sf-input{width:100%;padding:10px 12px;border:1px solid rgba(26,25,21,.2);border-radius:8px;font-size:13px;font-family:"DM Sans",sans-serif;color:#1A1915;background:rgba(255,255,255,.5);box-sizing:border-box;outline:none;transition:border-color .2s;margin-bottom:8px}
+.sf-input::placeholder{color:#7A7870}
+.sf-input:focus{border-color:#7B9E87}
+.sf-btn{width:100%;padding:11px;background:#C9A96E;color:#1A1915;border:none;border-radius:100px;font-size:13px;font-weight:600;font-family:"DM Sans",sans-serif;cursor:pointer;transition:all .2s;margin-top:2px}
+.sf-btn:hover{background:#A8843A}
+.sf-btn:disabled{background:rgba(201,169,110,.3);cursor:default}
+.sf-err{font-size:11px;color:#C0392B;margin-top:4px;min-height:14px}
+.sf-success{display:none;font-size:13px;color:#1A1915;line-height:1.7;text-align:center;padding:6px 0}
+.sf-success.show{display:block}
+.sf-tab{position:fixed;bottom:80px;right:28px;z-index:400;background:rgba(123,158,135,.55);backdrop-filter:blur(16px);border:1px solid rgba(123,158,135,.6);border-radius:100px;padding:10px 20px;font-size:12px;font-weight:500;font-family:"DM Sans",sans-serif;color:#1A1915;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.2);display:none;transition:all .2s}
+</style>
+
+<div id="ddt-signup-float" class="hidden">
+  <button class="sf-dismiss" onclick="sfDismiss()">&#x2715;</button>
+  <p class="sf-eyebrow">Early Access</p>
+  <h3 class="sf-title" id="sf-title">Protect your consent.<br><em>Join the waitlist.</em></h3>
+  <div class="sf-roles">
+    <button class="sf-role" id="sf-r-creator" onclick="sfRole('creator')">Creator</button>
+    <button class="sf-role" id="sf-r-vendor" onclick="sfRole('vendor')">Platform / Vendor</button>
+  </div>
+  <div class="sf-pitch" id="sf-pitch-creator">Your face, voice, and likeness are moving through AI pipelines right now. DDT gives you a live, revocable consent record that travels with your identity wherever it goes. Free for creators, always.</div>
+  <div class="sf-pitch" id="sf-pitch-vendor">Consent verification is becoming a legal requirement. DDT gives your platform a machine-verifiable answer before identity-derived content is used, generated, or distributed.<br><span class="sf-mandate-link" onclick="openDrawer('dMandate')">&#8594; See The Mandate</span></div>
+  <div class="sf-fields" id="sf-fields">
+    <input type="text" class="sf-input" id="sf-name" placeholder="Your name">
+    <input type="email" class="sf-input" id="sf-email" placeholder="Your email address">
+    <button class="sf-btn" id="sf-submit" onclick="sfSubmit()">Request Early Access</button>
+    <p class="sf-err" id="sf-err"></p>
+  </div>
+  <div class="sf-success" id="sf-success">You are on the list. We will be in touch when access opens.</div>
+</div>
+<button class="sf-tab" id="sf-tab" onclick="sfShow()">+ Get Early Access</button>
 </head>
 <body>
 
@@ -577,6 +627,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:12px 32px;display:fl
 </div>
 
 <!-- BANNER -->
+<div style="text-align:center;padding:64px 40px 0;background:var(--ink)">
+  <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,26px);font-weight:300;font-style:italic;color:rgba(240,237,230,.6);margin-bottom:24px">Ready to get compliant before the mandate arrives?</p>
+  <button onclick="sfShow()" style="display:inline-flex;align-items:center;gap:8px;background:#C9A96E;color:#1A1915;border:none;border-radius:100px;padding:14px 32px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s">Get Early Access</button>
+</div>
 <div class="banner fade-in">
   <h2 class="banner-h">As identity becomes data,<br>permission becomes <em>infrastructure.</em></h2>
   <p class="banner-sub">DDT makes it operable.</p>
