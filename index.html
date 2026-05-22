@@ -107,7 +107,12 @@ footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-i
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
 </style>
-  <script src="gate.js" defer></script>
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-Q-pu5Sv0vzVdauj79unNj.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
 </head>
 <body>
 
@@ -349,7 +354,7 @@ async function sfSubmit() {
 
 // Show after 4 seconds if gate already passed
 setTimeout(function(){
-  if (sessionStorage.getItem('ddt_gate_passed') && !sessionStorage.getItem('ddt_sf_dismissed')) {
+  if (!sessionStorage.getItem('ddt_sf_dismissed')) {
     sfShow();
   }
 }, 4000);
