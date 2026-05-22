@@ -298,6 +298,49 @@ footer{background:var(--ink);color:rgba(240,237,230,.4);padding:40px;text-align:
         <div class="form-success" id="cf-success">Message received. We will follow up at the email you provided.</div>
       </div>
     </div>
+
+        <div style="margin-top:48px;padding-top:40px;border-top:1px solid var(--border)">
+          <p class="sec-label" style="margin-bottom:8px">Request Materials</p>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(20px,2.5vw,28px);font-weight:300;line-height:1.2;margin-bottom:10px;color:var(--ink)">Need more <em style="font-style:italic;color:var(--gold)">depth?</em></h3>
+          <p style="font-size:14px;font-weight:300;color:var(--ink-soft);line-height:1.75;margin-bottom:24px">Investor materials, technical documentation, press kit, and partnership proposals are available on request. Tell us who you are and what you need.</p>
+
+          <div class="contact-form" id="requestForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-input" id="rq-name" placeholder="Your name">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" id="rq-email" placeholder="your@email.com">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Affiliation</label>
+              <input type="text" class="form-input" id="rq-affiliation" placeholder="Company, fund, publication, or organization">
+            </div>
+            <div class="form-group">
+              <label class="form-label">I am requesting</label>
+              <select class="form-select" id="rq-type">
+                <option value="" disabled selected>Select one</option>
+                <option value="investor">Investor materials and financial overview</option>
+                <option value="technical">Technical documentation and architecture</option>
+                <option value="press">Press kit and media materials</option>
+                <option value="partnership">Partnership or integration proposal</option>
+                <option value="legal">Legal and compliance documentation</option>
+                <option value="other">Other — I will describe below</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Additional context (optional)</label>
+              <textarea class="form-textarea" id="rq-message" placeholder="Tell us more about what you are looking for and how you intend to use it." style="min-height:90px"></textarea>
+            </div>
+            <p class="form-err" id="rq-err"></p>
+            <button class="form-submit" id="rq-submit" onclick="submitRequest()">Send Request</button>
+            <div class="form-success" id="rq-success">Request received. We will follow up at the email you provided.</div>
+          </div>
+        </div>
+
   </div>
 </div>
 
@@ -328,6 +371,38 @@ const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
 }, {threshold: 0.08});
 document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+async function submitRequest() {
+  var name        = (document.getElementById('rq-name').value||'').trim();
+  var email       = (document.getElementById('rq-email').value||'').trim();
+  var affiliation = (document.getElementById('rq-affiliation').value||'').trim();
+  var type        = document.getElementById('rq-type').value;
+  var message     = (document.getElementById('rq-message').value||'').trim();
+  var err         = document.getElementById('rq-err');
+  var btn         = document.getElementById('rq-submit');
+  if (!name)  { err.textContent = 'Please enter your name.'; return; }
+  if (!email || !/^[^\s@]+@[^\s@]+[.][^\s@]+$/.test(email)) { err.textContent = 'Please enter a valid email.'; return; }
+  if (!type)  { err.textContent = 'Please select what you are requesting.'; return; }
+  err.textContent = '';
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  try {
+    await fetch('https://ddt-core-production.up.railway.app/v1/gate/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email, name,
+        page: 'materials-request:' + type + (affiliation ? ':' + affiliation : ''),
+        referrer: message || null,
+        timestamp: new Date().toISOString(),
+        user_agent: navigator.userAgent,
+      }),
+      signal: AbortSignal.timeout(5000),
+    });
+  } catch(_) {}
+  btn.style.display = 'none';
+  document.getElementById('rq-success').classList.add('show');
+}
 
 async function submitContact() {
   const name    = document.getElementById('cf-name').value.trim();
