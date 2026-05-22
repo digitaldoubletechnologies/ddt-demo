@@ -33,8 +33,13 @@ html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);transition:background .4s,color .4s;overflow-x:hidden}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:12px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,248,244,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);transition:background .4s}
+nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;flex-direction:column;background:rgba(250,248,244,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);transition:background .4s}
+.nav-top{padding:10px 32px;display:flex;align-items:center;justify-content:space-between}
+.nav-pills{display:flex;align-items:center;gap:6px;padding:8px 32px;border-top:1px solid var(--border);overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+.nav-pills::-webkit-scrollbar{display:none}
 [data-theme=dark] nav{background:rgba(20,20,18,.95)}
+[data-theme=dark] .nav-top{background:transparent}
+[data-theme=dark] .nav-pills{background:transparent}
 .logo{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:var(--ink);text-decoration:none;letter-spacing:.02em}
 .logo span{color:var(--sage)}
 .nav-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
