@@ -430,7 +430,7 @@ async function submitContact() {
       body: JSON.stringify({
         email, name,
         page: '/about.html#contact: ' + type,
-        referrer: document.referrer || null,
+        referrer: message || null,
         timestamp: new Date().toISOString(),
         user_agent: navigator.userAgent,
       }),
