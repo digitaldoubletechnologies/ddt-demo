@@ -1,4 +1,7 @@
 *.key
 *.crt
 *.csr
+ddt-log-signing.key
+ddt-log-signing.csr
+ddt-log-signing.crt
 .env
