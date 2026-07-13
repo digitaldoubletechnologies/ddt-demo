@@ -533,7 +533,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
                 <path d="M81,101 Q87,98 93,101" stroke="#3D2B1F" stroke-width="1.6" fill="none" stroke-linecap="round"/>
                 <path d="M67,131 Q75,137 83,131" stroke="#C8845A" stroke-width="1.4" fill="none" stroke-linecap="round"/>
                 <rect x="0" y="154" width="150" height="38" fill="rgba(13,17,23,.82)"/>
-                <text x="7" y="165" font-size="6" fill="#7EE787" font-family="monospace">c2pa:manifest ✓</text>
+                <text x="7" y="165" font-size="6" fill="#7EE787" font-family="monospace">metadata ✓</text>
                 <text x="7" y="175" font-size="6" fill="#FFD700" font-family="monospace">ddt:cro · 0bd66ac7</text>
                 <text x="7" y="185" font-size="6" fill="#79C0FF" font-family="monospace">consent · AUTHORIZED</text>
               </svg>
@@ -604,19 +604,19 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
           <div class="s3p active" id="sp1">
             <div class="sp-lbl ok">Original File; Full Consent Data</div>
             <div class="sp-mono">
-              <div><span class="mk">c2pa:manifest</span>  <span class="mv ok">✓ verified</span></div>
+              <div><span class="mk">metadata record</span>  <span class="mv ok">✓ verified</span></div>
               <div><span class="mk">ddt:cro</span>         <span class="mv gold">0bd66ac7-55c9...</span></div>
               <div><span class="mk">subject</span>         <span class="mv">Performer / Creator</span></div>
               <div><span class="mk">consent</span>         <span class="mv ok">AUTHORIZED</span></div>
               <div><span class="mk">permitted_uses</span>  <span class="mv">editorial, licensed_commercial</span></div>
             </div>
-            <p class="sp-body">This photo carries a full DDT Consent Receipt Object. The C2PA manifest is verified. The subject has authorized specific uses only. Anyone who queries the Identity Permission State endpoint before using this content will receive a clear, real-time answer.</p>
+            <p class="sp-body">This photo carries a full DDT Consent Receipt Object. The consent metadata is verified. The subject has authorized specific uses only. Anyone who queries the Identity Permission State endpoint before using this content will receive a clear, real-time answer.</p>
           </div>
           <!-- Panel 2 -->
           <div class="s3p" id="sp2">
             <div class="sp-lbl bad">⚠ Metadata Being Erased</div>
             <div class="sp-mono">
-              <div id="sl1"><span class="mk">c2pa:manifest</span>  <span class="mv ok">✓ verified</span></div>
+              <div id="sl1"><span class="mk">metadata record</span>  <span class="mv ok">✓ verified</span></div>
               <div id="sl2"><span class="mk">ddt:cro</span>         <span class="mv gold">0bd66ac7-55c9...</span></div>
               <div id="sl3"><span class="mk">consent</span>         <span class="mv ok">AUTHORIZED</span></div>
               <div id="sl4"><span class="mk">permitted_uses</span>  <span class="mv">editorial, licensed</span></div>
@@ -627,7 +627,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
           <div class="s3p" id="sp3">
             <div class="sp-lbl ok">Hidden Layers Detected Beneath the Surface</div>
             <div class="sp-mono">
-              <div><span class="mk">Layer 1  c2pa</span>      <span class="mv bad">✗ MISSING; stripped</span></div>
+              <div><span class="mk">Layer 1  metadata</span>   <span class="mv bad">✗ MISSING; stripped</span></div>
               <div><span class="mk">Layer 2  hidden mark</span>  <span class="mv ok">✓ FOUND IN PIXELS</span></div>
               <div><span class="mk">Layer 3  identity match</span>  <span class="mv ok">✓ MATCH CONFIRMED</span></div>
               <div style="margin-top:6px"><span class="mk">identity</span>            <span class="mv gold">RESOLVED → Performer</span></div>
@@ -994,8 +994,8 @@ async function playS3(){
   if(s3run)return; s3run=true;
   document.getElementById('s3Play').style.display='none';
   document.getElementById('s3Pause').classList.add('show');
-  setAct(0); setCardLbl('C2PA manifest verified ✓','var(--ok)'); showPanel('sp1');
-  ann('a3ann','<strong>A photo with full consent data.</strong> The C2PA manifest is verified. The DDT CRO is attached. Consent is AUTHORIZED for specific uses only.');
+  setAct(0); setCardLbl('Consent metadata verified ✓','var(--ok)'); showPanel('sp1');
+  ann('a3ann','<strong>A photo with full consent data.</strong> The consent metadata is verified. The DDT CRO is attached. Consent is AUTHORIZED for specific uses only.');
   await D(4400);
   setAct(1); document.getElementById('s3Url').textContent='Metadata Editor; stripping provenance';
   setCardLbl('Flipping file to back...','var(--gold)');
@@ -1005,7 +1005,7 @@ async function playS3(){
   setAct(2);
   document.getElementById('eraser-marks').setAttribute('opacity','1');
   document.getElementById('meta-lines').setAttribute('opacity','0');
-  ann('a3ann','<strong>The erasing begins.</strong> Every consent field crossed out. C2PA manifest, DDT CRO, consent record, permitted uses. The file looks clean. They think the contract is gone.');
+  ann('a3ann','<strong>The erasing begins.</strong> Every consent field crossed out. Metadata, DDT CRO, consent record, permitted uses. The file looks clean. They think the contract is gone.');
   for(const id of ['sl1','sl2','sl3','sl4']){const el=document.getElementById(id);el.style.opacity='.22';el.style.textDecoration='line-through';await D(900);}
   await D(2800);
   setAct(3); showPanel('sp3');
