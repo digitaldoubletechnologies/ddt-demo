@@ -851,13 +851,13 @@ async function run() {
   document.getElementById('ipsCoreRing').classList.remove('flagged');
   document.getElementById('ipsCoreRing').classList.add('revoked');
   document.getElementById('icrSub').style.color='#FF7B72';
-  document.getElementById('scanStatusTxt').textContent='REVOKED; blocking page render';
+  document.getElementById('scanStatusTxt').textContent='REVOKED; the platform declined to render';
   document.getElementById('scanStatusTxt').classList.add('bad');
   document.getElementById('urlPill').classList.remove('loading');
   document.getElementById('urlPill').classList.add('revoked');
   document.getElementById('urlLock').className='url-lock bad';
   setIps('IPS · REVOKED', 'revoked');
-  setStatus('<strong style="color:#FF7B72">REVOKED.</strong> This use was not authorized. Blocking render. Notifying creator.', 'bad');
+  setStatus('<strong style="color:#FF7B72">REVOKED.</strong> This use was not authorized. The platform declined to render. Notifying creator.', 'bad');
   pulseWave('rgba(255,95,87,.5)');
   await D(1800);
 

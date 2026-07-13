@@ -356,7 +356,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
         <div class="pt-arrow" id="a3">→</div>
         <div class="pt-step"><div class="pt-node" id="n4">⚡</div><div class="pt-label">IPS<br>Query</div></div>
         <div class="pt-arrow" id="a4">→</div>
-        <div class="pt-step"><div class="pt-node" id="n5">🚫</div><div class="pt-label">Ingestion<br>Blocked</div></div>
+        <div class="pt-step"><div class="pt-node" id="n5">🚫</div><div class="pt-label">Ingestion<br>Declined</div></div>
         <div class="pt-arrow" id="a5">→</div>
         <div class="pt-step"><div class="pt-node" id="n6">📋</div><div class="pt-label">Audit<br>Logged</div></div>
       </div>
@@ -498,7 +498,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
     <span class="sc-chev" style="font-size:18px;color:var(--ink-muted);flex-shrink:0;margin-left:16px">▶ Play Scenario</span>
   </div>
   <div id="sc3body" style="display:none">
-  <p class="sc-sub">The photo. The flip. The erase. The hidden layers. The blocked import. Your notification. All in one screen.</p>
+  <p class="sc-sub">The photo. The flip. The erase. The hidden layers. The declined import. Your notification. All in one screen.</p>
   <div class="stage">
     <div class="bc">
       <div class="bc-dots"><div class="bcd r"></div><div class="bcd y"></div><div class="bcd g"></div></div>
@@ -592,7 +592,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
           <div class="s3-act" id="act2"><span class="act-d"></span><span class="act-l">Malicious User</span></div>
           <div class="s3-act" id="act3"><span class="act-d"></span><span class="act-l">Data erased</span></div>
           <div class="s3-act" id="act4"><span class="act-d"></span><span class="act-l">Layers revealed</span></div>
-          <div class="s3-act" id="act5"><span class="act-d"></span><span class="act-l">Import blocked</span></div>
+          <div class="s3-act" id="act5"><span class="act-d"></span><span class="act-l">Import declined</span></div>
           <div class="s3-act" id="act6"><span class="act-d"></span><span class="act-l">Creator notified</span></div>
         </div>
         <div class="cs-lbl" id="cardLbl"></div>
@@ -636,14 +636,14 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
           </div>
           <!-- Panel 4 -->
           <div class="s3p dark-bg" id="sp4">
-            <div class="sp-lbl bad" style="color:#FF7B72">DDT IPS; Import Blocked</div>
+            <div class="sp-lbl bad" style="color:#FF7B72">DDT IPS; SUSPENDED</div>
             <div class="sp-mono">
               <div><span class="mk-d">Permission state:</span>  <span style="color:#FF7B72;font-weight:600">SUSPENDED</span></div>
               <div><span class="mk-d">Use context:</span>       <span style="color:#FFD700">Outside permitted terms</span></div>
               <div><span class="mk-d">Metadata stripped:</span> <span style="color:#FF7B72">yes; logged</span></div>
             </div>
             <div style="padding:10px 12px;background:rgba(255,123,114,.08);border-radius:8px;border:1px solid rgba(255,123,114,.2);font-size:12px;color:rgba(255,255,255,.8);line-height:1.6;margin-bottom:12px">
-              <strong style="color:#FF7B72">This content cannot be imported.</strong> Stripping metadata does not remove consent requirements. This attempt has been logged.
+              <strong style="color:#FF7B72">The platform declined this import.</strong> Stripping metadata does not remove consent requirements. This attempt has been logged.
             </div>
             <div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:7px">What is the intended use of this content?</div>
             <div style="display:flex;flex-wrap:wrap">
@@ -659,11 +659,11 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
             <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:10px">
               <div style="background:white;border-radius:8px;padding:9px 11px;display:flex;gap:9px;align-items:flex-start;border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 10px rgba(0,0,0,.07)">
                 <div class="ni ni-e" style="width:28px;height:28px;font-size:13px">📧</div>
-                <div><div class="nt">DDT Alert; Strip Attempt Blocked</div><div class="nb">Someone attempted to strip your content's metadata and import it. The attempt was blocked. Evidence captured.</div></div>
+                <div><div class="nt">DDT Alert; Strip Attempt Detected</div><div class="nb">Someone attempted to strip your content's metadata and import it. The platform declined the import. Evidence captured.</div></div>
               </div>
               <div style="background:white;border-radius:8px;padding:9px 11px;display:flex;gap:9px;align-items:flex-start;border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 10px rgba(0,0,0,.07)">
                 <div class="ni ni-s" style="width:28px;height:28px;font-size:13px">💬</div>
-                <div><div class="nt">DDT SMS Alert</div><div class="nb">Unauthorized import blocked. Tap to review evidence and choose your next step.</div></div>
+                <div><div class="nt">DDT SMS Alert</div><div class="nb">Unauthorized import declined by the platform. Tap to review evidence and choose your next step.</div></div>
               </div>
             </div>
             <div style="background:var(--warm);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
@@ -934,7 +934,7 @@ async function runScan(){
   badgeSt.textContent='Permission check in progress...';
   ann('a2ann','<strong>Scan complete.</strong> One identity marker found. The IPS system asks the only question that matters.');
   await D(3200);
-  badgeSt.textContent='REVOKED; blocking render';
+  badgeSt.textContent='REVOKED; the platform declined to render';
   badge.style.borderColor='rgba(255,123,114,.5)';
   badge.querySelector('span').style.background='#FF7B72';
   badge.querySelector('span').style.boxShadow='0 0 0 3px rgba(255,123,114,.2)';
@@ -1017,7 +1017,7 @@ async function playS3(){
   await D(3800);
   setAct(4); document.getElementById('s3Url').textContent='DDT IPS; SUSPENDED · Outside permitted terms';
   showPanel('sp4');
-  ann('a3ann','<strong>SUSPENDED. Outside permitted terms.</strong> The import is halted. The system confronts the person and asks their intent. Every response is logged permanently.');
+  ann('a3ann','<strong>SUSPENDED. Outside permitted terms.</strong> The import is held pending authorization. The system confronts the person and asks their intent. Every response is logged permanently.');
   await D(4500);
   setAct(5); showPanel('sp5');
   ann('a3ann','<strong>You are notified instantly.</strong> Your manifest is updated. Three choices appear. You decide: view the evidence, open licensing on your terms, or issue a full REVOKE.');
