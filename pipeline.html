@@ -328,10 +328,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
           </div>
           <div class="seal-details" id="sealDetails">
             <div class="vlog">
-              <div class="vp-row"><div class="vp-dot" id="s1d"></div><div class="vp-txt">subject_id</div><div class="vp-val" id="s1v">...</div></div>
-              <div class="vp-row"><div class="vp-dot" id="s2d"></div><div class="vp-txt">permitted_uses</div><div class="vp-val" id="s2v">...</div></div>
-              <div class="vp-row" style="align-items:flex-start"><div class="vp-dot" id="s3d" style="margin-top:3px"></div><div class="vp-txt">prohibited_uses</div><div class="vp-val" id="s3v" style="text-align:right;line-height:1.6">...</div></div>
-              <div class="vp-row"><div class="vp-dot" id="s4d"></div><div class="vp-txt">ips_endpoint</div><div class="vp-val" id="s4v">...</div></div>
+              <div class="vp-row"><div class="vp-dot" id="s1d"></div><div class="vp-txt">subject identity</div><div class="vp-val" id="s1v">...</div></div>
+              <div class="vp-row"><div class="vp-dot" id="s2d"></div><div class="vp-txt">permitted uses</div><div class="vp-val" id="s2v">...</div></div>
+              <div class="vp-row" style="align-items:flex-start"><div class="vp-dot" id="s3d" style="margin-top:3px"></div><div class="vp-txt">prohibited uses</div><div class="vp-val" id="s3v" style="text-align:right;line-height:1.6">...</div></div>
+              <div class="vp-row"><div class="vp-dot" id="s4d"></div><div class="vp-txt">IPS endpoint</div><div class="vp-val" id="s4v">...</div></div>
               <div class="vp-row"><div class="vp-dot" id="s5d"></div><div class="vp-txt">signature</div><div class="vp-val" id="s5v">...</div></div>
             </div>
           </div>
@@ -549,7 +549,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
                 </div>
                 <div class="notif" id="jn2" style="padding:7px 9px">
                   <div class="n-ico n-warn" style="width:22px;height:22px;font-size:11px">⚠️</div>
-                  <div><div class="n-title" style="font-size:9px">Scope Blocked</div><div class="n-body" style="font-size:8.5px">AI training: OUT_OF_SCOPE. Blocked and logged.</div><div class="n-time">Just now</div></div>
+                  <div><div class="n-title" style="font-size:9px">Scope Blocked</div><div class="n-body" style="font-size:8.5px">AI training: Outside permitted terms. Logged.</div><div class="n-time">Just now</div></div>
                 </div>
               </div>
             </div>
@@ -557,9 +557,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
           <div class="audit" id="jAudit">
             <div style="font-size:8.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:5px">Jordan's audit record</div>
             <div class="v-receipt">
-              <div class="v-row"><span>queried_by</span><span style="color:var(--gold-deep)">🏢 Meridian Creative</span></div>
+              <div class="v-row"><span>queried by</span><span style="color:var(--gold-deep)">🏢 Meridian Creative</span></div>
               <div class="v-row"><span>Broadcast</span><span class="v-val">AUTHORIZED</span></div>
-              <div class="v-row"><span>AI Training</span><span style="color:var(--red)">OUT_OF_SCOPE</span></div>
+              <div class="v-row"><span>AI Training</span><span style="color:var(--red)">Outside permitted terms</span></div>
               <div class="v-row"><span>status</span><span class="v-val">COMPLIANT</span></div>
               <div class="v-row"><span>time</span><span id="auditTs" style="color:var(--ink-muted)"></span></div>
             </div>
@@ -576,9 +576,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
             <div class="vp-row"><div class="vp-dot" id="v3d"></div><div class="vp-txt">IPS query ; AI Training</div><div class="vp-val" id="v3s"></div></div>
             <div class="vp-row"><div class="vp-dot" id="v4d"></div><div class="vp-txt">Verification Receipt</div><div class="vp-val" id="v4s"></div></div>
           </div>
-          <!-- OUT_OF_SCOPE takeover — overlays right column only -->
+          <!-- Outside-permitted-terms takeover; overlays right column only -->
           <div id="oosPanel" style="position:absolute;top:32px;left:0;right:0;bottom:0;background:linear-gradient(135deg,#1A0808,#250A0A);padding:14px;opacity:0;transition:opacity .6s;pointer-events:none;border-radius:10px">
-            <div style="font-family:'DM Mono',monospace;font-size:10px;font-weight:700;color:#FF7B72;letter-spacing:.1em;margin-bottom:4px">OUT_OF_SCOPE</div>
+            <div style="font-family:'DM Mono',monospace;font-size:10px;font-weight:700;color:#FF7B72;letter-spacing:.1em;margin-bottom:4px">Outside permitted terms</div>
             <div style="font-size:9px;color:rgba(255,255,255,.5);margin-bottom:12px;font-family:'DM Mono',monospace">AI Training ; CRO: 0bd66ac7 ; asset held</div>
             <div style="font-size:9.5px;font-weight:600;color:rgba(255,255,255,.6);margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase">What can Meridian do now?</div>
             <div style="display:flex;flex-direction:column;gap:6px">
@@ -615,14 +615,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
       <div id="butSection" style="opacity:0;transition:opacity .6s">
         <div style="height:1px;background:rgba(255,255,255,.1);margin:14px 0"></div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(16px,2.2vw,24px);font-weight:300;font-style:italic;color:var(--sage-light);margin-bottom:10px">But that's not what happened.</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:10px">Meridian queried the IPS endpoint. The OUT_OF_SCOPE response was received and honored. The case never opened.</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:10px">Meridian queried the IPS endpoint. The "Outside permitted terms" response was received and honored. The case never opened.</div>
         <div class="m-verdict" id="mVerdict" style="opacity:1">
           <div style="font-size:8.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ok);margin-bottom:6px">Meridian is compliant. Protected.</div>
           <div class="v-receipt" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)">
-            <div class="v-row" style="color:rgba(255,255,255,.5)"><span>query_result</span><span class="v-val">OUT_OF_SCOPE · logged</span></div>
-            <div class="v-row" style="color:rgba(255,255,255,.5)"><span>action_taken</span><span class="v-val">asset_held</span></div>
-            <div class="v-row" style="color:rgba(255,255,255,.5)"><span>receipt</span><span style="color:var(--gold)">sha256:7f3a9c... · SEALED</span></div>
-            <div class="v-row" style="color:rgba(255,255,255,.5)"><span>meridian_status</span><span class="v-val">COMPLIANT</span></div>
+            <div class="v-row" style="color:rgba(255,255,255,.5)"><span>query result</span><span class="v-val">Outside permitted terms · logged</span></div>
+            <div class="v-row" style="color:rgba(255,255,255,.5)"><span>action taken</span><span class="v-val">asset held</span></div>
+            <div class="v-row" style="color:rgba(255,255,255,.5)"><span>receipt</span><span style="color:var(--gold)">SEALED</span></div>
+            <div class="v-row" style="color:rgba(255,255,255,.5)"><span>Meridian status</span><span class="v-val">COMPLIANT</span></div>
           </div>
         </div>
       </div>
@@ -932,19 +932,19 @@ async function run() {
   // AUTHORIZED fires simultaneously on both sides
   vrow('v2d','v2s','ok','AUTHORIZED');
   $('jn1').classList.add('show');
-  cc("<strong>AUTHORIZED — simultaneously.</strong> Broadcast use is permitted. Jordan's phone and Meridian's pipeline receive the same signal at the same moment.", 'narrText5');
+  cc("<strong>AUTHORIZED; simultaneously.</strong> Broadcast use is permitted. Jordan's phone and Meridian's pipeline receive the same signal at the same moment.", 'narrText5');
   await W(5000);
 
   cc("Meridian routes to AI training.", 'narrText5');
   await W(2500);
 
-  // OUT_OF_SCOPE fires simultaneously — and takeover appears on Meridian side
-  vrow('v3d','v3s','bad','OUT_OF_SCOPE');
+  // Outside-permitted-terms state fires simultaneously; takeover appears on Meridian side
+  vrow('v3d','v3s','bad','Outside permitted terms');
   $('jn2').classList.add('show');
   // OOS panel takes over Meridian pane
   const oop = $('oosPanel');
   if(oop){ oop.style.opacity='1'; oop.style.pointerEvents='auto'; }
-  cc("<strong>OUT_OF_SCOPE — simultaneously.</strong> Both sides receive the signal. Meridian's pipeline flags the asset. Jordan's phone is notified. The IPS answered the same question for both.", 'narrText5');
+  cc("<strong>Outside permitted terms; simultaneously.</strong> Both sides receive the signal. Meridian's pipeline flags the asset. Jordan's phone is notified. The IPS answered the same question for both.", 'narrText5');
   await W(6000);
 
   vrow('v4d','v4s','ok','SEALED');
@@ -1064,7 +1064,7 @@ function replay() {
     <a href="about.html" style="font-size:11px;color:rgba(240,237,230,.3);text-decoration:none">About</a>
     <a href="about.html#contact" style="font-size:11px;color:rgba(240,237,230,.3);text-decoration:none">Contact</a>
   </div>
-  <p style="font-size:10px;color:rgba(240,237,230,.2);width:100%">© 2026 Digital Double Technologies Inc All rights reserved.</p>
+  <p style="font-size:10px;color:rgba(240,237,230,.2);width:100%">Digital Double Technologies Inc · All rights reserved. · July 2026<br>System live in production · Active performer pilot running · ddt-pro.com</p>
 </footer>
 </body>
 </html>

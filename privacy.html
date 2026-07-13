@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy — Digital Double Technologies</title>
+<title>Privacy Policy · Digital Double Technologies Inc</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -25,6 +25,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:fl
 .tbtn:hover{border-color:var(--sage);color:var(--sage)}
 main{max-width:720px;margin:0 auto;padding:140px 32px 100px}
 h1{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,6vw,64px);font-weight:300;line-height:1.05;margin-bottom:12px}
+.entity{font-size:15px;color:var(--ink-soft);margin-bottom:6px}
 .updated{font-size:13px;color:var(--ink-muted);margin-bottom:48px;letter-spacing:.02em}
 h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--ink);margin:42px 0 14px}
 p{font-size:16px;font-weight:300;color:var(--ink-soft);margin-bottom:16px}
@@ -38,47 +39,48 @@ a:hover{border-bottom-color:var(--sage)}
 </head>
 <body>
 <nav>
-  <a href="https://myddt.app" class="logo">Digital Double <span>Technologies</span></a>
+  <a href="/" class="logo">Digital Double <span>Technologies</span></a>
   <button class="tbtn" onclick="toggleTheme()">theme</button>
 </nav>
 <main>
   <h1>Privacy Policy</h1>
-  <div class="updated">Last updated: April 8, 2026</div>
+  <div class="entity">Digital Double Technologies Inc</div>
+  <div class="updated">Last updated: July 13, 2026</div>
 
-  <p>Digital Double Technologies ("DDT", "we", "us") provides consent infrastructure for creators and the people who use their work. This policy explains what we collect, how we use it, and the rights you have over your information.</p>
+  <h2>What we do</h2>
+  <p>We verify whether a performer's consent to the use of their identity in AI-generated content is currently valid, and we provide a signed, timestamped record of that verification.</p>
 
-  <h2>What we collect</h2>
-  <ul>
-    <li><strong>Account information:</strong> email address, phone number, and name you provide when registering or accepting an invitation.</li>
-    <li><strong>Uploaded content metadata:</strong> filenames, file sizes, file types, timestamps, and the consent terms you attach to assets you upload. We do not analyze or extract biometric features from uploaded content.</li>
-    <li><strong>Consent records:</strong> the Consent Receipt Objects (CROs) you create, the permissions you grant or revoke, and the audit trail of access events tied to them.</li>
-    <li><strong>Access logs:</strong> when someone views a share link or queries a permission, we record who accessed it, when, and from what context, so you can audit it.</li>
-  </ul>
+  <h2>Data we collect and retain</h2>
+  <p>We permanently retain consent terms (what uses a performer has authorized, for which territories, for which requesting parties, and for how long); permission states (whether consent is currently active, revoked, expired, or suspended); signed verification records documenting what the permission state was at each moment it was checked; and audit events recording every significant action taken on a consent record, including its creation, any state changes, and its eventual deletion. These records contain identifiers and cryptographic digests only. They do not contain biometric data.</p>
 
-  <h2>How we use it</h2>
-  <ul>
-    <li>To verify consent when a third party queries an asset's permission state.</li>
-    <li>To notify you (by email or SMS) when your consent records are accessed, queried, or invited to collaborate on a project.</li>
-    <li>To maintain an audit trail you and your collaborators can inspect at any time.</li>
-    <li>To operate, secure, and improve the service.</li>
-  </ul>
+  <h2>Data we process transiently and do not retain</h2>
+  <p>Biometric reference material such as facial images and voice samples. When a performer enrolls or when content is scanned, the performer or their authorized representative provides reference media. We process that media locally to generate short cryptographic digests (one-way mathematical summaries that cannot be reversed into the original media). The reference media itself is used only during the session, is never transmitted to any external server during processing, and is destroyed on a documented schedule. We retain the cryptographic digest, which identifies a record but cannot reconstruct the person. We do not operate a database or vault of biometric reference material.</p>
 
-  <h2>What we do not do</h2>
-  <p>We do not sell your personal information. We do not share it with third parties for marketing or advertising. We do not use your uploaded content to train AI models. We do not disclose access logs to anyone other than the creator (and accepted collaborators) who owns the underlying consent record.</p>
+  <h2>Content-derived data</h2>
+  <p>When content is registered with our system, we may compute and retain perceptual fingerprints or hashes of the content itself. These identify the content file, not the person depicted in it, and they enable the content to be recognized if it appears elsewhere. This data is derived from the media asset, not from any person's biometric characteristics.</p>
 
-  <h2>Data deletion</h2>
-  <p>You can request deletion of your account and all associated data at any time by emailing <a href="mailto:jhofstad@ddt-pro.com">jhofstad@ddt-pro.com</a> from the address on file. We will permanently remove your account, uploaded assets, and consent records within 30 days, except where retention is required by law.</p>
+  <h2>Consent is granular and revocable</h2>
+  <p>A performer's consent can specify different terms for different uses, different territories, and different requesting parties. Consent can be revoked at any time, and revocation can be scoped narrowly: a performer can revoke consent for a specific party or a specific use without affecting other authorized uses. When consent is revoked, the change propagates to all future verification queries within seconds. Automated responses to unusual activity default to a suspended state that preserves the performer's position while allowing review, rather than taking irreversible action.</p>
 
-  <h2>Security</h2>
-  <p>Data is transmitted over TLS and stored in encrypted infrastructure. Access tokens and session credentials are scoped, time-limited, and revocable.</p>
+  <h2>Deletion rights</h2>
+  <p>A performer or their authorized representative can request deletion of their consent record at any time. Deletion removes all data associated with the record, including all biometric-derived digests, from our active systems. Verification records already issued are retained as historical proof of what the permission state was at past moments, because those records protect both the performer and any party that relied on them. Deletion is irreversible and documented with a signed audit event. After deletion, any query for the record returns an unknown state indistinguishable from a record that never existed.</p>
 
-  <h2>California Privacy Rights (CPRA)</h2>
-  <p>If you are a California resident, you have the right to opt out of the sale or sharing of your personal information. Digital Double Technologies does not sell your personal information. We do not share it with third parties for cross-context behavioral advertising. To exercise your rights under the California Privacy Rights Act, email <a href="mailto:jhofstad@ddt-pro.com">jhofstad@ddt-pro.com</a> with the subject line "California Privacy Request."</p>
+  <h2>No sale of data</h2>
+  <p>We never sell, license, or share biometric data, consent records, or verification records with any third party for their own commercial purposes. Verification records are issued to the party that requested verification and retained by us as the audit trail.</p>
+
+  <h2>Processing location</h2>
+  <p>All biometric processing (facial recognition, voice analysis) runs locally on infrastructure we control. No biometric data is transmitted to any external server, cloud API, or third-party processor during analysis. Our verification endpoint operates over encrypted connections and returns only permission states and signed records, never biometric data.</p>
+
+  <h2>Children</h2>
+  <p>Our services are designed for professional performers and rights holders and are not directed at children under 13. We do not knowingly collect data from children.</p>
+
+  <h2>Regulatory alignment</h2>
+  <p>Our data handling is designed to comply with the Illinois Biometric Information Privacy Act, the EU General Data Protection Regulation, the EU AI Act, and applicable state performer protection laws including the New York synthetic performer disclosure law effective June 2026. Our retention and destruction practices default to the strictest applicable standard.</p>
 
   <h2>Contact</h2>
-  <p>Questions about this policy or your data: <a href="mailto:jhofstad@ddt-pro.com">jhofstad@ddt-pro.com</a></p>
+  <p><a href="mailto:jhofstad@ddt-pro.com">jhofstad@ddt-pro.com</a></p>
 
-  <a href="https://myddt.app" class="back">← Back to myddt.app</a>
+  <a href="/" class="back">← Back</a>
 </main>
 <script>
 const saved=localStorage.getItem('ddt-theme');

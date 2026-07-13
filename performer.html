@@ -425,9 +425,8 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
         <div class="vq">Did this person give their permission for their likeness to appear on this page?</div>
         <div class="va">NO.</div>
         <div style="height:1px;background:rgba(255,255,255,.1);margin:2px 0"></div>
-        <div class="vrow"><span class="vk">permission_state:</span><span class="vv rev">REVOKED</span></div>
-        <div class="vrow"><span class="vk">subject_id:</span><span class="vv gold">0bd66ac7-55c9...</span></div>
-        <div class="vrow"><span class="vk">action:</span><span class="vv rev">BLOCK_RENDER · NOTIFY_CREATOR</span></div>
+        <div class="vrow"><span class="vk">Permission state:</span><span class="vv rev">REVOKED</span></div>
+        <div class="vrow"><span class="vk">Identity record:</span><span class="vv gold">0bd66ac7-55c9...</span></div>
       </div>
     </div>
     <!-- webpage -->
@@ -463,7 +462,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
         <div class="mp-badge">🚩 Consent Manifest Updated</div>
         <div class="mp-event">
           <div class="ev-hdr" onclick="toggleEvt()">
-            <div class="ev-type">FLAGGED_CONSENT_EVENT · just now; www.AnyWebsite.com</div>
+            <div class="ev-type">Consent event flagged · just now; www.AnyWebsite.com</div>
             <div id="evChev" style="color:var(--ink-muted);font-size:13px">▼</div>
           </div>
           <div class="ev-body" id="evBody">
@@ -499,7 +498,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
     <span class="sc-chev" style="font-size:18px;color:var(--ink-muted);flex-shrink:0;margin-left:16px">▶ Play Scenario</span>
   </div>
   <div id="sc3body" style="display:none">
-  <p class="sc-sub">The photo. The flip. The erase. The hidden layers. The blocked import. Your notification. All in one screen. <span style="font-size:13px;color:var(--gold);font-style:italic">Soft binding and watermark survivability layers are architectural roadmap capabilities. Active conversations are underway with watermarking standards partners and certificate authority infrastructure.</span></p>
+  <p class="sc-sub">The photo. The flip. The erase. The hidden layers. The blocked import. Your notification. All in one screen.</p>
   <div class="stage">
     <div class="bc">
       <div class="bc-dots"><div class="bcd r"></div><div class="bcd y"></div><div class="bcd g"></div></div>
@@ -561,7 +560,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
                   <line x1="14" y1="64" x2="64" y2="64" stroke="#D4C4B0" stroke-width="1.2"/>
                 </g>
                 <g id="wm-pattern" opacity="0" style="transition:opacity 1s">
-                  <text x="75" y="100" text-anchor="middle" font-size="6" fill="rgba(74,200,111,.5)" font-family="monospace" transform="rotate(-18,75,110)">TRUSTMARK·DDT·WATERMARK</text>
+                  <text x="75" y="100" text-anchor="middle" font-size="6" fill="rgba(74,200,111,.5)" font-family="monospace" transform="rotate(-18,75,110)">DDT·CONSENT·LAYER</text>
                   <text x="75" y="113" text-anchor="middle" font-size="5" fill="rgba(74,200,111,.4)" font-family="monospace" transform="rotate(-18,75,110)">0bd66ac7·identity·anchor</text>
                   <circle cx="24" cy="98" r="1.5" fill="rgba(74,200,111,.35)"/>
                   <circle cx="40" cy="108" r="1.5" fill="rgba(74,200,111,.35)"/>
@@ -581,7 +580,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
                 </g>
               </svg>
               <div id="layer-labels" style="position:absolute;bottom:6px;left:0;right:0;text-align:center;opacity:0;transition:opacity .8s">
-                <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ok);letter-spacing:.06em;margin-bottom:2px">💧 TRUSTMARK ACTIVE</div>
+                <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ok);letter-spacing:.06em;margin-bottom:2px">💧 HIDDEN LAYER ACTIVE</div>
                 <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--gold);letter-spacing:.06em">🧬 FINGERPRINT PRESENT</div>
               </div>
             </div>
@@ -628,21 +627,20 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
           <div class="s3p" id="sp3">
             <div class="sp-lbl ok">Hidden Layers Detected Beneath the Surface</div>
             <div class="sp-mono">
-              <div><span class="mk">layer_1  c2pa</span>      <span class="mv bad">✗ MISSING; stripped</span></div>
-              <div><span class="mk">layer_2  trustmark</span>  <span class="mv ok">✓ FOUND IN PIXELS</span></div>
-              <div><span class="mk">layer_3  neural_fp</span>  <span class="mv ok">✓ MATCH CONFIRMED</span></div>
+              <div><span class="mk">Layer 1  c2pa</span>      <span class="mv bad">✗ MISSING; stripped</span></div>
+              <div><span class="mk">Layer 2  hidden mark</span>  <span class="mv ok">✓ FOUND IN PIXELS</span></div>
+              <div><span class="mk">Layer 3  identity match</span>  <span class="mv ok">✓ MATCH CONFIRMED</span></div>
               <div style="margin-top:6px"><span class="mk">identity</span>            <span class="mv gold">RESOLVED → Performer</span></div>
             </div>
-            <p class="sp-body">The metadata is gone. But two layers were never in the metadata. A digital watermark embedded in the image pixels carries a pointer back to the IPS endpoint; it survives metadata stripping. A biometric fingerprint confirms the subject anchor. Identity fully verified across two independent layers.</p>
+            <p class="sp-body">The metadata is gone. But two layers were never in the metadata. A hidden layer in the image itself still points back to the consent record, and an identity match confirms who is in the photo. Identity fully verified across two independent layers.</p>
           </div>
           <!-- Panel 4 -->
           <div class="s3p dark-bg" id="sp4">
             <div class="sp-lbl bad" style="color:#FF7B72">DDT IPS; Import Blocked</div>
             <div class="sp-mono">
-              <div><span class="mk-d">permission_state:</span>  <span style="color:#FF7B72;font-weight:600">SUSPENDED</span></div>
-              <div><span class="mk-d">use_context:</span>       <span style="color:#FFD700">OUT_OF_SCOPE</span></div>
-              <div><span class="mk-d">manifest_stripped:</span> <span style="color:#FF7B72">true; logged</span></div>
-              <div><span class="mk-d">action:</span>            <span style="color:#FF7B72">HALT_IMPORT · NOTIFY_CREATOR</span></div>
+              <div><span class="mk-d">Permission state:</span>  <span style="color:#FF7B72;font-weight:600">SUSPENDED</span></div>
+              <div><span class="mk-d">Use context:</span>       <span style="color:#FFD700">Outside permitted terms</span></div>
+              <div><span class="mk-d">Metadata stripped:</span> <span style="color:#FF7B72">yes; logged</span></div>
             </div>
             <div style="padding:10px 12px;background:rgba(255,123,114,.08);border-radius:8px;border:1px solid rgba(255,123,114,.2);font-size:12px;color:rgba(255,255,255,.8);line-height:1.6;margin-bottom:12px">
               <strong style="color:#FF7B72">This content cannot be imported.</strong> Stripping metadata does not remove consent requirements. This attempt has been logged.
@@ -669,7 +667,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
               </div>
             </div>
             <div style="background:var(--warm);border:1px solid var(--border);border-radius:8px;padding:10px 12px">
-              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--flag);font-weight:500;margin-bottom:8px">FLAGGED_CONSENT_EVENT; strip attempt</div>
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--flag);font-weight:500;margin-bottom:8px">Consent event flagged; strip attempt</div>
               <div style="display:flex;gap:7px;flex-wrap:wrap">
                 <button class="ea" onclick="modal('👁','View Evidence','Full record of the strip attempt: file hash, timestamp, import destination, and intent response. All saved to your identity record.')">👁 View Evidence</button>
                 <button class="ea" onclick="modal('📩','Request Licensing','DDT opens a licensing conversation on your terms. You set the price and the permitted uses.')">📩 Request Licensing</button>
@@ -718,7 +716,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
 <footer>
   <div class="f-logo">Digital Double Technologies, Inc.</div>
   <div class="f-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="about.html#contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/security.html">Security</a></div>
-  <p class="f-legal">© 2026 Digital Double Technologies, Inc. Provisional patent filed. All rights reserved.</p>
+  <p class="f-legal">Digital Double Technologies Inc · All rights reserved. · July 2026<br>System live in production · Active performer pilot running · ddt-pro.com</p>
 </footer>
 
 <div id="modalWrap" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;place-items:center;backdrop-filter:blur(4px)">
@@ -796,7 +794,7 @@ const s1steps = [
   {n:'n2',a:'a2',log:{id:'l3',c:'active',t:'> [09:14:24] Processing: performer_headshots_2024.zip...'},msg:'<strong>Your content is discovered.</strong> The crawler reads the file. But your content carries something unexpected: a DDT Consent Receipt Object.'},
   {n:'n3',a:'a3',log:{id:'l4',c:'warn',  t:'> [09:14:26] ⚡ CRO identifier detected in asset metadata'},msg:'<strong>DDT detects the CRO.</strong> Embedded in your content is a cryptographic record tied to your identity. The ingestion queue pauses.'},
   {n:'n4',a:'a4',log:{id:'l5',c:'active',t:'> [09:14:27] Querying DDT Identity Permission State endpoint...'},msg:'<strong>The Identity Permission State is queried.</strong> One question: did this person authorize AI training? The live endpoint responds.'},
-  {n:'n5',a:'a5',log:{id:'l6',c:'error', t:'> [09:14:28] permission_state: "OUT_OF_SCOPE"; not authorized'},msg:'<strong>The answer is NO.</strong> The IPS endpoint returns OUT_OF_SCOPE. The platform\'s system; honoring that signal; stops ingestion. DDT does not block anything; it provides the answer. The platform acted on it. And now cannot claim it did not know.'},
+  {n:'n5',a:'a5',log:{id:'l6',c:'error', t:'> [09:14:28] Permission state: outside permitted terms; not authorized'},msg:'<strong>The answer is NO.</strong> The IPS endpoint answers: outside permitted terms. The platform\'s system; honoring that signal; stops ingestion. DDT does not block anything; it provides the answer. The platform acted on it. And now cannot claim it did not know.'},
   {n:'n6',a:null,log:{id:'l7',c:'warn',  t:'> [09:14:28] ✓ Audit packet generated. Timestamp sealed. Logged.'},msg:'<strong>The attempt is logged permanently.</strong> A timestamped audit packet is generated. The "I didn\'t know" defense is closed.'},
 ];
 async function playS1() {
@@ -1011,15 +1009,15 @@ async function playS3(){
   for(const id of ['sl1','sl2','sl3','sl4']){const el=document.getElementById(id);el.style.opacity='.22';el.style.textDecoration='line-through';await D(900);}
   await D(2800);
   setAct(3); showPanel('sp3');
-  ann('a3ann','<strong>But two layers were never in the metadata.</strong> A digital watermark embedded in the image pixels carries a pointer back to the IPS endpoint. A biometric fingerprint confirms the subject anchor. Identity confirmed across two independent layers.');
+  ann('a3ann','<strong>But two layers were never in the metadata.</strong> A hidden layer in the image itself still points back to the consent record. An identity match confirms who is in the photo. Identity confirmed across two independent layers.');
   document.getElementById('wm-pattern').setAttribute('opacity','1'); await D(1400);
   document.getElementById('fp-pattern').setAttribute('opacity','1'); await D(1200);
   document.getElementById('layer-labels').style.opacity='1';
-  setCardLbl('💧 Watermark + 🧬 Fingerprint active','var(--ok)');
+  setCardLbl('💧 Hidden layer + 🧬 Identity match active','var(--ok)');
   await D(3800);
-  setAct(4); document.getElementById('s3Url').textContent='DDT IPS; SUSPENDED · OUT_OF_SCOPE';
+  setAct(4); document.getElementById('s3Url').textContent='DDT IPS; SUSPENDED · Outside permitted terms';
   showPanel('sp4');
-  ann('a3ann','<strong>SUSPENDED. OUT OF SCOPE.</strong> The import is halted. The system confronts the person and asks their intent. Every response is logged permanently.');
+  ann('a3ann','<strong>SUSPENDED. Outside permitted terms.</strong> The import is halted. The system confronts the person and asks their intent. Every response is logged permanently.');
   await D(4500);
   setAct(5); showPanel('sp5');
   ann('a3ann','<strong>You are notified instantly.</strong> Your manifest is updated. Three choices appear. You decide: view the evidence, open licensing on your terms, or issue a full REVOKE.');
@@ -1027,7 +1025,7 @@ async function playS3(){
   s3run=false; document.getElementById('s3Pause').classList.remove('show'); document.getElementById('s3Replay').classList.add('show');
 }
 function replayS3(){document.getElementById('s3Replay').classList.remove('show');document.getElementById('s3Pause').classList.remove('show');document.getElementById('s3Pause').textContent='⏸ Pause';paused=false;document.getElementById('s3Play').style.display='inline-flex';s3run=false;resetS3();playS3();}
-function s3Intent(t){const m={commercial:'> OUT_OF_SCOPE; commercial use not authorized by subject',training:'> OUT_OF_SCOPE; AI training explicitly prohibited in CRO',editorial:'> SUSPENDED; editorial use requires verified licensing agreement'};document.getElementById('intentResp').textContent=m[t]||'> OUT_OF_SCOPE';}
+function s3Intent(t){const m={commercial:'> Outside permitted terms; commercial use not authorized by subject',training:'> Outside permitted terms; AI training explicitly prohibited in CRO',editorial:'> SUSPENDED; editorial use requires verified licensing agreement'};document.getElementById('intentResp').textContent=m[t]||'> Outside permitted terms';}
 
 // Modal
 function modal(i,t,b){document.getElementById('mIcon').textContent=i;document.getElementById('mTitle').textContent=t;document.getElementById('mBody').textContent=b;document.getElementById('modalWrap').style.display='grid';}

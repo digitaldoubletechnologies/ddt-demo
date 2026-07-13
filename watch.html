@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DDT — Watch the Scan</title>
+<title>DDT · Watch the Scan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -461,7 +461,7 @@ html, body { width: 100%; height: 100%; background: #0A0A09; font-family: 'DM Sa
               <div class="founder-tag">Our Founder</div>
               <h2>Justin Hofstad</h2>
               <p>Justin is a SAG-AFTRA performer, Rutgers Mason Gross BFA graduate, and the founder of Digital Double Technologies. He built DDT after experiencing firsthand the gap between existing protections and the realities of AI-generated content.</p>
-              <p>Trained at Shakespeare's Globe and MGSA. A working performer who decided the infrastructure had to exist — and built it.</p>
+              <p>Trained at Shakespeare's Globe and MGSA. A working performer who decided the infrastructure had to exist, and built it.</p>
             </div>
             <div class="about-photo-col">
               <div class="about-photo" id="aboutPhoto">
@@ -512,7 +512,7 @@ html, body { width: 100%; height: 100%; background: #0A0A09; font-family: 'DM Sa
         <!-- CRO targeting: bubbles emerge from matrix and converge on IPS core -->
         <div class="cro-target-wrap" id="croTargetWrap">
           <div class="cro-target-bubble" id="ctb1">CRO · 0bd66ac7-55c9...</div>
-          <div class="cro-target-bubble" id="ctb2">subject_id · 0bd66ac7</div>
+          <div class="cro-target-bubble" id="ctb2">identity record · 0bd66ac7</div>
           <div class="cro-target-bubble" id="ctb3">ddt:cro · FOUND</div>
           <div class="reticle" id="reticle"></div>
         </div>
@@ -535,9 +535,9 @@ html, body { width: 100%; height: 100%; background: #0A0A09; font-family: 'DM Sa
     <div class="ap-card notif-card" id="apEmail">
       <div class="nc-icon nc-email">📧</div>
       <div>
-        <div class="nc-title">DDT Alert — Unauthorized Use Detected</div>
-        <div class="nc-body">Your likeness was found on ddt-pro.com/about-us without your authorization. A screenshot, URL, and timestamp have been captured and saved to your evidence record.</div>
-        <div class="nc-time">Just now · ddt-pro.com/about-us</div>
+        <div class="nc-title">DDT Alert: Unauthorized Use Detected</div>
+        <div class="nc-body">Your likeness was found on ddt-pro.com/about.html without your authorization. A screenshot, URL, and timestamp have been captured and saved to your evidence record.</div>
+        <div class="nc-time">Just now · ddt-pro.com/about.html</div>
       </div>
     </div>
 
@@ -555,12 +555,12 @@ html, body { width: 100%; height: 100%; background: #0A0A09; font-family: 'DM Sa
     <div class="ap-card manifest-card" id="apManifest">
       <div class="mc-header">
         <div class="mc-badge">🚩 Consent Manifest Updated</div>
-        <div class="mc-title">Your Identity Record — New Event</div>
+        <div class="mc-title">Your Identity Record: New Event</div>
       </div>
       <div class="manifest-event">
-        <div class="me-type">FLAGGED_CONSENT_EVENT · <span id="eventTs"></span></div>
+        <div class="me-type">Consent event flagged · <span id="eventTs"></span></div>
         <div class="me-detail">
-          Your likeness was detected on <strong>ddt-pro.com/about-us</strong>. Permission state at time of detection: <strong style="color:#FF7B72">REVOKED</strong>. Subject identity confirmed via DDT CRO <strong>0bd66ac7-55c9</strong>. Screenshot and full evidence packet saved. This event has been timestamped and sealed in your consent manifest.
+          Your likeness was detected on <strong>ddt-pro.com/about.html</strong>. Permission state at time of detection: <strong style="color:#FF7B72">REVOKED</strong>. Subject identity confirmed via DDT CRO <strong>0bd66ac7-55c9</strong>. Screenshot and full evidence packet saved. This event has been timestamped and sealed in your consent manifest.
         </div>
       </div>
     </div>
@@ -597,7 +597,7 @@ html, body { width: 100%; height: 100%; background: #0A0A09; font-family: 'DM Sa
         </button>
         <button class="cc-btn danger" onclick="creatorAction('revoke')" style="grid-column:span 2">
           <div class="cc-btn-icon">🔴</div>
-          <div class="cc-btn-title">REVOKE All Uses — Immediately</div>
+          <div class="cc-btn-title">REVOKE All Uses: Immediately</div>
           <div class="cc-btn-desc">Issue a full REVOKE across all platforms. Every system querying the Identity Permission State endpoint will receive REVOKED in real time. Takes effect globally within seconds.</div>
         </button>
         <button class="cc-btn" onclick="creatorAction('contact')">
@@ -653,7 +653,7 @@ function startMatrix() {
   const fs = 11;
   const cols = Math.floor(W / (fs * 0.62));
   const drops = Array.from({length: cols}, () => Math.random() * -50);
-  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ0123456789ABCDEFconsent:cro:ips:authorized:revoked:ddt:subject:biometric:c2pa:trustmark:fingerprint'.split('');
+  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ0123456789ABCDEFconsent:cro:ips:authorized:revoked:ddt:subject:biometric:c2pa:fingerprint'.split('');
   function draw() {
     ctx.fillStyle = 'rgba(5,12,8,.16)';
     ctx.fillRect(0,0,W,H);
@@ -703,17 +703,17 @@ async function run() {
   document.getElementById('btnPlay').style.display='none';
 
   // 1. Type URL
-  setStatus('Navigating to <strong>ddt-pro.com/about-us</strong>...');
+  setStatus('Navigating to <strong>ddt-pro.com/about.html</strong>...');
   const urlTxt = document.getElementById('urlText');
   const cur = document.getElementById('urlCursor');
-  const full = 'ddt-pro.com/about-us';
+  const full = 'ddt-pro.com/about.html';
   cur.style.display='inline-block';
   for(let i=0;i<=full.length;i++){urlTxt.textContent=full.slice(0,i);await D(60+Math.random()*50);}
   cur.style.display='none';
   document.getElementById('urlPill').classList.add('loading');
   document.getElementById('urlLock').className='url-lock ok';
-  document.getElementById('tabTitle').textContent='ddt-pro.com — About Us';
-  document.getElementById('chromeAddrMini').textContent='ddt-pro.com/about-us';
+  document.getElementById('tabTitle').textContent='ddt-pro.com · About Us';
+  document.getElementById('chromeAddrMini').textContent='ddt-pro.com/about.html';
   await D(300);
 
   // 2. Loading bar starts — matrix fires immediately BEFORE page renders
@@ -742,7 +742,7 @@ async function run() {
     {d:700, t:'Reading page asset identifiers...'},
     {d:800, t:'Parsing image metadata and attributes...'},
     {d:600, t:'Searching for Subject CRO...'},
-    {d:900, t:'CRO identifier located — zeroing in...'},
+    {d:900, t:'CRO identifier located; zeroing in...'},
     {d:700, t:'Resolving subject identity...'},
     {d:600, t:'Querying live permission endpoint...'},
   ];
@@ -851,7 +851,7 @@ async function run() {
   document.getElementById('ipsCoreRing').classList.remove('flagged');
   document.getElementById('ipsCoreRing').classList.add('revoked');
   document.getElementById('icrSub').style.color='#FF7B72';
-  document.getElementById('scanStatusTxt').textContent='REVOKED — blocking page render';
+  document.getElementById('scanStatusTxt').textContent='REVOKED; blocking page render';
   document.getElementById('scanStatusTxt').classList.add('bad');
   document.getElementById('urlPill').classList.remove('loading');
   document.getElementById('urlPill').classList.add('revoked');
@@ -946,10 +946,10 @@ function restart() {
 
 function creatorAction(t) {
   const actions = {
-    evidence: ['👁','View Evidence','Your full evidence packet has been opened. It contains: a screenshot of ddt-pro.com/about-us, the exact URL, the detection timestamp, the CRO identifier, the IPS response, and a sealed audit trail. This packet is admissible evidence.'],
-    license:  ['📩','Request Licensing','A licensing request has been initiated. You will be connected with the platform to negotiate permitted uses, pricing, and duration — entirely on your terms. DDT facilitates the conversation.'],
+    evidence: ['👁','View Evidence','Your full evidence packet has been opened. It contains: a screenshot of ddt-pro.com/about.html, the exact URL, the detection timestamp, the CRO identifier, the IPS response, and a sealed audit trail. This packet is admissible evidence.'],
+    license:  ['📩','Request Licensing','A licensing request has been initiated. You will be connected with the platform to negotiate permitted uses, pricing, and duration, entirely on your terms. DDT facilitates the conversation.'],
     resolve:  ['✓','Resolve Flag','This detection event has been marked as resolved. Your consent manifest is updated. You can re-flag at any time if the situation changes.'],
-    revoke:   ['🔴','REVOKE Issued — All Platforms','A full REVOKE has been issued for this subject identity. Every system querying the Identity Permission State endpoint now receives REVOKED. This takes effect globally within seconds. No platform can claim they did not know.'],
+    revoke:   ['🔴','REVOKE Issued: All Platforms','A full REVOKE has been issued for this subject identity. Every system querying the Identity Permission State endpoint now receives REVOKED. This takes effect globally within seconds. No platform can claim they did not know.'],
     contact:  ['⚖️','Union Rep Notified','Your evidence packet has been pre-populated and sent to your SAG-AFTRA representative. They have the URL, the screenshot, the timestamp, the CRO identifier, and the full IPS audit trail.'],
   };
   const [icon, title, body] = actions[t] || ['', '', ''];
