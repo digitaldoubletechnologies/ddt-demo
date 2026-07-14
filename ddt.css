@@ -223,10 +223,13 @@
 /* ---------------------------------------------------------------------------
    MOTION
    --------------------------------------------------------------------------- */
-.fade-in{opacity:0;transform:translateY(20px);animation:ddtFadeIn .8s forwards}
-@keyframes ddtFadeIn{to{opacity:1;transform:translateY(0)}}
+/* Observer-compatible reveal: pages add .visible via IntersectionObserver.
+   Matches the existing about.html / investor.html pattern so linking ddt.css
+   does not force page fade-ins to run on load instead of on scroll. */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s}
+.fade-in.visible{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
-  .fade-in{animation:none;opacity:1;transform:none}
+  .fade-in{opacity:1;transform:none;transition:none}
 }
 
 /* ---------------------------------------------------------------------------
