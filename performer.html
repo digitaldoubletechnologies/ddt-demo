@@ -15,6 +15,7 @@
 <title>DDT; For Creators</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ddt.css">
 <style>
 :root{
   --cream:#FAF8F4;--warm:#F5F2EC;--ink:#1A1915;--ink-soft:#3D3B35;--ink-muted:#7A7870;
@@ -231,8 +232,8 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
     <a href="index.html" class="logo">Digital Double <span>Technologies</span></a>
     <div class="nav-r">
       <span class="nav-tag">For Creators</span>
-      <button class="tbtn" id="themeToggle">Dark mode</button>
-      <a href="index.html" class="back-link">← Back</a>
+      <button class="tbtn ddt-theme-btn" onclick="ddtTheme()" aria-label="Toggle dark mode"></button>
+      <a href="index.html" class="back-link">Back</a>
     </div>
   </div>
   <div class="nav-pills">
@@ -348,17 +349,17 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
     </div>
     <div class="ai-stage">
       <div class="pt">
-        <div class="pt-step"><div class="pt-node" id="n1">🤖</div><div class="pt-label">AI<br>Crawler</div></div>
-        <div class="pt-arrow" id="a1">→</div>
-        <div class="pt-step"><div class="pt-node" id="n2">📄</div><div class="pt-label">Content<br>Found</div></div>
-        <div class="pt-arrow" id="a2">→</div>
-        <div class="pt-step"><div class="pt-node" id="n3">🔍</div><div class="pt-label">CRO<br>Detected</div></div>
-        <div class="pt-arrow" id="a3">→</div>
-        <div class="pt-step"><div class="pt-node" id="n4">⚡</div><div class="pt-label">IPS<br>Query</div></div>
-        <div class="pt-arrow" id="a4">→</div>
-        <div class="pt-step"><div class="pt-node" id="n5">🚫</div><div class="pt-label">Ingestion<br>Declined</div></div>
-        <div class="pt-arrow" id="a5">→</div>
-        <div class="pt-step"><div class="pt-node" id="n6">📋</div><div class="pt-label">Audit<br>Logged</div></div>
+        <div class="pt-step"><div class="pt-node" id="n1"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#cpu"></use></svg></div><div class="pt-label">AI<br>Crawler</div></div>
+        <div class="pt-arrow" id="a1"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#arrow-right"></use></svg></div>
+        <div class="pt-step"><div class="pt-node" id="n2"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#film"></use></svg></div><div class="pt-label">Content<br>Found</div></div>
+        <div class="pt-arrow" id="a2"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#arrow-right"></use></svg></div>
+        <div class="pt-step"><div class="pt-node" id="n3"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#scan"></use></svg></div><div class="pt-label">CRO<br>Detected</div></div>
+        <div class="pt-arrow" id="a3"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#arrow-right"></use></svg></div>
+        <div class="pt-step"><div class="pt-node" id="n4"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#eye"></use></svg></div><div class="pt-label">IPS<br>Query</div></div>
+        <div class="pt-arrow" id="a4"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#arrow-right"></use></svg></div>
+        <div class="pt-step"><div class="pt-node" id="n5"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#shield-x"></use></svg></div><div class="pt-label">Ingestion<br>Declined</div></div>
+        <div class="pt-arrow" id="a5"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#arrow-right"></use></svg></div>
+        <div class="pt-step"><div class="pt-node" id="n6"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#check"></use></svg></div><div class="pt-label">Audit<br>Logged</div></div>
       </div>
       <div class="ai-log">
         <div class="ll dim">> DDT Identity Permission State Monitor v2.1</div>
@@ -437,7 +438,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
             <div class="wp-img">
               <div class="wp-sil">🧑‍🎨</div>
               <div class="blur-overlay" id="blurOverlay">
-                <div class="blur-badge" id="blurBadge">🔴 UNVERIFIED CONTENT<br><span style="font-size:10px;font-weight:400;opacity:.9">Permission State: REVOKED<br>Live consent check active</span></div>
+                <div class="blur-badge" id="blurBadge"><svg class="ddt-icon" style="width:1em;height:1em;vertical-align:-0.15em;margin-right:4px" aria-hidden="true"><use href="icons.svg#alert"></use></svg>UNVERIFIED CONTENT<br><span style="font-size:10px;font-weight:400;opacity:.9">Permission State: REVOKED<br>Live consent check active</span></div>
               </div>
             </div>
           </div>
@@ -450,11 +451,11 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
       </div>
       <div class="notif-layer">
         <div class="notif-popup" id="notif1">
-          <div class="ni ni-e">📧</div>
+          <div class="ni ni-e"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#mail"></use></svg></div>
           <div><div class="nt">DDT Alert; Unauthorized Use Detected</div><div class="nb">Your likeness was found on www.AnyWebsite.com without authorization. Evidence captured.</div><div class="ntime">Just now · www.AnyWebsite.com/AboutUs</div></div>
         </div>
         <div class="notif-popup" id="notif2">
-          <div class="ni ni-s">💬</div>
+          <div class="ni ni-s"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#message"></use></svg></div>
           <div><div class="nt">DDT SMS Alert</div><div class="nb">Unauthorized use of your identity detected. Tap to review evidence and take action.</div><div class="ntime">Just now · SMS</div></div>
         </div>
       </div>
@@ -658,11 +659,11 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
             <div class="sp-lbl ok">✓ You Are Notified; Manifest Updated</div>
             <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:10px">
               <div style="background:white;border-radius:8px;padding:9px 11px;display:flex;gap:9px;align-items:flex-start;border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 10px rgba(0,0,0,.07)">
-                <div class="ni ni-e" style="width:28px;height:28px;font-size:13px">📧</div>
+                <div class="ni ni-e" style="width:28px;height:28px;font-size:13px"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#mail"></use></svg></div>
                 <div><div class="nt">DDT Alert; Strip Attempt Detected</div><div class="nb">Someone attempted to strip your content's metadata and import it. The platform declined the import. Evidence captured.</div></div>
               </div>
               <div style="background:white;border-radius:8px;padding:9px 11px;display:flex;gap:9px;align-items:flex-start;border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 10px rgba(0,0,0,.07)">
-                <div class="ni ni-s" style="width:28px;height:28px;font-size:13px">💬</div>
+                <div class="ni ni-s" style="width:28px;height:28px;font-size:13px"><svg class="ddt-icon" aria-hidden="true"><use href="icons.svg#message"></use></svg></div>
                 <div><div class="nt">DDT SMS Alert</div><div class="nb">Unauthorized import declined by the platform. Tap to review evidence and choose your next step.</div></div>
               </div>
             </div>
@@ -713,10 +714,10 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
     <a href="investor.html?d=dStatus" style="font-size:11px;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace;letter-spacing:.08em;border:1px solid rgba(255,255,255,.12);padding:5px 14px;border-radius:100px;text-decoration:none">The Now</a>
   </div>
 </div>
-<footer>
-  <div class="f-logo">Digital Double Technologies Inc</div>
-  <div class="f-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="about.html#contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/security.html">Security</a></div>
-  <p class="f-legal">Digital Double Technologies Inc · All rights reserved. · July 2026<br>System live in production · Active performer pilot running · ddt-pro.com</p>
+<footer class="ddt-footer">
+  <div class="ddt-footer-logo">Digital Double Technologies Inc</div>
+  <div class="ddt-footer-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="about.html#contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/security.html">Security</a></div>
+  <p class="ddt-footer-status">Digital Double Technologies Inc · All rights reserved. · July 2026<br>System live in production · Active performer pilot running · ddt-pro.com</p>
 </footer>
 
 <div id="modalWrap" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;place-items:center;backdrop-filter:blur(4px)">
@@ -760,11 +761,8 @@ const D = ms => new Promise(r => {
 const ann = (id, h) => { const el = document.getElementById(id); if(el) el.innerHTML = h; };
 
 // Theme
-document.getElementById('themeToggle').addEventListener('click', function(){
-  const d = document.documentElement.getAttribute('data-theme') === 'dark';
-  document.documentElement.setAttribute('data-theme', d ? 'light' : 'dark');
-  this.textContent = d ? 'Dark mode' : 'Light mode';
-});
+function ddtTheme(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('ddt-theme',n);}
+if(localStorage.getItem('ddt-theme')==='dark')document.documentElement.setAttribute('data-theme','dark');
 
 // IPS; live endpoint with timeout fallback
 async function checkIPS() {
@@ -1033,38 +1031,6 @@ function closeModal(){document.getElementById('modalWrap').style.display='none';
 </script>
 
 <!-- FLOATING SIGNUP BOX -->
-<style>
-#ddt-signup-float{position:fixed;bottom:80px;right:28px;z-index:400;background:rgba(123,158,135,.55);backdrop-filter:blur(20px);border:1px solid rgba(123,158,135,.6);border-radius:16px;padding:22px 24px;width:310px;box-shadow:0 16px 48px rgba(0,0,0,.25);font-family:"DM Sans",sans-serif;transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s}
-#ddt-signup-float.hidden{transform:translateY(130%);opacity:0;pointer-events:none}
-.sf-dismiss{position:absolute;top:12px;right:14px;background:none;border:none;color:rgba(26,25,21,.35);cursor:pointer;font-size:15px;padding:2px 6px;transition:color .2s}
-.sf-dismiss:hover{color:#1A1915}
-.sf-eyebrow{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#3D3B35;margin-bottom:6px}
-.sf-title{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:300;color:#1A1915;line-height:1.25;margin-bottom:14px}
-.sf-title em{font-style:italic;color:#A8843A}
-.sf-roles{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
-.sf-role{background:rgba(255,255,255,.2);border:1px solid rgba(26,25,21,.15);border-radius:8px;padding:9px 10px;font-size:12px;font-weight:500;color:#3D3B35;cursor:pointer;text-align:center;transition:all .2s;font-family:"DM Sans",sans-serif}
-.sf-role:hover{border-color:rgba(201,169,110,.4);color:rgba(201,169,110,.8)}
-.sf-role.active-creator{border-color:#7B9E87;color:#7B9E87;background:rgba(123,158,135,.1)}
-.sf-role.active-vendor{border-color:#C9A96E;color:#C9A96E;background:rgba(201,169,110,.08)}
-.sf-pitch{font-size:12px;font-weight:300;color:#3D3B35;line-height:1.7;margin-bottom:12px;display:none}
-.sf-pitch.show{display:block}
-.sf-mandate-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#C9A96E;text-decoration:none;border:1px solid rgba(201,169,110,.25);border-radius:100px;padding:5px 12px;margin-top:8px;transition:all .2s;cursor:pointer;font-family:"DM Mono",monospace}
-.sf-mandate-link:hover{background:rgba(201,169,110,.08);border-color:rgba(201,169,110,.5)}
-.sf-fields{display:none}
-.sf-fields.show{display:block}
-.sf-input{width:100%;padding:10px 12px;border:1px solid rgba(26,25,21,.2);border-radius:8px;font-size:13px;font-family:"DM Sans",sans-serif;color:#1A1915;background:rgba(255,255,255,.5);box-sizing:border-box;outline:none;transition:border-color .2s;margin-bottom:8px}
-.sf-input::placeholder{color:#7A7870}
-.sf-input:focus{border-color:#7B9E87}
-.sf-btn{width:100%;padding:11px;background:#C9A96E;color:#1A1915;border:none;border-radius:100px;font-size:13px;font-weight:600;font-family:"DM Sans",sans-serif;cursor:pointer;transition:all .2s;margin-top:2px}
-.sf-btn:hover{background:#A8843A}
-.sf-btn:disabled{background:rgba(201,169,110,.3);cursor:default}
-.sf-err{font-size:11px;color:#C0392B;margin-top:4px;min-height:14px}
-.sf-success{display:none;font-size:13px;color:#7B9E87;line-height:1.7;text-align:center;padding:6px 0}
-.sf-success.show{display:block}
-.sf-tab{position:fixed;bottom:80px;right:28px;z-index:400;background:rgba(26,25,21,.92);backdrop-filter:blur(16px);border:1px solid rgba(201,169,110,.3);border-radius:100px;padding:10px 20px;font-size:12px;font-weight:500;font-family:"DM Sans",sans-serif;color:#C9A96E;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.3);display:none;transition:all .2s;letter-spacing:.02em}
-.sf-tab:hover{background:rgba(201,169,110,.1)}
-</style>
-
 <div id="ddt-signup-float" class="hidden">
   <button class="sf-dismiss" onclick="sfDismiss()">&#x2715;</button>
   <p class="sf-eyebrow">Early Access</p>

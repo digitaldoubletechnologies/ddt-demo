@@ -15,6 +15,7 @@
 <title>DDT ; How It Works</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ddt.css">
 <style>
 :root{
   --cream:#FAF8F4;--warm:#F2EFE8;--ink:#1A1915;--ink-soft:#3D3B35;--ink-muted:#7A7870;
@@ -633,7 +634,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
   <!-- FINAL -->
   <div id="finalCard">
     <div class="fc-inner">
-      <div style="font-size:42px;margin-bottom:12px">🔏</div>
+      <div style="font-size:42px;margin-bottom:12px"><svg class="ddt-icon" style="width:42px;height:42px;color:var(--gold)" aria-hidden="true"><use href="icons.svg#lock"></use></svg></div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3.5vw,36px);font-weight:300;color:rgba(255,255,255,.92);margin-bottom:10px">The Tag held.</div>
       <div style="font-size:14px;color:rgba(255,255,255,.44);line-height:1.85;max-width:440px;margin:0 auto 22px">Jordan's terms were honored. Meridian is compliant. The Verification Receipt is sealed. Neither party had to think about it after terms were confirmed.</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(15px,2vw,20px);font-weight:300;font-style:italic;color:var(--gold);line-height:1.6">When your identity can move anywhere,<br>so should your permission.</div>
@@ -1056,16 +1057,17 @@ function replay() {
   setTimeout(()=>{ts.style.opacity='1';ts.style.pointerEvents='auto';$('btnPlay').style.display='inline-flex';$('btnPause').style.display='none';currentNarrBox='narrText1';},50);
 }
 </script>
-<footer style="background:var(--ink);padding:24px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid rgba(255,255,255,.06)">
-  <div style="font-family:'Cormorant Garamond',serif;font-size:15px;color:rgba(240,237,230,.4)">Digital Double <span style="color:#7B9E87">Technologies</span></div>
-  <div style="display:flex;gap:18px;flex-wrap:wrap">
-    <a href="/privacy" style="font-size:11px;color:rgba(240,237,230,.3);text-decoration:none">Privacy</a>
-    <a href="/terms" style="font-size:11px;color:rgba(240,237,230,.3);text-decoration:none">Terms</a>
-    <a href="/security.html" style="font-size:11px;color:rgba(240,237,230,.3);text-decoration:none">Security</a>
-    <a href="about.html" style="font-size:11px;color:rgba(240,237,230,.3);text-decoration:none">About</a>
-    <a href="about.html#contact" style="font-size:11px;color:rgba(240,237,230,.3);text-decoration:none">Contact</a>
+<footer class="ddt-footer">
+  <div class="ddt-footer-logo">Digital Double Technologies Inc</div>
+  <div class="ddt-footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="about.html#contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+    <a href="/security.html">Security</a>
   </div>
-  <p style="font-size:10px;color:rgba(240,237,230,.2);width:100%">Digital Double Technologies Inc · All rights reserved. · July 2026<br>System live in production · Active performer pilot running · ddt-pro.com</p>
+  <p class="ddt-footer-status">Digital Double Technologies Inc · All rights reserved. · July 2026<br>System live in production · Active performer pilot running · ddt-pro.com</p>
 </footer>
 </body>
 </html>
