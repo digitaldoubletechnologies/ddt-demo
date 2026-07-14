@@ -6,11 +6,11 @@
 <title>SMS Terms · Digital Double Technologies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ddt.css">
 <style>
-:root{--cream:#FAF8F4;--warm:#F5F2EC;--ink:#1A1915;--ink-soft:#3D3B35;--ink-muted:#7A7870;--sage:#7B9E87;--border:rgba(26,25,21,0.1)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;line-height:1.7}
-.wrap{max-width:680px;margin:0 auto;padding:80px 24px 60px}
+.wrap{max-width:680px;margin:0 auto;padding:140px 24px 60px}
 h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:300;margin-bottom:8px}
 h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:300;margin:32px 0 12px}
 p{font-size:14px;color:var(--ink-soft);margin-bottom:16px}
@@ -26,6 +26,15 @@ footer a{color:var(--ink-muted);margin:0 12px;text-decoration:none}
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 </head>
 <body>
+<nav class="ddt-nav">
+  <a href="index.html" class="ddt-nav-logo">Digital Double <span>Technologies</span></a>
+  <div class="ddt-nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="about.html#contact">Contact</a>
+    <button class="tbtn ddt-theme-btn" onclick="ddtTheme()" aria-label="Toggle dark mode"></button>
+  </div>
+</nav>
 <div class="wrap">
 <h1>SMS Terms of Service</h1>
 <div class="meta">Digital Double Technologies Inc | Last updated: April 30, 2026</div>
@@ -53,12 +62,22 @@ footer a{color:var(--ink-muted);margin:0 12px;text-decoration:none}
 <h2>Carrier Disclaimer</h2>
 <p>Carriers are not liable for delayed or undelivered messages. DDT consent record protections operate independently of SMS delivery. Your consent records remain protected whether or not SMS notifications are received.</p>
 
-<footer>
-  <a href="/privacy">Privacy</a>
-  <a href="/terms">Terms</a>
-  <a href="/security.html">Security</a>
-  <p style="margin-top:14px">Digital Double Technologies Inc · All rights reserved. · July 2026<br>System live in production · Active performer pilot running · ddt-pro.com</p>
-</footer>
 </div>
+<footer class="ddt-footer">
+  <div class="ddt-footer-logo">Digital Double Technologies Inc</div>
+  <div class="ddt-footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="about.html#contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+    <a href="/security.html">Security</a>
+  </div>
+  <p class="ddt-footer-status">Digital Double Technologies Inc · All rights reserved. · July 2026<br>System live in production · Active performer pilot running · ddt-pro.com</p>
+</footer>
+<script>
+function ddtTheme(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('ddt-theme',n);}
+if(localStorage.getItem('ddt-theme')==='dark')document.documentElement.setAttribute('data-theme','dark');
+</script>
 </body>
 </html>

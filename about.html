@@ -14,6 +14,7 @@
 <title>About | Digital Double Technologies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ddt.css">
 <style>
 :root{
   --cream:#FAF8F4;--warm:#F5F2EC;--parchment:#F7F3EA;
@@ -147,11 +148,13 @@ footer{background:var(--ink);color:rgba(240,237,230,.4);padding:40px;text-align:
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="logo">Digital Double <span>Technologies</span></a>
-  <div class="nav-r">
-    <a href="index.html" class="back-link">← Back</a>
-    <button class="tbtn" onclick="toggleTheme()">Dark</button>
+<nav class="ddt-nav">
+  <a href="index.html" class="ddt-nav-logo">Digital Double <span>Technologies</span></a>
+  <div class="ddt-nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="about.html#contact">Contact</a>
+    <button class="tbtn ddt-theme-btn" onclick="ddtTheme()" aria-label="Toggle dark mode"></button>
   </div>
 </nav>
 
@@ -241,21 +244,21 @@ footer{background:var(--ink);color:rgba(240,237,230,.4);padding:40px;text-align:
 
       <div class="direct-links">
         <a href="mailto:jhofstad@ddt-pro.com" class="direct-link">
-          <div class="direct-link-icon email">✉</div>
+          <div class="direct-link-icon email"><svg class="ddt-icon" style="width:16px;height:16px" aria-hidden="true"><use href="icons.svg#mail"></use></svg></div>
           <div class="direct-link-text">
             <span class="direct-link-label">Email</span>
             <span class="direct-link-value">jhofstad@ddt-pro.com</span>
           </div>
         </a>
         <a href="https://www.linkedin.com/in/justin-hofstad-5b02a670/" target="_blank" rel="noopener" class="direct-link">
-          <div class="direct-link-icon li">in</div>
+          <div class="direct-link-icon li"><svg class="ddt-icon" style="width:16px;height:16px" aria-hidden="true"><use href="icons.svg#linkedin"></use></svg></div>
           <div class="direct-link-text">
             <span class="direct-link-label">Justin Hofstad</span>
             <span class="direct-link-value">LinkedIn</span>
           </div>
         </a>
         <a href="https://www.linkedin.com/in/ailsapierrepont/" target="_blank" rel="noopener" class="direct-link">
-          <div class="direct-link-icon li">in</div>
+          <div class="direct-link-icon li"><svg class="ddt-icon" style="width:16px;height:16px" aria-hidden="true"><use href="icons.svg#linkedin"></use></svg></div>
           <div class="direct-link-text">
             <span class="direct-link-label">Ailsa Pierrepont</span>
             <span class="direct-link-value">LinkedIn</span>
@@ -345,26 +348,22 @@ footer{background:var(--ink);color:rgba(240,237,230,.4);padding:40px;text-align:
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="f-logo">Digital Double <span>Technologies</span></div>
-  <div class="f-links">
+<footer class="ddt-footer">
+  <div class="ddt-footer-logo">Digital Double Technologies Inc</div>
+  <div class="ddt-footer-links">
     <a href="index.html">Home</a>
-    <a href="investor.html">For Platforms</a>
-    <a href="performer.html">For Creators</a>
     <a href="about.html">About</a>
     <a href="about.html#contact">Contact</a>
     <a href="/privacy">Privacy</a>
     <a href="/terms">Terms</a>
     <a href="/security.html">Security</a>
   </div>
-  <p class="f-copy">Digital Double Technologies Inc · All rights reserved. · July 2026<br>System live in production · Active performer pilot running · ddt-pro.com</p>
+  <p class="ddt-footer-status">Digital Double Technologies Inc · All rights reserved. · July 2026<br>System live in production · Active performer pilot running · ddt-pro.com</p>
 </footer>
 
 <script>
-function toggleTheme(){
-  document.documentElement.dataset.theme =
-    document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
-}
+function ddtTheme(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('ddt-theme',n);}
+if(localStorage.getItem('ddt-theme')==='dark')document.documentElement.setAttribute('data-theme','dark');
 
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });

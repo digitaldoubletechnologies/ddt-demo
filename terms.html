@@ -6,6 +6,7 @@
 <title>Terms of Use · Digital Double Technologies Inc</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ddt.css">
 <style>
 :root{
   --cream:#FAF8F4;--warm:#F5F2EC;--ink:#1A1915;--ink-soft:#3D3B35;--ink-muted:#7A7870;
@@ -41,9 +42,14 @@ a:hover{border-bottom-color:var(--sage)}
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 </head>
 <body>
-<nav>
-  <a href="/" class="logo">Digital Double <span>Technologies</span></a>
-  <button class="tbtn" onclick="toggleTheme()">theme</button>
+<nav class="ddt-nav">
+  <a href="index.html" class="ddt-nav-logo">Digital Double <span>Technologies</span></a>
+  <div class="ddt-nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="about.html#contact">Contact</a>
+    <button class="tbtn ddt-theme-btn" onclick="ddtTheme()" aria-label="Toggle dark mode"></button>
+  </div>
 </nav>
 <main>
   <h1>Terms of Use</h1>
@@ -79,21 +85,26 @@ a:hover{border-bottom-color:var(--sage)}
   <h2>Contact</h2>
   <p>Questions about these Terms of Use can be sent to <a href="mailto:jhofstad@ddt-pro.com">jhofstad@ddt-pro.com</a>.</p>
 
-  <div class="foot-links">
-    <a href="/" class="back">← Back</a>
+  <div class="foot-links" style="margin-top:48px">
+    <a href="/" class="ddt-btn-secondary">Back</a>
     <span class="alt">SMS notification terms: <a href="/sms-terms">SMS Terms</a></span>
   </div>
 </main>
+<footer class="ddt-footer">
+  <div class="ddt-footer-logo">Digital Double Technologies Inc</div>
+  <div class="ddt-footer-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="about.html#contact">Contact</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+    <a href="/security.html">Security</a>
+  </div>
+  <p class="ddt-footer-status">Digital Double Technologies Inc · All rights reserved.<br>System live in production · Active performer pilot running · ddt-pro.com</p>
+</footer>
 <script>
-const saved=localStorage.getItem('ddt-theme');
-if(saved==='dark')document.documentElement.setAttribute('data-theme','dark');
-function toggleTheme(){
-  const cur=document.documentElement.getAttribute('data-theme');
-  const next=cur==='dark'?'':'dark';
-  if(next)document.documentElement.setAttribute('data-theme',next);
-  else document.documentElement.removeAttribute('data-theme');
-  localStorage.setItem('ddt-theme',next);
-}
+function ddtTheme(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('ddt-theme',n);}
+if(localStorage.getItem('ddt-theme')==='dark')document.documentElement.setAttribute('data-theme','dark');
 </script>
 </body>
 </html>

@@ -170,7 +170,7 @@
 .ddt-credibility-strip .cred-item{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase}
 .ddt-credibility-strip .cred-item.cred-sage{color:var(--sage)}
 .ddt-credibility-strip .cred-item.cred-gold{color:var(--gold)}
-.ddt-credibility-strip .cred-item::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.ddt-credibility-strip .cred-item::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 0 3px color-mix(in srgb, currentColor 20%, transparent);flex-shrink:0}
 .ddt-credibility-strip .cred-sep{width:1px;height:14px;background:var(--border)}
 
 /* ---------------------------------------------------------------------------
