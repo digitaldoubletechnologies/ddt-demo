@@ -389,6 +389,9 @@ html, body { width: 100%; height: 100%; background: #0A0A09; font-family: 'DM Sa
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
 </style>
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-Q-pu5Sv0vzVdauj79unNj.js"></script>
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 </head>
 <body>
 
@@ -481,7 +484,7 @@ html, body { width: 100%; height: 100%; background: #0A0A09; font-family: 'DM Sa
                     <div class="uv-det">
                       permission_state: REVOKED<br>
                       Identity: Justin Hofstad<br>
-                      DDT Protection Active
+                      DDT Verification Active
                     </div>
                   </div>
                 </div>
@@ -598,7 +601,7 @@ html, body { width: 100%; height: 100%; background: #0A0A09; font-family: 'DM Sa
         <button class="cc-btn danger" onclick="creatorAction('revoke')" style="grid-column:span 2">
           <div class="cc-btn-icon">🔴</div>
           <div class="cc-btn-title">REVOKE All Uses: Immediately</div>
-          <div class="cc-btn-desc">Issue a full REVOKE across all platforms. Every system querying the Identity Permission State endpoint will receive REVOKED in real time. Takes effect globally within seconds.</div>
+          <div class="cc-btn-desc">Issue a full REVOKE across all platforms. Every system that checks your live consent record will receive REVOKED in real time. Takes effect globally within seconds.</div>
         </button>
         <button class="cc-btn" onclick="creatorAction('contact')">
           <div class="cc-btn-icon">⚖️</div>
@@ -610,6 +613,13 @@ html, body { width: 100%; height: 100%; background: #0A0A09; font-family: 'DM Sa
 
   </div><!-- /action-panel -->
 </div><!-- /main -->
+
+<!-- SITE CTA (the real site speaking, not part of the demo) -->
+<div style="background:#12120F;border-top:1px solid rgba(255,255,255,.08);padding:48px 24px 88px;text-align:center">
+  <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(20px,3vw,28px);font-weight:300;color:rgba(240,237,230,.92);margin-bottom:8px">Your identity deserves this infrastructure.</div>
+  <p style="font-size:13px;color:rgba(240,237,230,.45);margin-bottom:22px">DDT is in active pilot with performers. Tag your work and hold your consent.</p>
+  <a href="performer.html" style="display:inline-flex;align-items:center;gap:8px;background:#C9A96E;color:#1A1915;border-radius:100px;padding:13px 30px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;text-decoration:none">Get early access →</a>
+</div>
 
 <!-- STATUS BAR -->
 <div class="status-bar">
@@ -717,7 +727,7 @@ async function run() {
   await D(300);
 
   // 2. Loading bar starts — matrix fires immediately BEFORE page renders
-  setStatus('Connecting... DDT Identity Permission State intercept active.');
+  setStatus('Connecting... DDT live consent check active.');
   setIps('IPS · INTERCEPTING', 'scanning');
   const fill = document.getElementById('loadFill');
   fill.style.width='20%'; await D(250);
@@ -736,12 +746,12 @@ async function run() {
   badge.classList.add('show');
   document.getElementById('icrSub').textContent='SCANNING';
   setIps('IPS · SCANNING', 'scanning');
-  setStatus('Identity Permission State system scanning page identifiers...');
+  setStatus('Live consent check scanning page identifiers...');
 
   const statusSteps = [
     {d:700, t:'Reading page asset identifiers...'},
     {d:800, t:'Parsing image metadata and attributes...'},
-    {d:600, t:'Searching for Subject CRO...'},
+    {d:600, t:'Searching for the subject consent record...'},
     {d:900, t:'CRO identifier located; zeroing in...'},
     {d:700, t:'Resolving subject identity...'},
     {d:600, t:'Querying live permission endpoint...'},
@@ -756,7 +766,7 @@ async function run() {
       // "Searching for Subject CRO" — show the searching label above IPS core
       document.getElementById('searchLabel').classList.add('show');
       document.getElementById('icrSub').textContent='SEARCHING';
-      setStatus('IPS searching for Subject <strong>Consent Receipt Object</strong> across all page assets...');
+      setStatus('Searching for the subject <strong>consent record</strong> across all page assets...');
     }
 
     if(i===3){
@@ -809,7 +819,7 @@ async function run() {
       reticle.classList.add('show');
       document.getElementById('icrSub').textContent='TARGETING';
       pulseWave('rgba(255,215,0,.4)');
-      setStatus('IPS zeroing in on Subject CRO: <strong>0bd66ac7-55c9-4e04-9e8d-f2cb71460b0c</strong>');
+      setStatus('Zeroing in on the subject consent record: <strong>0bd66ac7-55c9-4e04-9e8d-f2cb71460b0c</strong>');
       setIps('IPS · TARGETING', 'scanning');
     }
 
@@ -837,7 +847,7 @@ async function run() {
       const croFlag = document.getElementById('croFlag');
       croFlag.style.top = flagTop+'px';
       croFlag.classList.add('show');
-      setStatus('CRO locked: <strong>subject Justin Hofstad · 0bd66ac7</strong>. Querying permission state...');
+      setStatus('Consent record located: <strong>subject Justin Hofstad · 0bd66ac7</strong>. Running live permission check...');
       setIps('IPS · LOCKED', 'scanning');
     }
 
@@ -946,11 +956,11 @@ function restart() {
 
 function creatorAction(t) {
   const actions = {
-    evidence: ['👁','View Evidence','Your full evidence packet has been opened. It contains: a screenshot of ddt-pro.com/about.html, the exact URL, the detection timestamp, the CRO identifier, the IPS response, and a sealed audit trail. This packet is admissible evidence.'],
+    evidence: ['👁','View Evidence','Your full evidence packet has been opened. It contains: a screenshot of ddt-pro.com/about.html, the exact URL, the detection timestamp, the consent record identifier, the permission state response, and a sealed audit trail. This packet is a timestamped, signed evidentiary record.'],
     license:  ['📩','Request Licensing','A licensing request has been initiated. You will be connected with the platform to negotiate permitted uses, pricing, and duration, entirely on your terms. DDT facilitates the conversation.'],
     resolve:  ['✓','Resolve Flag','This detection event has been marked as resolved. Your consent manifest is updated. You can re-flag at any time if the situation changes.'],
-    revoke:   ['🔴','REVOKE Issued: All Platforms','A full REVOKE has been issued for this subject identity. Every system querying the Identity Permission State endpoint now receives REVOKED. This takes effect globally within seconds. No platform can claim they did not know.'],
-    contact:  ['⚖️','Union Rep Notified','Your evidence packet has been pre-populated and sent to your SAG-AFTRA representative. They have the URL, the screenshot, the timestamp, the CRO identifier, and the full IPS audit trail.'],
+    revoke:   ['🔴','REVOKE Issued: All Platforms','A full REVOKE has been issued for this subject identity. Every system that checks your live consent record now receives REVOKED. This takes effect globally within seconds. No platform can claim they did not know.'],
+    contact:  ['⚖️','Union Rep Notified','Your evidence packet has been pre-populated and sent to your SAG-AFTRA representative. They have the URL, the screenshot, the timestamp, the consent record identifier, and the full permission audit trail.'],
   };
   const [icon, title, body] = actions[t] || ['', '', ''];
   document.getElementById('modalIcon').textContent=icon;

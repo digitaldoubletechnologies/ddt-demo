@@ -228,7 +228,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
 <div id="titleScreen">
   <p class="ts-tag">The DDT Pipeline</p>
   <h1 class="ts-h">Follow the seal.<br>From creation to <em>compliance.</em></h1>
-  <p class="ts-sub">A Consent Receipt Object created by a performer, attached to her content, traveling through the law, and protecting everyone it touches.</p>
+  <p class="ts-sub">A consent tag created by a performer, attached to her content, traveling through the law, and standing with everyone it touches.</p>
   <div class="ts-cta">
     <button class="btn-play" onclick="start()" style="font-size:14px;padding:12px 30px">Play</button>
   </div>
@@ -278,7 +278,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
                   <div class="scope-row"><span class="scope-label" style="color:rgba(255,95,87,.7)">Third Party Licensing</span><div class="tog off" id="tog12"></div></div>
                 </div>
                 <div style="font-size:7.5px;color:rgba(255,255,255,.25);font-family:'DM Mono',monospace;letter-spacing:.06em;margin-bottom:7px;text-align:center">+ many more choices in your full CRO</div>
-                <button class="confirm-btn" id="confirmBtn">Generate My CRO</button>
+                <button class="confirm-btn" id="confirmBtn">Create My Tag</button>
               </div>
             </div>
           </div>
@@ -634,10 +634,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;padding:11px 32px;display:fl
   <div id="finalCard">
     <div class="fc-inner">
       <div style="font-size:42px;margin-bottom:12px">🔏</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3.5vw,36px);font-weight:300;color:rgba(255,255,255,.92);margin-bottom:10px">The CRO held.</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3.5vw,36px);font-weight:300;color:rgba(255,255,255,.92);margin-bottom:10px">The Tag held.</div>
       <div style="font-size:14px;color:rgba(255,255,255,.44);line-height:1.85;max-width:440px;margin:0 auto 22px">Jordan's terms were honored. Meridian is compliant. The Verification Receipt is sealed. Neither party had to think about it after terms were confirmed.</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(15px,2vw,20px);font-weight:300;font-style:italic;color:var(--gold);line-height:1.6">When your identity can move anywhere,<br>so should your permissions.</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(15px,2vw,20px);font-weight:300;font-style:italic;color:var(--gold);line-height:1.6">When your identity can move anywhere,<br>so should your permission.</div>
       <div style="font-size:13px;color:var(--sage);margin-top:9px;font-weight:500;letter-spacing:.02em">DDT makes it possible.</div>
+      <a href="performer.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;background:#C9A96E;color:#1A1915;border-radius:100px;padding:12px 28px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;text-decoration:none">Get early access →</a>
     </div>
   </div>
 
@@ -779,7 +780,7 @@ async function run() {
   await W(2500);
 
   $('confirmBtn').classList.add('ready');
-  cc("She taps <strong>Generate My CRO.</strong> Four greens. Eight reds. Her document becomes her seal.", 'narrText1a');
+  cc("She taps <strong>Create My Tag.</strong> Four greens. Eight reds. Her document becomes her seal.", 'narrText1a');
   await W(2500);
 
   // Paper fades, seal forms
@@ -891,7 +892,7 @@ async function run() {
   cc("The seal is working. Jordan knows her permissions are set.", 'narrText4');
   await W(4000);
 
-  cc("As the CRO moves through the pipeline, it passes through compliance checkpoints.", 'narrText4');
+  cc("As the consent tag moves through the pipeline, it passes through compliance checkpoints.", 'narrText4');
   await W(3000);
 
   cc("Each law it satisfies is sealed into the record as it travels.", 'narrText4');
@@ -916,14 +917,14 @@ async function run() {
   await W(3000);
 
   await pipeStep('pn5','pl5',null,'gold','Vendor Ingests');
-  cc("The DDT extension queries the Identity Permission State endpoint. Automatically. Both sides are about to react at the same moment.", 'narrText4');
+  cc("The DDT extension runs a live permission check, automatically. Both sides are about to react at the same moment.", 'narrText4');
   await W(4500);
 
   // ── ACT THREE: IPS simultaneous ──────────────────────────────────────
   currentNarrBox='narrText5';
   scrollAct('a3');
   $('splitWrap').style.opacity='1';
-  cc("Meridian's content management system ingests the asset and finds the CRO. The IPS endpoint is queried automatically for each intended use.", 'narrText5');
+  cc("Meridian's content management system ingests the asset and finds the consent tag. A live permission check runs automatically for each intended use.", 'narrText5');
   await W(4000);
 
   vrow('v1d','v1s','ok','CRO FOUND');
@@ -999,7 +1000,7 @@ function replay() {
   $('sealGlow').style.opacity='0'; $('sealCont').classList.remove('lit'); $('sealCont').style.animation='';
   $('sealLbl').textContent='Awaiting confirmation'; $('sealLbl').style.color='';
   $('sealDetails').style.opacity='0';
-  const b=$('confirmBtn'); b.textContent='Generate My CRO'; b.className='confirm-btn'; b.style.background=''; b.style.color='';
+  const b=$('confirmBtn'); b.textContent='Create My Tag'; b.className='confirm-btn'; b.style.background=''; b.style.color='';
   ['s1d','s2d','s3d','s4d','s5d'].forEach(id=>{const e=$(id);e.className='vp-dot';});
   ['s1v','s2v','s3v','s4v','s5v'].forEach(id=>{const e=$(id);e.textContent='...';e.className='vp-val';});
 

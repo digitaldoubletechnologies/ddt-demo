@@ -17,12 +17,32 @@
       "dest": "/terms.html"
     },
     {
+      "src": "/sms-terms",
+      "dest": "/sms-terms.html"
+    },
+    {
       "src": "/performer",
       "dest": "/performer.html"
     },
     {
       "src": "/watch",
       "dest": "/watch.html"
+    },
+    {
+      "src": "/about",
+      "dest": "/about.html"
+    },
+    {
+      "src": "/investor",
+      "dest": "/investor.html"
+    },
+    {
+      "src": "/pipeline",
+      "dest": "/pipeline.html"
+    },
+    {
+      "src": "/security",
+      "dest": "/security.html"
     },
     {
       "src": "/",

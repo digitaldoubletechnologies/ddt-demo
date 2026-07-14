@@ -117,8 +117,11 @@ footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-i
 <body>
 
 <nav>
-  <a href="#" class="logo">Digital Double <span>Technologies</span></a>
-  <button class="tbtn" id="themeToggle">Dark mode</button>
+  <a href="index.html" class="logo">Digital Double <span>Technologies</span></a>
+  <div style="display:flex;align-items:center;gap:16px">
+    <a href="about.html" style="font-size:13px;color:var(--ink-muted);text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--sage)'" onmouseout="this.style.color='var(--ink-muted)'">About</a>
+    <button class="tbtn" id="themeToggle">Dark mode</button>
+  </div>
 </nav>
 
 <section class="hero">
@@ -126,9 +129,9 @@ footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-i
 
   <p class="eyebrow">Your likeness, voice, and skills are your most valuable assets</p>
 
-  <h1 class="headline" style="animation-delay:.2s">
-    Identity,<br>
-    Used with <em>Permission.</em>
+  <h1 class="headline" style="animation-delay:.2s;font-size:clamp(30px,4.5vw,54px)">
+    The world needed Visa when finance went digital.<br>
+    Your likeness, voice, and skills need <span style="color:var(--gold);font-style:normal">DDT.</span>
   </h1>
 
   <p class="tagline" style="animation-delay:.35s">A real-time system for permissioned identity.</p>
@@ -150,7 +153,7 @@ footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-i
   <!-- PATH CARDS — bigger titles per Ailsa -->
   <div class="paths">
     <a href="investor.html" class="path-card investor">
-      <span class="path-tag">For Platforms</span>
+      <span class="path-tag">For Platforms and Investors</span>
       <div class="path-title">The Identity Permission Layer</div>
       <p class="path-desc">A system enabling trusted, permissioned use of identity across platforms.</p>
       <span class="path-arrow">→</span>
@@ -173,6 +176,13 @@ footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-i
   </div>
 
 </section>
+
+<!-- CREDIBILITY STRIP -->
+<div style="display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;padding:22px 24px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--warm)">
+  <span style="display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--sage)"><span style="width:7px;height:7px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 3px rgba(123,158,135,.2)"></span>System live in production</span>
+  <span style="width:1px;height:14px;background:var(--border)" aria-hidden="true"></span>
+  <span style="display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)"><span style="width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(201,169,110,.2)"></span>Active performer pilot running</span>
+</div>
 
 <!-- THESIS — quiet, for those who know -->
 <div class="thesis">
@@ -212,8 +222,9 @@ async function checkIPS() {
     val.textContent = s;
   } catch(e) {
     clearTimeout(timer);
-    dot.className = 'ips-dot';
-    val.textContent = 'AUTHORIZED';
+    dot.className = 'ips-dot loading';
+    val.textContent = 'Checking...';
+    val.style.color = 'var(--ink-muted)';
   }
 }
 checkIPS();
@@ -351,7 +362,7 @@ async function sfSubmit() {
   document.getElementById('sf-title').innerHTML = 'You are on the list.';
 }
 
-// Show after 4 seconds if gate already passed
+// Show after 2 seconds if not dismissed
 setTimeout(function(){
   if (!sessionStorage.getItem('ddt_sf_dismissed')) {
     sfShow();

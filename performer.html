@@ -261,7 +261,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
       <div class="ips-pill">
         <span class="ips-dot load" id="ipsDot"></span>
         <span>Your permission state right now:</span>
-        <span class="ips-val" id="ipsVal">; </span>
+        <span class="ips-val" id="ipsVal">Checking</span>
       </div>
     </div>
   </div>
@@ -437,7 +437,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
             <div class="wp-img">
               <div class="wp-sil">🧑‍🎨</div>
               <div class="blur-overlay" id="blurOverlay">
-                <div class="blur-badge" id="blurBadge">🔴 UNVERIFIED CONTENT<br><span style="font-size:10px;font-weight:400;opacity:.9">Permission State: REVOKED<br>DDT Identity Protection Active</span></div>
+                <div class="blur-badge" id="blurBadge">🔴 UNVERIFIED CONTENT<br><span style="font-size:10px;font-weight:400;opacity:.9">Permission State: REVOKED<br>Live consent check active</span></div>
               </div>
             </div>
           </div>
@@ -714,7 +714,7 @@ footer{border-top:1px solid var(--border);padding:28px 32px;display:flex;align-i
   </div>
 </div>
 <footer>
-  <div class="f-logo">Digital Double Technologies, Inc.</div>
+  <div class="f-logo">Digital Double Technologies Inc</div>
   <div class="f-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="about.html#contact">Contact</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/security.html">Security</a></div>
   <p class="f-legal">Digital Double Technologies Inc · All rights reserved. · July 2026<br>System live in production · Active performer pilot running · ddt-pro.com</p>
 </footer>
@@ -777,7 +777,7 @@ async function checkIPS() {
     const d = await r.json();
     const s = (d.state || d.permission_state || 'AUTHORIZED').toUpperCase().replace(/_/g,' ');
     dot.className = 'ips-dot'; val.textContent = s;
-  } catch(e) { clearTimeout(timer); dot.className = 'ips-dot'; val.textContent = 'AUTHORIZED'; }
+  } catch(e) { clearTimeout(timer); dot.className = 'ips-dot load'; val.textContent = 'Checking...'; val.style.color = 'var(--ink-muted)'; }
 }
 checkIPS();
 
@@ -1030,6 +1030,123 @@ function s3Intent(t){const m={commercial:'> Outside permitted terms; commercial 
 // Modal
 function modal(i,t,b){document.getElementById('mIcon').textContent=i;document.getElementById('mTitle').textContent=t;document.getElementById('mBody').textContent=b;document.getElementById('modalWrap').style.display='grid';}
 function closeModal(){document.getElementById('modalWrap').style.display='none';}
+</script>
+
+<!-- FLOATING SIGNUP BOX -->
+<style>
+#ddt-signup-float{position:fixed;bottom:80px;right:28px;z-index:400;background:rgba(123,158,135,.55);backdrop-filter:blur(20px);border:1px solid rgba(123,158,135,.6);border-radius:16px;padding:22px 24px;width:310px;box-shadow:0 16px 48px rgba(0,0,0,.25);font-family:"DM Sans",sans-serif;transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s}
+#ddt-signup-float.hidden{transform:translateY(130%);opacity:0;pointer-events:none}
+.sf-dismiss{position:absolute;top:12px;right:14px;background:none;border:none;color:rgba(26,25,21,.35);cursor:pointer;font-size:15px;padding:2px 6px;transition:color .2s}
+.sf-dismiss:hover{color:#1A1915}
+.sf-eyebrow{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#3D3B35;margin-bottom:6px}
+.sf-title{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:300;color:#1A1915;line-height:1.25;margin-bottom:14px}
+.sf-title em{font-style:italic;color:#A8843A}
+.sf-roles{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.sf-role{background:rgba(255,255,255,.2);border:1px solid rgba(26,25,21,.15);border-radius:8px;padding:9px 10px;font-size:12px;font-weight:500;color:#3D3B35;cursor:pointer;text-align:center;transition:all .2s;font-family:"DM Sans",sans-serif}
+.sf-role:hover{border-color:rgba(201,169,110,.4);color:rgba(201,169,110,.8)}
+.sf-role.active-creator{border-color:#7B9E87;color:#7B9E87;background:rgba(123,158,135,.1)}
+.sf-role.active-vendor{border-color:#C9A96E;color:#C9A96E;background:rgba(201,169,110,.08)}
+.sf-pitch{font-size:12px;font-weight:300;color:#3D3B35;line-height:1.7;margin-bottom:12px;display:none}
+.sf-pitch.show{display:block}
+.sf-mandate-link{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#C9A96E;text-decoration:none;border:1px solid rgba(201,169,110,.25);border-radius:100px;padding:5px 12px;margin-top:8px;transition:all .2s;cursor:pointer;font-family:"DM Mono",monospace}
+.sf-mandate-link:hover{background:rgba(201,169,110,.08);border-color:rgba(201,169,110,.5)}
+.sf-fields{display:none}
+.sf-fields.show{display:block}
+.sf-input{width:100%;padding:10px 12px;border:1px solid rgba(26,25,21,.2);border-radius:8px;font-size:13px;font-family:"DM Sans",sans-serif;color:#1A1915;background:rgba(255,255,255,.5);box-sizing:border-box;outline:none;transition:border-color .2s;margin-bottom:8px}
+.sf-input::placeholder{color:#7A7870}
+.sf-input:focus{border-color:#7B9E87}
+.sf-btn{width:100%;padding:11px;background:#C9A96E;color:#1A1915;border:none;border-radius:100px;font-size:13px;font-weight:600;font-family:"DM Sans",sans-serif;cursor:pointer;transition:all .2s;margin-top:2px}
+.sf-btn:hover{background:#A8843A}
+.sf-btn:disabled{background:rgba(201,169,110,.3);cursor:default}
+.sf-err{font-size:11px;color:#C0392B;margin-top:4px;min-height:14px}
+.sf-success{display:none;font-size:13px;color:#7B9E87;line-height:1.7;text-align:center;padding:6px 0}
+.sf-success.show{display:block}
+.sf-tab{position:fixed;bottom:80px;right:28px;z-index:400;background:rgba(26,25,21,.92);backdrop-filter:blur(16px);border:1px solid rgba(201,169,110,.3);border-radius:100px;padding:10px 20px;font-size:12px;font-weight:500;font-family:"DM Sans",sans-serif;color:#C9A96E;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.3);display:none;transition:all .2s;letter-spacing:.02em}
+.sf-tab:hover{background:rgba(201,169,110,.1)}
+</style>
+
+<div id="ddt-signup-float" class="hidden">
+  <button class="sf-dismiss" onclick="sfDismiss()">&#x2715;</button>
+  <p class="sf-eyebrow">Early Access</p>
+  <h3 class="sf-title" id="sf-title">Protect your consent.<br><em>Join the waitlist.</em></h3>
+  <div class="sf-roles">
+    <button class="sf-role" id="sf-r-creator" onclick="sfRole('creator')">Creator</button>
+    <button class="sf-role" id="sf-r-vendor" onclick="sfRole('vendor')">Platform / Vendor</button>
+  </div>
+  <div class="sf-pitch" id="sf-pitch-creator">Your face, voice, and likeness are moving through AI pipelines right now. DDT gives you a live, revocable consent record that travels with your identity wherever it goes. Free for creators, always.</div>
+  <div class="sf-pitch" id="sf-pitch-vendor">Consent verification is becoming a legal requirement. DDT gives your platform a machine-verifiable answer before identity-derived content is used, generated, or distributed.<br><span class="sf-mandate-link" onclick="window.location.href='investor.html?d=dMandate'">&#8594; See The Mandate</span></div>
+  <div class="sf-fields" id="sf-fields">
+    <input type="text" class="sf-input" id="sf-name" placeholder="Your name">
+    <input type="email" class="sf-input" id="sf-email" placeholder="Your email address">
+    <button class="sf-btn" id="sf-submit" onclick="sfSubmit()">Request Early Access</button>
+    <p class="sf-err" id="sf-err"></p>
+  </div>
+  <div class="sf-success" id="sf-success">You are on the list. We will be in touch when access opens.</div>
+</div>
+<button class="sf-tab" id="sf-tab" onclick="sfShow()">+ Get Early Access</button>
+
+<script>
+var _sfRole = null;
+
+function sfRole(role) {
+  _sfRole = role;
+  document.getElementById('sf-r-creator').className = 'sf-role' + (role==='creator' ? ' active-creator' : '');
+  document.getElementById('sf-r-vendor').className  = 'sf-role' + (role==='vendor'  ? ' active-vendor'  : '');
+  document.getElementById('sf-pitch-creator').className = 'sf-pitch' + (role==='creator' ? ' show' : '');
+  document.getElementById('sf-pitch-vendor').className  = 'sf-pitch' + (role==='vendor'  ? ' show' : '');
+  document.getElementById('sf-fields').className = 'sf-fields show';
+  if (role==='vendor') {
+    document.getElementById('sf-title').innerHTML = 'Become consent<br><em>compliant.</em>';
+  } else {
+    document.getElementById('sf-title').innerHTML = 'Protect your consent.<br><em>Join the waitlist.</em>';
+  }
+}
+
+function sfDismiss() {
+  document.getElementById('ddt-signup-float').classList.add('hidden');
+  document.getElementById('sf-tab').style.display = 'block';
+  sessionStorage.setItem('ddt_sf_dismissed','1');
+}
+
+function sfShow() {
+  document.getElementById('ddt-signup-float').classList.remove('hidden');
+  document.getElementById('sf-tab').style.display = 'none';
+}
+
+async function sfSubmit() {
+  var name  = (document.getElementById('sf-name').value||'').trim();
+  var email = (document.getElementById('sf-email').value||'').trim();
+  var err   = document.getElementById('sf-err');
+  var btn   = document.getElementById('sf-submit');
+  if (!_sfRole) { err.textContent='Please select Creator or Platform.'; return; }
+  if (!name)    { err.textContent='Please enter your name.'; return; }
+  if (!email || !/^[^\s@]+@[^\s@]+[.][^\s@]+$/.test(email)) { err.textContent='Please enter a valid email.'; return; }
+  err.textContent='';
+  btn.disabled=true;
+  btn.textContent='Submitting...';
+  try {
+    await fetch('https://ddt-core-production.up.railway.app/v1/gate/log',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,name:name,page:'waitlist:'+_sfRole,timestamp:new Date().toISOString(),user_agent:navigator.userAgent}),
+      signal:AbortSignal.timeout(5000)
+    });
+  } catch(_){}
+  document.getElementById('sf-fields').style.display='none';
+  document.getElementById('sf-pitch-creator').style.display='none';
+  document.getElementById('sf-pitch-vendor').style.display='none';
+  document.getElementById('sf-success').classList.add('show');
+  document.getElementById('sf-title').innerHTML = 'You are on the list.';
+}
+
+// Default to the creator pitch on this creator-facing page
+sfRole('creator');
+
+setTimeout(function(){
+  if (!sessionStorage.getItem('ddt_sf_dismissed')) {
+    sfShow();
+  }
+}, 2000);
 </script>
 </body>
 </html>

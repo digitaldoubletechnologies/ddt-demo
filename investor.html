@@ -226,26 +226,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;flex-direction:
 .sf-success.show{display:block}
 .sf-tab{position:fixed;bottom:80px;right:28px;z-index:400;background:rgba(123,158,135,.55);backdrop-filter:blur(16px);border:1px solid rgba(123,158,135,.6);border-radius:100px;padding:10px 20px;font-size:12px;font-weight:500;font-family:"DM Sans",sans-serif;color:#1A1915;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.2);display:none;transition:all .2s}
 </style>
-
-<div id="ddt-signup-float" class="hidden">
-  <button class="sf-dismiss" onclick="sfDismiss()">&#x2715;</button>
-  <p class="sf-eyebrow">Early Access</p>
-  <h3 class="sf-title" id="sf-title">Protect your consent.<br><em>Join the waitlist.</em></h3>
-  <div class="sf-roles">
-    <button class="sf-role" id="sf-r-creator" onclick="sfRole('creator')">Creator</button>
-    <button class="sf-role" id="sf-r-vendor" onclick="sfRole('vendor')">Platform / Vendor</button>
-  </div>
-  <div class="sf-pitch" id="sf-pitch-creator">Your face, voice, and likeness are moving through AI pipelines right now. DDT gives you a live, revocable consent record that travels with your identity wherever it goes. Free for creators, always.</div>
-  <div class="sf-pitch" id="sf-pitch-vendor">Consent verification is becoming a legal requirement. DDT gives your platform a machine-verifiable answer before identity-derived content is used, generated, or distributed.<br><span class="sf-mandate-link" onclick="openDrawer('dMandate')">&#8594; See The Mandate</span></div>
-  <div class="sf-fields" id="sf-fields">
-    <input type="text" class="sf-input" id="sf-name" placeholder="Your name">
-    <input type="email" class="sf-input" id="sf-email" placeholder="Your email address">
-    <button class="sf-btn" id="sf-submit" onclick="sfSubmit()">Request Early Access</button>
-    <p class="sf-err" id="sf-err"></p>
-  </div>
-  <div class="sf-success" id="sf-success">You are on the list. We will be in touch when access opens.</div>
-</div>
-<button class="sf-tab" id="sf-tab" onclick="sfShow()">+ Get Early Access</button>
 </head>
 <body>
 
@@ -504,7 +484,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;flex-direction:
 <div class="hero">
   <div class="hero-bg"></div>
   <div class="hero-inner">
-    <p class="hero-tag">For Platforms</p>
+    <p class="hero-tag">Consent Infrastructure</p>
     <h1 class="hero-h">The world needed Visa when finance went digital.<br><em>Your likeness, voice, and skills need DDT.</em></h1>
     <p class="hero-desc">Every platform shift in history produced one infrastructure layer that became non-negotiable. You didn't choose to use them. The world made them inevitable. <em style="font-style:italic">That moment is arriving for human identity.</em></p>
     <p style="font-size:clamp(15px,1.6vw,17px);font-weight:400;color:var(--sage);max-width:580px;margin:28px auto 0;line-height:1.8">DDT is a real-time permission layer for identity. It enables platforms to verify whether identity-driven content is authorized before it is ingested, generated, or distributed.</p>
@@ -624,7 +604,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;flex-direction:
       <div class="bc-num">03</div>
       <div class="bc-title">Future-proofs compliance</div>
       <p class="bc-body">NY, EU, UK, and union frameworks all converge on the same requirement: verifiable consent before identity is used. DDT is the infrastructure those requirements converge on.</p>
-      <div class="bc-proof">Aligned with NY Digital Replica Act<br>Aligned with EU AI Act Article 52<br>Aligned with SAG-AFTRA digital replica provisions</div>
+      <div class="bc-proof">Aligned with NY Digital Replica Act<br>Aligned with EU AI Act Article 50<br>Aligned with SAG-AFTRA digital replica provisions</div>
     </div>
   </div>
 </div>
@@ -690,6 +670,88 @@ const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
 },{threshold:0.1});
 document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+
+<!-- FLOATING SIGNUP BOX -->
+<div id="ddt-signup-float" class="hidden">
+  <button class="sf-dismiss" onclick="sfDismiss()">&#x2715;</button>
+  <p class="sf-eyebrow">Early Access</p>
+  <h3 class="sf-title" id="sf-title">Protect your consent.<br><em>Join the waitlist.</em></h3>
+  <div class="sf-roles">
+    <button class="sf-role" id="sf-r-creator" onclick="sfRole('creator')">Creator</button>
+    <button class="sf-role" id="sf-r-vendor" onclick="sfRole('vendor')">Platform / Vendor</button>
+  </div>
+  <div class="sf-pitch" id="sf-pitch-creator">Your face, voice, and likeness are moving through AI pipelines right now. DDT gives you a live, revocable consent record that travels with your identity wherever it goes. Free for creators, always.</div>
+  <div class="sf-pitch" id="sf-pitch-vendor">Consent verification is becoming a legal requirement. DDT gives your platform a machine-verifiable answer before identity-derived content is used, generated, or distributed.<br><span class="sf-mandate-link" onclick="openDrawer('dMandate')">&#8594; See The Mandate</span></div>
+  <div class="sf-fields" id="sf-fields">
+    <input type="text" class="sf-input" id="sf-name" placeholder="Your name">
+    <input type="email" class="sf-input" id="sf-email" placeholder="Your email address">
+    <button class="sf-btn" id="sf-submit" onclick="sfSubmit()">Request Early Access</button>
+    <p class="sf-err" id="sf-err"></p>
+  </div>
+  <div class="sf-success" id="sf-success">You are on the list. We will be in touch when access opens.</div>
+</div>
+<button class="sf-tab" id="sf-tab" onclick="sfShow()">+ Get Early Access</button>
+
+<script>
+var _sfRole = null;
+
+function sfRole(role) {
+  _sfRole = role;
+  document.getElementById('sf-r-creator').className = 'sf-role' + (role==='creator' ? ' active-creator' : '');
+  document.getElementById('sf-r-vendor').className  = 'sf-role' + (role==='vendor'  ? ' active-vendor'  : '');
+  document.getElementById('sf-pitch-creator').className = 'sf-pitch' + (role==='creator' ? ' show' : '');
+  document.getElementById('sf-pitch-vendor').className  = 'sf-pitch' + (role==='vendor'  ? ' show' : '');
+  document.getElementById('sf-fields').className = 'sf-fields show';
+  if (role==='vendor') {
+    document.getElementById('sf-title').innerHTML = 'Become consent<br><em>compliant.</em>';
+  } else {
+    document.getElementById('sf-title').innerHTML = 'Protect your consent.<br><em>Join the waitlist.</em>';
+  }
+}
+
+function sfDismiss() {
+  document.getElementById('ddt-signup-float').classList.add('hidden');
+  document.getElementById('sf-tab').style.display = 'block';
+  sessionStorage.setItem('ddt_sf_dismissed','1');
+}
+
+function sfShow() {
+  document.getElementById('ddt-signup-float').classList.remove('hidden');
+  document.getElementById('sf-tab').style.display = 'none';
+}
+
+async function sfSubmit() {
+  var name  = (document.getElementById('sf-name').value||'').trim();
+  var email = (document.getElementById('sf-email').value||'').trim();
+  var err   = document.getElementById('sf-err');
+  var btn   = document.getElementById('sf-submit');
+  if (!_sfRole) { err.textContent='Please select Creator or Platform.'; return; }
+  if (!name)    { err.textContent='Please enter your name.'; return; }
+  if (!email || !/^[^\s@]+@[^\s@]+[.][^\s@]+$/.test(email)) { err.textContent='Please enter a valid email.'; return; }
+  err.textContent='';
+  btn.disabled=true;
+  btn.textContent='Submitting...';
+  try {
+    await fetch('https://ddt-core-production.up.railway.app/v1/gate/log',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,name:name,page:'waitlist:'+_sfRole,timestamp:new Date().toISOString(),user_agent:navigator.userAgent}),
+      signal:AbortSignal.timeout(5000)
+    });
+  } catch(_){}
+  document.getElementById('sf-fields').style.display='none';
+  document.getElementById('sf-pitch-creator').style.display='none';
+  document.getElementById('sf-pitch-vendor').style.display='none';
+  document.getElementById('sf-success').classList.add('show');
+  document.getElementById('sf-title').innerHTML = 'You are on the list.';
+}
+
+setTimeout(function(){
+  if (!sessionStorage.getItem('ddt_sf_dismissed')) {
+    sfShow();
+  }
+}, 2000);
 </script>
 </body>
 </html>
