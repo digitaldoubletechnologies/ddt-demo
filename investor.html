@@ -385,39 +385,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;flex-direction:
     <button class="dw-close" onclick="closeAll()">Close</button>
   </div>
   <div class="dw-body">
-    <p>DDT's defensibility is not network effects or brand. It is architectural position. The three primitives at the core of the system are the claims on which the moat is built.</p>
-
-    <div class="patent-note">
-      <strong>Provisional patents filed.</strong>
-    </div>
-
-    <div class="dw-h2">The three primitives</div>
-
-    <div class="primitive-block cro">
-      <div class="prim-label cro">Primitive One</div>
-      <div class="prim-title">Consent Receipt Object (CRO)</div>
-      <p class="prim-body">Anchored to the biometric identity subject rather than the asset creator. This distinction is fundamental: in identity-derived media workflows, the entity that captures a performer's likeness is not the entity whose consent governs use. Existing asset-level consent systems register under the asset creator's credentials. The CRO registers under the performer's DID. Once issued, immutable. Permission state changes are recorded as discrete lifecycle events, not modifications to the original object.</p>
-    </div>
-
-    <div class="primitive-block ips">
-      <div class="prim-label ips">Primitive Two</div>
-      <div class="prim-title">Identity Permission State (IPS) Responder</div>
-      <p class="prim-body">A live, cryptographically verifiable endpoint that answers whether a specific identity use is currently authorized. Operates as an OCSP analogue for identity permission state: as OCSP answers "is this TLS certificate currently valid?", the IPS answers "is this identity use currently authorized?" Returns a typed permission state reflecting the current lifecycle status of the consent record. SUSPENDED is always fail-closed: it is an active operational hold, not an ambiguous or unknown state.</p>
-    </div>
-
-    <div class="primitive-block vr">
-      <div class="prim-label vr">Primitive Three</div>
-      <div class="prim-title">Verification Receipt</div>
-      <p class="prim-body">A short-lived, cryptographically signed snapshot of an IPS evaluation result. Embeddable in content credentials for offline verification without a live IPS query. Operates as an OCSP stapling analogue: the permission-state answer travels with the content, bounded by an expiry window.</p>
-    </div>
-
-    <div class="dw-rule"></div>
-    <div class="dw-h2">Standards position</div>
-    <ul class="dw-list">
-      <li>Active in CAWG and DIF standards bodies with filed namespace proposal: org.c2pa.digital-likeness (Issue #259). No competing implementation exists at the operational layer. CAWG has confirmed this.</li>
-      <li>The subject/creator distinction is DDT's foundational architectural claim. CAWG Identity Assertion v1.2 covers creator authorization. DDT's namespace covers subject consent. These are additive, not competing.</li>
-      <li>Neutral infrastructure positioning: DDT serves platforms, unions, and creators without subordinating to any single stakeholder. Neutrality is the product. Subordinating to any single partner would compromise the infrastructure positioning.</li>
-    </ul>
+    <p>The companies big enough to build this can't afford to. Their businesses are built on owning content: vaults, catalogs, licenses measured in years. That model only works if a yes, once given, stays given. We built the opposite: permission that lives with the person, live, scoped, and revocable in milliseconds. For an incumbent to offer that, they would have to spend their own money rebuilding their own systems in order to devalue their own inventory. Their engineers could do it. No CFO will fund it. They must stay committed to asset sovereignty because their company's future depends on it. That commitment is our moat, and it is not a gap in their roadmap; it is a property of who they are.</p>
+    <p>Neutrality is the second wall. A platform checking permission for its own AI pipeline is grading its own homework, and a self-issued record is the first thing challenged in any dispute. The rail has to be run by someone with no stake in the answer. The incumbents are disqualified by definition; we are neutral by design.</p>
+    <p>Timing is the third. Everyone else answers what happened after the content was already used. Identity doesn't work like money: a second of unauthorized exposure cannot be undone. The only check that preserves value happens before the transaction completes, and that is where we sit. When permission can't be confirmed, the rail returns SUSPENDED and the client decides what to do; we never block anything, we make the answer provable.</p>
+    <p>We filed the architecture before we disclosed it. The patent portfolio is assigned to the company and in active prosecution, US and international, and every verification we sign adds to a record of cleared uses no latecomer can backfill. The moat is giving power to the people whose identities are being mined. We are the Visa of identity. Nobody remembers the first merchant to accept a card. They remember the network.</p>
   </div>
 </div>
 
@@ -631,6 +602,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;flex-direction:
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
     <a href="about.html#contact">Contact</a>
+    <a href="performer.html#demo">Demo</a>
     <a href="/privacy">Privacy</a>
     <a href="/terms">Terms</a>
     <a href="/security.html">Security</a>

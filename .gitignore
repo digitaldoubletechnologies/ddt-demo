@@ -2,3 +2,6 @@
 *.crt
 *.csr
 .env
+*.mp4
+.vercel
+.env*
