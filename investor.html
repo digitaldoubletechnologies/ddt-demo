@@ -124,12 +124,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;flex-direction:
 
 /* BANNER */
 .banner{background:var(--ink);color:var(--cream);padding:80px 40px;text-align:center}
-[data-theme=dark] .banner{background:#0A0908}
 .banner-h{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,52px);font-weight:300;line-height:1.2;margin-bottom:14px}
 .banner-h em{font-style:italic;color:var(--gold)}
-.banner-sub{font-size:16px;color:rgba(255,255,255,.5);font-weight:300}
+.banner-sub{font-size:16px;color:color-mix(in srgb, var(--cream) 55%, transparent);font-weight:300}
 .banner-links{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:32px}
-.banner-link{font-size:11px;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace;letter-spacing:.08em;cursor:pointer;border:1px solid rgba(255,255,255,.12);padding:5px 14px;border-radius:100px;transition:all .2s}
+.banner-link{font-size:11px;color:color-mix(in srgb, var(--cream) 35%, transparent);font-family:'DM Mono',monospace;letter-spacing:.08em;cursor:pointer;border:1px solid color-mix(in srgb, var(--cream) 14%, transparent);padding:5px 14px;border-radius:100px;transition:all .2s}
 .banner-link:hover{border-color:var(--gold);color:var(--gold)}
 
 /* SHARED DRAWER STYLES */
@@ -439,13 +438,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;flex-direction:
 <!-- WHY PLATFORMS NEED THIS -->
 <div style="background:var(--ink);color:var(--cream);padding:80px 40px;" class="fade-in">
 <div style="max-width:960px;margin:0 auto">
-  <p class="sec-label" style="color:rgba(255,255,255,.35)">What Changed</p>
-  <h2 class="sec-h" style="color:rgba(255,255,255,.92)">AI didn't just automate tasks.<br><em>It made human identity a raw material.</em></h2>
+  <p class="sec-label" style="color:color-mix(in srgb, var(--cream) 40%, transparent)">What Changed</p>
+  <h2 class="sec-h" style="color:color-mix(in srgb, var(--cream) 92%, transparent)">AI didn't just automate tasks.<br><em>It made human identity a raw material.</em></h2>
   <p style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;opacity:.9">A New Requirement: Regulation</p>
-  <p class="sec-body" style="max-width:680px;color:rgba(255,255,255,.6)">For the first time, a person's face, voice, and likeness can be synthesized and deployed at scale without their knowledge, without consent, and without any record it happened.</p>
-  <p class="sec-body" style="max-width:680px;margin-top:16px;color:rgba(255,255,255,.6)">Laws are arriving. State. Federal. International. Every jurisdiction moving on this faces the same problem: the legal requirement exists. The technical infrastructure to fulfill it does not.</p>
-  <p class="sec-body" style="max-width:680px;margin-top:16px;color:rgba(255,255,255,.6)">DDT builds that infrastructure and answers the only question regulators will ask: was this authorized, and can you <em style="font-style:italic;color:rgba(255,255,255,.85)">prove</em> it?</p>
-  <p style="max-width:680px;margin-top:20px;font-size:16px;font-weight:500;color:rgba(255,255,255,.85)">Compliance is not optional. DDT is how you get there before the lawsuit does.</p>
+  <p class="sec-body" style="max-width:680px;color:color-mix(in srgb, var(--cream) 60%, transparent)">For the first time, a person's face, voice, and likeness can be synthesized and deployed at scale without their knowledge, without consent, and without any record it happened.</p>
+  <p class="sec-body" style="max-width:680px;margin-top:16px;color:color-mix(in srgb, var(--cream) 60%, transparent)">Laws are arriving. State. Federal. International. Every jurisdiction moving on this faces the same problem: the legal requirement exists. The technical infrastructure to fulfill it does not.</p>
+  <p class="sec-body" style="max-width:680px;margin-top:16px;color:color-mix(in srgb, var(--cream) 60%, transparent)">DDT builds that infrastructure and answers the only question regulators will ask: was this authorized, and can you <em style="font-style:italic;color:color-mix(in srgb, var(--cream) 85%, transparent)">prove</em> it?</p>
+  <p style="max-width:680px;margin-top:20px;font-size:16px;font-weight:500;color:color-mix(in srgb, var(--cream) 85%, transparent)">Compliance is not optional. DDT is how you get there before the lawsuit does.</p>
 </div>
 </div>
 
@@ -579,7 +578,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;flex-direction:
 
 <!-- BANNER -->
 <div style="text-align:center;padding:64px 40px 0;background:var(--ink)">
-  <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,26px);font-weight:300;font-style:italic;color:rgba(240,237,230,.6);margin-bottom:24px">Ready to get compliant before the mandate arrives?</p>
+  <p class="ddt-on-ink" style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,26px);font-weight:300;font-style:italic;margin-bottom:24px">Ready to get compliant before the mandate arrives?</p>
   <button onclick="sfShow()" class="ddt-btn-primary">Get Early Access</button>
 </div>
 <div class="banner fade-in">

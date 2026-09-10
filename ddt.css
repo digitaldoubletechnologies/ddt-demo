@@ -125,12 +125,22 @@
 /* ---------------------------------------------------------------------------
    FOOTER
    --------------------------------------------------------------------------- */
-.ddt-footer{background:var(--ink);color:#FAF8F4;border-top:1px solid var(--border);padding:var(--space-xl) var(--space-lg) var(--space-lg);display:flex;flex-direction:column;align-items:center;gap:var(--space-md);text-align:center}
-.ddt-footer-logo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:#FAF8F4;letter-spacing:.02em}
+.ddt-footer{background:var(--ink);color:var(--cream);border-top:1px solid var(--border);padding:var(--space-xl) var(--space-lg) var(--space-lg);display:flex;flex-direction:column;align-items:center;gap:var(--space-md);text-align:center}
+.ddt-footer-logo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--cream);letter-spacing:.02em}
 .ddt-footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--space-md)}
-.ddt-footer-links a{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:rgba(250,248,244,.6);text-decoration:none;transition:color .2s}
+.ddt-footer-links a{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;color:color-mix(in srgb, var(--cream) 60%, transparent);text-decoration:none;transition:color .2s}
 .ddt-footer-links a:hover{color:var(--sage-light)}
-.ddt-footer-status{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;line-height:1.7;color:rgba(250,248,244,.45)}
+[data-theme=dark] .ddt-footer-links a:hover{color:var(--sage)}
+.ddt-footer-status{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;line-height:1.7;color:color-mix(in srgb, var(--cream) 45%, transparent)}
+
+/* ---------------------------------------------------------------------------
+   ON-INK BAND — content sitting on a background:var(--ink) band. The band
+   flips with the theme, so every color here is a mix of var(--cream), which
+   flips with it. Never hardcode white/light text on these bands.
+   --------------------------------------------------------------------------- */
+.ddt-on-ink{color:color-mix(in srgb, var(--cream) 55%, transparent)}
+.ddt-on-ink-pill{font-size:11px;font-family:'DM Mono',monospace;letter-spacing:.08em;color:color-mix(in srgb, var(--cream) 35%, transparent);border:1px solid color-mix(in srgb, var(--cream) 14%, transparent);padding:5px 14px;border-radius:100px;text-decoration:none;cursor:pointer;transition:all .2s}
+.ddt-on-ink-pill:hover{border-color:var(--gold);color:var(--gold)}
 
 /* ---------------------------------------------------------------------------
    BUTTONS
