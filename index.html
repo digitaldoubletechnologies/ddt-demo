@@ -242,6 +242,14 @@ var ctx=cv.getContext('2d');if(!ctx)return;
 var W=0,H=0,pts=[],raf=0,running=false,pageVisible=true,heroVisible=true,last=0,warm=0;
 var mStill=matchMedia('(prefers-reduced-motion: reduce), (max-width: 700px), (pointer: coarse)');
 var sage={r:123,g:158,b:135},gold={r:201,g:169,b:110};
+var cur={x:0,y:0,t:0,k:0};
+if(matchMedia('(pointer: fine)').matches){
+  cv.parentElement.addEventListener('pointermove',function(e){
+    var r=cv.getBoundingClientRect();
+    cur.x=e.clientX-r.left;cur.y=e.clientY-r.top;cur.t=1;
+  });
+  cv.parentElement.addEventListener('pointerleave',function(){cur.t=0});
+}
 
 function readColors(){
   var cs=getComputedStyle(document.documentElement);
@@ -276,6 +284,7 @@ function seed(){
 
 function step(dt,t){
   var i,j,n=pts.length;
+  cur.k+=(cur.t-cur.k)*Math.min(1,3*dt);
   for(i=0;i<n;i++){
     var p=pts[i],sx=0,sy=0,c=0;
     for(j=0;j<n;j++){
@@ -286,6 +295,10 @@ function step(dt,t){
     if(c)p.a=turn(p.a,Math.atan2(sy,sx),Math.min(1,2.6*dt));            /* together */
     p.a+=(Math.sin(t*.00028+p.x*.004)+Math.cos(t*.00016+p.y*.005))*.55*dt; /* but separate */
     p.a=turn(p.a,Math.atan2(H*.35-p.y,W*.5-p.x),.3*dt);                  /* drawn to the light */
+    if(cur.k>.01){                                                       /* mild curiosity toward the cursor */
+      var cdx=cur.x-p.x,cdy=cur.y-p.y,cd2=cdx*cdx+cdy*cdy;
+      if(cd2<22500){var cw=1-Math.sqrt(cd2)/150;p.a=turn(p.a,Math.atan2(cdy,cdx),.12*cw*cw*cur.k*dt)}
+    }
     var m=60;                                                            /* soft walls, ceiling open */
     if(p.x<m)p.a=turn(p.a,0,3.2*dt);else if(p.x>W-m)p.a=turn(p.a,Math.PI,3.2*dt);
     if(p.y>H-m)p.a=turn(p.a,-Math.PI/2,3.2*dt);
@@ -324,7 +337,8 @@ function size(){
 }
 
 function still(){
-  /* settled single frame for reduced motion and small screens */
+  /* settled single frame for reduced motion and small screens — never cursor-steered */
+  cur.t=0;cur.k=0;
   size();seed();
   for(warm=0;warm<240;warm++)step(1/30,warm*33);
   draw();
