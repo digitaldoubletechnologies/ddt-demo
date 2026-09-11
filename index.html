@@ -295,9 +295,19 @@ function step(dt,t){
     if(c)p.a=turn(p.a,Math.atan2(sy,sx),Math.min(1,2.6*dt));            /* together */
     p.a+=(Math.sin(t*.00028+p.x*.004)+Math.cos(t*.00016+p.y*.005))*.55*dt; /* but separate */
     p.a=turn(p.a,Math.atan2(H*.35-p.y,W*.5-p.x),.3*dt);                  /* drawn to the light */
-    if(cur.k>.01){                                                       /* curiosity toward the cursor — half the beam's pull */
-      var cdx=cur.x-p.x,cdy=cur.y-p.y,cd2=cdx*cdx+cdy*cdy;
-      if(cd2<48400){var cw=1-Math.sqrt(cd2)/220;p.a=turn(p.a,Math.atan2(cdy,cdx),.15*cw*cur.k*dt)}
+    if(cur.k>.01){
+      /* gather toward the cursor: heading steer alone loses to the 2.6/s
+         alignment consensus, so the influence is a positional drift that
+         alignment cannot erase — an annulus profile, zero at the cursor tip
+         and at the 220px edge, peaking mid-radius so points ring the cursor
+         rather than pile onto it */
+      var cdx=cur.x-p.x,cdy=cur.y-p.y,cd=Math.sqrt(cdx*cdx+cdy*cdy);
+      if(cd<220&&cd>1){
+        var cw=1-cd/220;
+        p.a=turn(p.a,Math.atan2(cdy,cdx),.15*cw*cur.k*dt);
+        var g=55*cw*(1-cw)*4*cur.k*dt/cd;
+        p.x+=cdx*g;p.y+=cdy*g;
+      }
     }
     var m=60;                                                            /* soft walls, ceiling open */
     if(p.x<m)p.a=turn(p.a,0,3.2*dt);else if(p.x>W-m)p.a=turn(p.a,Math.PI,3.2*dt);
