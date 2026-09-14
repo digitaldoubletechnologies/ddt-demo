@@ -242,13 +242,27 @@ var ctx=cv.getContext('2d');if(!ctx)return;
 var W=0,H=0,pts=[],raf=0,running=false,pageVisible=true,heroVisible=true,last=0,warm=0;
 var mStill=matchMedia('(prefers-reduced-motion: reduce), (max-width: 700px), (pointer: coarse)');
 var sage={r:123,g:158,b:135},gold={r:201,g:169,b:110};
-var cur={x:0,y:0,t:0,k:0};
-if(matchMedia('(pointer: fine)').matches){
-  cv.parentElement.addEventListener('pointermove',function(e){
-    var r=cv.getBoundingClientRect();
-    cur.x=e.clientX-r.left;cur.y=e.clientY-r.top;cur.t=1;
-  });
-  cv.parentElement.addEventListener('pointerleave',function(){cur.t=0});
+var cursor={x:0,y:0,active:false,influence:0};
+var lastTrusted=false;
+/* DEBUG readout (report §E) — cannot false-pass: a real mouse shows trusted:true */
+var dbg=document.createElement('div');
+dbg.style.cssText='position:fixed;top:8px;left:8px;z-index:99999;'
+  +'font:12px monospace;background:#000;color:#0f0;padding:4px;pointer-events:none';
+document.body.appendChild(dbg);
+/* gate on capability, not the flaky primary-pointer query (report §A / Stage 4) */
+var fine=matchMedia('(any-pointer: fine)').matches&&matchMedia('(any-hover: hover)').matches;
+if(fine){
+  /* attach to WINDOW so pointer-events:none anywhere in the hero is irrelevant (report Stage 1) */
+  window.addEventListener('pointermove',function(e){
+    if(e.pointerType==='touch')return;
+    lastTrusted=e.isTrusted;
+    var r=cv.parentElement.getBoundingClientRect();
+    var x=e.clientX-r.left,y=e.clientY-r.top;      /* CSS px, hero-local — no DPR multiply */
+    cursor.active=x>=0&&y>=0&&x<=r.width&&y<=r.height;
+    cursor.x=x;cursor.y=y;
+  },{passive:true});
+  window.addEventListener('pointerout',function(e){if(!e.relatedTarget)cursor.active=false});
+  cv.parentElement.addEventListener('pointerleave',function(){cursor.active=false});
 }
 
 function readColors(){
@@ -284,7 +298,8 @@ function seed(){
 
 function step(dt,t){
   var i,j,n=pts.length;
-  cur.k+=(cur.t-cur.k)*Math.min(1,3*dt);
+  var RISE=3.0,FALL=1.5;                            /* smoothed enter/exit (report §C) */
+  cursor.influence+=((cursor.active?1:0)-cursor.influence)*Math.min(1,(cursor.active?RISE:FALL)*dt);
   for(i=0;i<n;i++){
     var p=pts[i],sx=0,sy=0,c=0;
     for(j=0;j<n;j++){
@@ -294,26 +309,27 @@ function step(dt,t){
     }
     if(c)p.a=turn(p.a,Math.atan2(sy,sx),Math.min(1,2.6*dt));            /* together */
     p.a+=(Math.sin(t*.00028+p.x*.004)+Math.cos(t*.00016+p.y*.005))*.55*dt; /* but separate */
-    p.a=turn(p.a,Math.atan2(H*.35-p.y,W*.5-p.x),.3*dt);                  /* drawn to the light */
-    if(cur.k>.01){
-      /* gather toward the cursor: heading steer alone loses to the 2.6/s
-         alignment consensus, so the influence is a positional drift that
-         alignment cannot erase — an annulus profile, zero at the cursor tip
-         and at the 220px edge, peaking mid-radius so points ring the cursor
-         rather than pile onto it */
-      var cdx=cur.x-p.x,cdy=cur.y-p.y,cd=Math.sqrt(cdx*cdx+cdy*cdy);
-      if(cd<220&&cd>1){
-        var cw=1-cd/220;
-        p.a=turn(p.a,Math.atan2(cdy,cdx),.15*cw*cur.k*dt);
-        var g=55*cw*(1-cw)*4*cur.k*dt/cd;
-        p.x+=cdx*g;p.y+=cdy*g;
+    p.a=turn(p.a,Math.atan2(H*.35-p.y,W*.5-p.x),.15*dt);                 /* beam — TEMP 0.15 (report §D, loud) */
+    var sm=1;
+    if(cursor.active&&cursor.influence>0){                               /* cursor steer (report §C, loud column) */
+      var cdx=cursor.x-p.x,cdy=cursor.y-p.y,cd=Math.hypot(cdx,cdy)||1;
+      var R_IN=150,R_OUT=260,CURSOR_STEER=2.5;
+      var ct=Math.max(0,Math.min(1,(R_OUT-cd)/(R_OUT-R_IN)));
+      var falloff=ct*ct*(3-2*ct);                                        /* smoothstep ease-out */
+      if(falloff>0){
+        var des=Math.atan2(cdy,cdx);
+        var da=Math.atan2(Math.sin(des-p.a),Math.cos(des-p.a));          /* shortest signed angle */
+        var stp=da*CURSOR_STEER*falloff*cursor.influence*dt;
+        var maxTurn=CURSOR_STEER*dt;                                     /* clamp: ease, never snap */
+        p.a+=Math.max(-maxTurn,Math.min(maxTurn,stp));
+        sm=1.3;                                                          /* influenced speed mult */
       }
     }
     var m=60;                                                            /* soft walls, ceiling open */
     if(p.x<m)p.a=turn(p.a,0,3.2*dt);else if(p.x>W-m)p.a=turn(p.a,Math.PI,3.2*dt);
     if(p.y>H-m)p.a=turn(p.a,-Math.PI/2,3.2*dt);
-    p.x+=Math.cos(p.a)*p.s*dt;
-    p.y+=Math.sin(p.a)*p.s*dt;
+    p.x+=Math.cos(p.a)*p.s*sm*dt;
+    p.y+=Math.sin(p.a)*p.s*sm*dt;
     if(p.y<-50){p.x=W*.5+(Math.random()-.5)*W*.3;p.y=-30;p.a=Math.PI/2+(Math.random()-.5)*.6}
   }
 }
@@ -337,6 +353,8 @@ function draw(){
     ctx.fillStyle='rgba('+cc.r+','+cc.g+','+cc.b+','+al2.toFixed(3)+')';
     ctx.beginPath();ctx.arc(p.x,p.y,1.4+.9*p.L,0,Math.PI*2);ctx.fill();
   }
+  dbg.textContent = `active:${cursor.active} x:${cursor.x|0} y:${cursor.y|0} `
+    + `infl:${cursor.influence.toFixed(2)} trusted:${lastTrusted}`;
 }
 
 function size(){
@@ -348,7 +366,7 @@ function size(){
 
 function still(){
   /* settled single frame for reduced motion and small screens — never cursor-steered */
-  cur.t=0;cur.k=0;
+  cursor.active=false;cursor.influence=0;
   size();seed();
   for(warm=0;warm<240;warm++)step(1/30,warm*33);
   draw();
