@@ -323,6 +323,9 @@ function step(dt,t){
         var maxTurn=CURSOR_STEER*dt;                                     /* clamp: ease, never snap */
         p.a+=Math.max(-maxTurn,Math.min(maxTurn,stp));
         sm=1.3;                                                          /* influenced speed mult */
+        var vmag=70*falloff*cursor.influence*dt;                         /* Swarm-style pull (report §G) — V_CURSOR 70, loud */
+        p.x+=cdx/cd*vmag;
+        p.y+=cdy/cd*vmag;
       }
     }
     var m=60;                                                            /* soft walls, ceiling open */
@@ -339,19 +342,28 @@ function draw(){
   var dark=document.documentElement.getAttribute('data-theme')==='dark';
   var dotBase=dark?.5:.55,lineBase=dark?.3:.3,maxD=115,maxD2=maxD*maxD,i,j,n=pts.length;
   var ds=dark?sage:shade(sage,.62),dg=dark?gold:shade(gold,.66);
-  for(i=0;i<n;i++){var p=pts[i];p.L=lightAt(p.x,p.y)}
+  var act=cursor.active&&cursor.influence>0;
+  for(i=0;i<n;i++){
+    var p=pts[i];p.L=lightAt(p.x,p.y);p.F=0;
+    if(act){                                                             /* visual tell (report §D) — mirrors step()'s loud radii */
+      var fx=cursor.x-p.x,fy=cursor.y-p.y,fd=Math.hypot(fx,fy);
+      var ft=Math.max(0,Math.min(1,(260-fd)/(260-150)));
+      p.F=ft*ft*(3-2*ft)*cursor.influence;
+    }
+  }
   for(i=0;i<n;i++)for(j=i+1;j<n;j++){
     var a=pts[i],b=pts[j],dx=b.x-a.x,dy=b.y-a.y,d2=dx*dx+dy*dy;
     if(d2<maxD2){
       var f=1-Math.sqrt(d2)/maxD,al=lineBase*f*f*(.4+.6*(a.L+b.L)*.5);
+      al=Math.min(1,al*(1+.4*Math.min(a.F,b.F)));
       ctx.strokeStyle='rgba('+ds.r+','+ds.g+','+ds.b+','+al.toFixed(3)+')';
       ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
     }
   }
   for(i=0;i<n;i++){
-    var p=pts[i],cc=p.gold?dg:ds,al2=dotBase*(.45+.55*p.L);
+    var p=pts[i],cc=p.gold?dg:ds,al2=Math.min(1,dotBase*(.45+.55*p.L)*(1+.4*p.F));
     ctx.fillStyle='rgba('+cc.r+','+cc.g+','+cc.b+','+al2.toFixed(3)+')';
-    ctx.beginPath();ctx.arc(p.x,p.y,1.4+.9*p.L,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(p.x,p.y,(1.4+.9*p.L)*(1+.4*p.F),0,Math.PI*2);ctx.fill();
   }
   dbg.textContent = `active:${cursor.active} x:${cursor.x|0} y:${cursor.y|0} `
     + `infl:${cursor.influence.toFixed(2)} trusted:${lastTrusted}`;
