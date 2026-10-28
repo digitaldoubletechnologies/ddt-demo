@@ -106,6 +106,37 @@ footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-i
 .f-links a{font-size:12px;color:var(--ink-muted);text-decoration:none}.f-links a:hover{color:var(--sage)}
 .f-legal{font-size:10px;color:var(--ink-muted);width:100%}
 
+/* FILM TILES: same grid and size as the path cards, opening into a player */
+.films{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:660px;width:100%;margin-bottom:16px;opacity:0;animation:fadeUp .8s .85s forwards}
+@media(max-width:580px){.films{grid-template-columns:1fr}}
+.film-card{appearance:none;-webkit-appearance:none;font:inherit;background:var(--warm);border:1px solid var(--border);border-radius:18px;padding:0;margin:0;color:var(--ink);text-align:left;cursor:pointer;overflow:hidden;position:relative;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s,border-color .3s}
+.film-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.film-card.film-paper::after{background:var(--gold)}
+.film-card.film-demo::after{background:var(--sage)}
+.film-card:hover{transform:translateY(-4px);box-shadow:0 16px 44px rgba(0,0,0,.09);border-color:transparent}
+.film-card:hover::after{transform:scaleX(1)}
+.film-card:focus-visible{outline:2px solid var(--sage);outline-offset:3px}
+.film-thumb{position:relative;display:block;width:100%;aspect-ratio:16/9;background:#0E0E0C center/cover no-repeat}
+.film-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,14,12,0) 55%,rgba(14,14,12,.5))}
+.film-play{position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:rgba(250,248,244,.94);box-shadow:0 6px 20px rgba(0,0,0,.25);z-index:1;transition:transform .25s}
+.film-play::before{content:'';position:absolute;left:21px;top:17px;border-style:solid;border-width:9px 0 9px 15px;border-color:transparent transparent transparent #1A1915}
+.film-card:hover .film-play{transform:scale(1.08)}
+.film-time{position:absolute;right:12px;bottom:10px;z-index:1;font-size:11px;font-weight:500;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:#FAF8F4}
+.film-meta{display:block;padding:18px 22px 22px}
+.film-tag{display:block;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.film-paper .film-tag{color:var(--gold)}
+.film-demo .film-tag{color:var(--sage)}
+.film-title{display:block;font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;line-height:1.15;color:var(--ink)}
+.film-dlg{position:fixed;inset:0;z-index:1000;border:none;padding:0;margin:auto;background:transparent;width:min(1120px,94vw);height:fit-content;max-width:94vw;max-height:96vh;overflow:auto;color:#F0EDE6}
+.film-dlg::backdrop{background:rgba(10,10,9,.84);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.film-frame{background:#000;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.film-frame video{display:block;width:100%;height:auto;max-height:72vh;aspect-ratio:16/9;background:#000}
+.film-note{font-size:14px;line-height:1.6;color:rgba(240,237,230,.85);margin:10px 0 0}
+.film-cap{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:10px}
+.film-cap-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:#F0EDE6}
+.film-close{background:none;border:1px solid rgba(240,237,230,.4);color:#F0EDE6;border-radius:100px;padding:7px 16px;font:inherit;font-size:13px;cursor:pointer;flex-shrink:0}
+.film-close:hover,.film-close:focus-visible{border-color:#F0EDE6;outline:none}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
 </style>
@@ -154,6 +185,17 @@ footer{border-top:1px solid var(--border);padding:22px 40px;display:flex;align-i
     </div>
   </div>
   <p class="ips-microcopy">Checked in real time before identity is used</p>
+
+  <div class="films">
+    <button type="button" class="film-card film-paper" data-film="paper" aria-label="Play The Paper Trail, 1 minute 51 seconds">
+      <span class="film-thumb" style="background-image:url('paper-trail-poster.jpg')"><span class="film-play" aria-hidden="true"></span><span class="film-time" aria-hidden="true">1:51</span></span>
+      <span class="film-meta"><span class="film-tag">The Film</span><span class="film-title">The Paper Trail</span></span>
+    </button>
+    <button type="button" class="film-card film-demo" data-film="demo" aria-label="Play the demo, 5 minutes 42 seconds">
+      <span class="film-thumb" style="background-image:url('demo-poster.jpg')"><span class="film-play" aria-hidden="true"></span><span class="film-time" aria-hidden="true">5:42</span></span>
+      <span class="film-meta"><span class="film-tag">The Demo</span><span class="film-title">See it working</span></span>
+    </button>
+  </div>
 
   <!-- PATH CARDS — bigger titles per Ailsa -->
   <div class="paths">
@@ -501,6 +543,63 @@ setTimeout(function(){
     sfShow();
   }
 }, 2000);
+</script>
+<dialog class="film-dlg" id="ddtFilm" aria-labelledby="ddtFilmTitle">
+  <div class="film-frame"><video id="ddtFilmVideo" controls playsinline preload="none"></video></div>
+  <p class="film-note" id="ddtFilmNote" hidden></p>
+  <div class="film-cap"><span class="film-cap-title" id="ddtFilmTitle"></span><button type="button" class="film-close" id="ddtFilmClose">Close</button></div>
+</dialog>
+<script>
+(function(){
+  var films = {
+    paper: {src: 'https://aq5cml3cul0fgsqm.public.blob.vercel-storage.com/DDT_ThePaperTrail_web.mp4', poster: 'paper-trail-poster.jpg', title: 'The Paper Trail', note: 'Narration: AI-generated voice, licensed from a consenting, paid voice actor.', captions: ''},
+    demo: {src: 'https://aq5cml3cul0fgsqm.public.blob.vercel-storage.com/DDT_Demo_July26_web.mp4', poster: 'demo-poster.jpg', title: 'The Demo', note: '', captions: ''}
+  };
+  var dlg = document.getElementById('ddtFilm');
+  var v = document.getElementById('ddtFilmVideo');
+  var t = document.getElementById('ddtFilmTitle');
+  var n = document.getElementById('ddtFilmNote');
+  if (dlg === null) return;
+  function cleanup() {
+    v.pause();
+    v.removeAttribute('src');
+    while (v.firstChild) v.removeChild(v.firstChild);
+    v.load();
+  }
+  function hide() {
+    if (typeof dlg.close === 'function') { dlg.close(); } else { dlg.removeAttribute('open'); cleanup(); }
+  }
+  function openFilm(id) {
+    var f = films[id];
+    if (f === undefined) return;
+    while (v.firstChild) v.removeChild(v.firstChild);
+    v.poster = f.poster;
+    v.src = f.src;
+    if (f.captions) {
+      var tr = document.createElement('track');
+      tr.kind = 'captions';
+      tr.srclang = 'en';
+      tr.label = 'English';
+      tr.src = f.captions;
+      v.appendChild(tr);
+    }
+    v.setAttribute('aria-label', f.note ? f.title + '. ' + f.note : f.title);
+    t.textContent = f.title;
+    n.textContent = f.note;
+    n.hidden = (f.note === '');
+    if (typeof dlg.showModal === 'function') { dlg.showModal(); } else { dlg.setAttribute('open', ''); }
+    var p = v.play();
+    if (p && p.catch) p.catch(function(){});
+    if (window.plausible) window.plausible('Film Play', {props: {film: id}});
+  }
+  var cards = document.querySelectorAll('[data-film]');
+  for (var i = 0; i < cards.length; i++) {
+    cards[i].addEventListener('click', function(){ openFilm(this.getAttribute('data-film')); });
+  }
+  document.getElementById('ddtFilmClose').addEventListener('click', hide);
+  dlg.addEventListener('click', function(e){ if (e.target === dlg) hide(); });
+  dlg.addEventListener('close', cleanup);
+})();
 </script>
 </body>
 </html>
