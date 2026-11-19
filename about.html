@@ -277,6 +277,7 @@ footer{background:var(--ink);color:rgba(240,237,230,.4);padding:40px;text-align:
           <div class="form-group">
             <label class="form-label">Email</label>
             <input type="email" class="form-input" id="cf-email" placeholder="your@email.com">
+    <input type="text" id="cf-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;opacity:0">
           </div>
         </div>
         <div class="form-group">
@@ -316,6 +317,7 @@ footer{background:var(--ink);color:rgba(240,237,230,.4);padding:40px;text-align:
               <div class="form-group">
                 <label class="form-label">Email</label>
                 <input type="email" class="form-input" id="rq-email" placeholder="your@email.com">
+    <input type="text" id="rq-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;opacity:0">
               </div>
             </div>
             <div class="form-group">
@@ -385,20 +387,26 @@ async function submitRequest() {
   err.textContent = '';
   btn.disabled = true;
   btn.textContent = 'Sending...';
+  let rqOk = false;
   try {
-    await fetch('https://ddt-core-production.up.railway.app/v1/gate/log', {
+    const r = await fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email, name,
-        page: 'materials-request:' + type + (affiliation ? ':' + affiliation : ''),
-        referrer: message || null,
-        timestamp: new Date().toISOString(),
-        user_agent: navigator.userAgent,
+        kind: 'materials', name, email, topic: type, affiliation, message,
+        page: location.pathname,
+        website: (document.getElementById('rq-hp') || {}).value || '',
       }),
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(10000),
     });
+    rqOk = r.ok;
   } catch(_) {}
+  if (rqOk === false) {
+    err.innerHTML = 'Something went wrong. Please try again, or email <a href="mailto:jhofstad@ddt-pro.com">jhofstad@ddt-pro.com</a>.';
+    btn.disabled = false;
+    btn.textContent = 'Send Request';
+    return;
+  }
   btn.style.display = 'none';
   document.getElementById('rq-success').classList.add('show');
 }
@@ -422,20 +430,26 @@ async function submitContact() {
   btn.disabled = true;
   btn.textContent = 'Sending...';
 
+  let cfOk = false;
   try {
-    await fetch('https://ddt-core-production.up.railway.app/v1/gate/log', {
+    const r = await fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email, name,
-        page: '/about.html#contact: ' + type,
-        referrer: message || null,
-        timestamp: new Date().toISOString(),
-        user_agent: navigator.userAgent,
+        kind: 'contact', name, email, topic: type, message,
+        page: location.pathname,
+        website: (document.getElementById('cf-hp') || {}).value || '',
       }),
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(10000),
     });
+    cfOk = r.ok;
   } catch(_) {}
+  if (cfOk === false) {
+    err.innerHTML = 'Something went wrong. Please try again, or email <a href="mailto:jhofstad@ddt-pro.com">jhofstad@ddt-pro.com</a>.';
+    btn.disabled = false;
+    btn.textContent = 'Send message';
+    return;
+  }
 
   btn.style.display = 'none';
   document.getElementById('cf-success').classList.add('show');

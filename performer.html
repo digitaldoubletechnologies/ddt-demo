@@ -491,6 +491,7 @@ function closeModal(){document.getElementById('modalWrap').style.display='none';
   <div class="sf-fields" id="sf-fields">
     <input type="text" class="sf-input" id="sf-name" placeholder="Your name">
     <input type="email" class="sf-input" id="sf-email" placeholder="Your email address">
+    <input type="text" id="sf-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;opacity:0">
     <button class="sf-btn" id="sf-submit" onclick="sfSubmit()">Request Early Access</button>
     <p class="sf-err" id="sf-err"></p>
   </div>
@@ -537,14 +538,22 @@ async function sfSubmit() {
   err.textContent='';
   btn.disabled=true;
   btn.textContent='Submitting...';
+  var ok = false;
   try {
-    await fetch('https://ddt-core-production.up.railway.app/v1/gate/log',{
+    var r = await fetch('/api/contact',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email:email,name:name,page:'waitlist:'+_sfRole,timestamp:new Date().toISOString(),user_agent:navigator.userAgent}),
-      signal:AbortSignal.timeout(5000)
+      body:JSON.stringify({kind:'waitlist',name:name,email:email,topic:(_sfRole==='vendor'?'Platform':'Creator'),page:location.pathname,website:(document.getElementById('sf-hp')||{}).value||''}),
+      signal:AbortSignal.timeout(10000)
     });
+    ok = r.ok;
   } catch(_){}
+  if (ok === false) {
+    err.innerHTML = 'Something went wrong. Please try again, or email <a href="mailto:jhofstad@ddt-pro.com">jhofstad@ddt-pro.com</a>.';
+    btn.disabled = false;
+    btn.textContent = 'Request Early Access';
+    return;
+  }
   document.getElementById('sf-fields').style.display='none';
   document.getElementById('sf-pitch-creator').style.display='none';
   document.getElementById('sf-pitch-vendor').style.display='none';
